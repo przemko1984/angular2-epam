@@ -27,20 +27,17 @@ import { NoContentComponent } from './pages/no-content';
 import { CoreModule } from './core';
 
 // Pages
-import { LoginPageModule } from './pages/login';
-import { CourseListPageModule } from  './pages/course-list';
-import { CourseDetailsPageModule } from  './pages/course-details';
-import { HomeModule } from './pages/home';
-import { PageOneModule } from  './pages/page-one';
-import { PageTwoModule } from  './pages/page-two';
+import {
+	LoginPageModule,
+	CourseListPageModule,
+	CourseDetailsPageModule
+} from './pages';
 
 // Services
 
-import { TodoService } from './core/services';
-
 // Application wide providers
 const APP_PROVIDERS = [
-	TodoService
+
 ];
 
 /**
@@ -60,10 +57,7 @@ const APP_PROVIDERS = [
 		CoreModule,
 		LoginPageModule,
 		CourseListPageModule,
-		CourseDetailsPageModule,
-		HomeModule,
-		PageOneModule,
-		PageTwoModule
+		CourseDetailsPageModule
 	],
 	providers: [ // expose our Services and Providers into Angular's dependency injection
 		ENV_PROVIDERS,
