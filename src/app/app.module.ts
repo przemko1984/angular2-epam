@@ -27,6 +27,9 @@ import { NoContentComponent } from './pages/no-content';
 import { CoreModule } from './core';
 
 // Pages
+import { LoginPageModule } from './pages/login';
+import { CourseListPageModule } from  './pages/course-list';
+import { CourseDetailsPageModule } from  './pages/course-details';
 import { HomeModule } from './pages/home';
 import { PageOneModule } from  './pages/page-one';
 import { PageTwoModule } from  './pages/page-two';
@@ -55,6 +58,9 @@ const APP_PROVIDERS = [
 		HttpModule,
 		RouterModule.forRoot(ROUTES, {useHash: true, preloadingStrategy: PreloadAllModules}),
 		CoreModule,
+		LoginPageModule,
+		CourseListPageModule,
+		CourseDetailsPageModule,
 		HomeModule,
 		PageOneModule,
 		PageTwoModule
