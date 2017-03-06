@@ -6,7 +6,6 @@ import {
 	OnInit,
 	ViewEncapsulation
 } from '@angular/core';
-import { AppState } from './app.service';
 
 /*
  * App Component

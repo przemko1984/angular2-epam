@@ -23,8 +23,8 @@ import { ROUTES } from './app.routes';
 import { AppComponent } from './app.component';
 import { NoContentComponent } from './pages/no-content';
 
-// Components
-import { HeaderModule, FooterModule } from './core/components';
+// Core components
+import { CoreModule } from './core';
 
 // Pages
 import { HomeModule } from './pages/home';
@@ -54,8 +54,7 @@ const APP_PROVIDERS = [
 		FormsModule,
 		HttpModule,
 		RouterModule.forRoot(ROUTES, {useHash: true, preloadingStrategy: PreloadAllModules}),
-		HeaderModule,
-		FooterModule,
+		CoreModule,
 		HomeModule,
 		PageOneModule,
 		PageTwoModule
