@@ -5,12 +5,13 @@ import { CommonModule } from '@angular/common';
 
 // custom components
 import { CourseListPageComponent } from './course-list.component';
+import { CoreModule } from './../../core/core.module';
 
 @NgModule({
 	declarations: [
 		CourseListPageComponent
 	],
-	imports: [],
+	imports: [CoreModule],
 	providers: []
 })
 export class CourseListPageModule {
