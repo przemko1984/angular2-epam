@@ -1,0 +1,23 @@
+@import "../../../styles/variables/colors.scss";
+
+.course-item {
+	border: 1px solid $c-primary;
+	margin: 0.5rem 0;
+	padding: 0.5rem;
+	font-size: 0.9rem;
+
+	h3{
+		font-size: 1.1rem;
+	}
+
+	.desc {
+		padding: 0.5rem 0 0;
+		font-size: 0.8rem;
+		text-align: justify;
+	}
+
+	button {
+		width: 100%;
+		margin: 0.2rem 0;
+	}
+}

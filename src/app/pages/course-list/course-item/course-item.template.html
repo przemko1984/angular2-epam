@@ -1,6 +1,22 @@
-<div>
-    <p>{{course.name}}</p>
-    <p>{{course.duration}}</p>
-    <p>{{course.createDate}}</p>
-    <button type="submit" class="btn btn-primary btn-sm" (click)="delete()">delete</button>
+<div class="container course-item">
+	<div class="row">
+		<div class="col-sm-10">
+            <div class="row">
+		        <div class="col-sm-4">
+                    <h3>{{course.name}}</h3>
+		        </div>
+                <div class="col-sm-4">
+                    <span>{{course.duration}}min</span>
+		        </div>
+                <div class="col-sm-4 text-right">
+                    <span >{{course.createDate | date}}</span>
+		        </div>
+            </div>
+            <p class="desc">{{course.description}}</p>
+		</div>
+		<div class="col-sm-2 text-right">
+			<button type="submit" class="btn btn-primary btn-sm" (click)="edit()">edit</button>
+            <button type="submit" class="btn btn-danger btn-sm" (click)="delete()">delete</button>
+		</div>
+	</div>
 </div>

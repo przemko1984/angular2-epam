@@ -8,14 +8,14 @@ import { Component, ViewEncapsulation } from '@angular/core';
 	encapsulation: ViewEncapsulation.None
 })
 export class ToolboxComponent {
-	private search: string;
+	private search: string = '';
 
 	constructor() {
 
 	}
 
 	public find() {
-		console.log(this.search);
+		console.log(`searching: "${this.search}"`);
 	}
 
 	public addCourse() {

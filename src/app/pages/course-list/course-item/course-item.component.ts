@@ -6,6 +6,7 @@ import { ICourse } from './../../../business-entities';
 	selector: 'course-item',
 	encapsulation: ViewEncapsulation.None,
 	providers: [],
+	styles: [require('./course-item.component.scss')],
 	template: require('./course-item.template.html')
 })
 export class CourseItemComponent {
@@ -23,4 +24,7 @@ export class CourseItemComponent {
 		this.deleteCourse.emit(this.course.id);
 	}
 
+	public edit() {
+		console.log(`edit: ${this.course.id}`);
+	}
 }
