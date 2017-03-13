@@ -58,7 +58,6 @@ export class CourseListPageComponent implements OnInit, OnDestroy, OnChanges, Do
 	}
 
 	public ngOnDestroy() {
-	public ngOnDestroy() {
 		console.log('CourseListPageComponent: ngOnInit');
 	}
 
