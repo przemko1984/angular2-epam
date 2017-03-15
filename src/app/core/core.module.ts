@@ -1,22 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { FormsModule }   from '@angular/forms';
 import {
 	HeaderComponent,
 	LogoComponent,
-	FooterComponent
+	FooterComponent,
+	ToolboxComponent
 } from './components/';
 
 @NgModule({
 	declarations: [
 		HeaderComponent,
 		LogoComponent,
-		FooterComponent
+		FooterComponent,
+		ToolboxComponent
 	],
-	imports: [RouterModule],
+	imports: [RouterModule, FormsModule],
 	exports: [
 		HeaderComponent,
 		LogoComponent,
-		FooterComponent
+		FooterComponent,
+		ToolboxComponent
 	]
 })
 export class CoreModule {

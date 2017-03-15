@@ -1,7 +1,22 @@
 @import "../../../styles/variables/colors.scss";
 
 .main-navbar {
-	height: 60px;
 	background-color: $c-primary;
 	color: $white;
+	min-height: 75px;
+
+	.user {
+		padding: 1.3rem 0 0;
+		p {
+			margin: 0.1rem 0;
+			padding: 0;
+			font-size: 0.8rem;
+			line-height: 0.8rem;
+		}
+	}
+
+	a {
+		color: $c-humming-bird;
+	}
 }
+
