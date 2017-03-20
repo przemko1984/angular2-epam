@@ -16,7 +16,15 @@
 		</div>
 		<div class="col-sm-2 text-right">
 			<button type="submit" class="btn btn-primary btn-sm" (click)="edit()">edit</button>
-            <button type="submit" class="btn btn-danger btn-sm" (click)="delete()">delete</button>
+            <button 
+				class="btn btn-danger btn-sm" 				
+				mwlConfirmationPopover
+				title="Are you sure?"
+				placement="top"
+				confirmText="Yes"
+				cancelText="No"
+				(confirm)="delete()"
+			>delete</button>
 		</div>
 	</div>
 </div>
