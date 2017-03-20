@@ -54,7 +54,7 @@ const APP_PROVIDERS = [
 		FormsModule,
 		HttpModule,
 		RouterModule.forRoot(ROUTES, {useHash: true, preloadingStrategy: PreloadAllModules}),
-		SharedModule,
+		SharedModule.forRoot(),
 		LoginPageModule,
 		CourseListPageModule,
 		CourseDetailsPageModule
