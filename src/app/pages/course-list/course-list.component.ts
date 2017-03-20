@@ -23,7 +23,7 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 
 	public ngOnInit() {
 		console.log('CourseListPageComponent: ngOnInit');
-		this.courses = this.courseService.getList();
+		this.loadCourses();
 	}
 
 	public ngOnDestroy() {
@@ -53,5 +53,16 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 	// other stuff
 	public deleteCourse(id: string) {
 		console.log('Delete course id:', id);
+	}
+
+	private loadCourses() {
+		this.courseService.getList().subscribe(
+            (resp) => {
+                this.courses = resp;
+            },
+            (error) => {
+                console.error('error', error);
+            }
+        );
 	}
 }

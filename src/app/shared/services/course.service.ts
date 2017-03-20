@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
@@ -8,10 +8,7 @@ import { ICourse } from '../../business-entities/';
 @Injectable()
 export class CourseService {
 
-    constructor() { }
-
-    getList(): ICourse[] {
-        return [{
+    private courseList: ICourse[] = [{
             id: 'uuid1',
             name: 'Course 1',
             duration: 10,
@@ -36,6 +33,11 @@ export class CourseService {
                 'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
                 'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
         }];
+
+    constructor() { }
+
+    getList(): Observable<ICourse[]> {
+        return Observable.of<ICourse[]>(this.courseList);
     }
 
     create(course: ICourse): ICourse {
