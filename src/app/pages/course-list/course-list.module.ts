@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 
 // custom components
 import { CourseListPageComponent } from './course-list.component';
-import { CoreModule } from './../../core/core.module';
+import { SharedModule } from './../../shared/shared.module';
 import { CourseItemComponent } from './course-item';
 
 @NgModule({
@@ -15,7 +15,7 @@ import { CourseItemComponent } from './course-item';
 	],
 	imports: [
 		CommonModule,
-		CoreModule
+		SharedModule
 	],
 	providers: []
 })
