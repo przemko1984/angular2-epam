@@ -53,6 +53,12 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 	// other stuff
 	public deleteCourse(id: string) {
 		console.log('Delete course id:', id);
+		this.courseService.remove(id);
+	}
+
+	public editCourse(id: string) {
+		console.log('Edit course id:', id);
+		this.courseService.update(id);
 	}
 
 	private loadCourses() {

@@ -40,44 +40,42 @@ export class CourseService {
         return Observable.of<ICourse[]>(this.courseList);
     }
 
-    create(course: ICourse): ICourse {
-        return {
-            id: 'uuid4',
-            name: 'Course 4',
+    create(): ICourse {
+        let no: number = this.courseList.length;
+        let newCourse: ICourse = {
+            id: `uuid${no++}`,
+            name: `Course ${no++}`,
             duration: 10,
             createDate: new Date('2016-08-10'),
             description: 'Lorem ipsum dolor sit amet 1, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
                 'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla.' +
                 ' Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
         };
+
+        this.courseList.push(newCourse);
+
+        return newCourse;
     }
 
     getById(id: string): ICourse {
-        return {
-            id: 'uuid1',
-            name: 'Course 1',
-            duration: 10,
-            createDate: new Date('2016-08-10'),
-            description: 'Lorem ipsum dolor sit amet 1, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
-                'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla.' +
-                ' Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
-        };
+        return this.courseList.find((item: ICourse) => item.id === id);
     }
 
-    update(id: string, updateCours: ICourse): ICourse {
-        return {
-            id: 'uuid1',
-            name: 'Course 1',
-            duration: 10,
-            createDate: new Date('2016-08-10'),
-            description: 'Lorem ipsum dolor sit amet 1, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
-                'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla.' +
-                ' Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
-        };
+    update(id: string): ICourse {
+        let course: ICourse = this.courseList.find((item: ICourse) => item.id === id);
+        let updateCourse: any = {name: `${course.name} [edited]`};
+
+        if (course) {
+            Object.assign(course, updateCourse);
+            this.courseList.splice(this.courseList.findIndex((item) => item.id === id), 1, course);
+
+            return course;
+        }
+        return null;
     }
 
     remove(id: string) {
-
+        this.courseList.splice(this.courseList.findIndex((item) => item.id === id), 1);
     }
 
 }

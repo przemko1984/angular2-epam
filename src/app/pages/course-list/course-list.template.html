@@ -2,6 +2,6 @@
 <div class="container">
     <h2>Course list:</h2>
     <div class="course-list">
-        <course-item *ngFor="let course of courses" [course]="course" (deleteCourse)="deleteCourse($event)"></course-item>
+        <course-item *ngFor="let course of courses" [course]="course" (deleteCourse)="deleteCourse($event)" (editCourse)="editCourse($event)"></course-item>
     </div>
 </div>
