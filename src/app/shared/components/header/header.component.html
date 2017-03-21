@@ -4,9 +4,12 @@
 			<div class="col-sm-8">
 				<logo></logo>
 			</div>
-			<div class="col-sm-4 text-right user">
-				<p>user login</p>
-				<p><a href="#">log off</a></p>
+			<div *ngIf="authService.isAuthenticated()" class="col-sm-4 text-right user">
+				<p>user login: {{authService.getUserInfo()}}</p>
+				<p><a href="#" (click)="logout($event)">log off</a></p>
+			</div>
+			<div *ngIf="!authService.isAuthenticated()" class="col-sm-4 text-right user">
+				<p><a href="#/login">login</a></p>
 			</div>
 		</div>
 	</div>

@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
+import { AuthService }  from './../../shared/services';
 
 @Component({
 	selector: 'login-page',
@@ -7,7 +8,10 @@ import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
 	template: require('./login.template.html')
 })
 export class LoginPageComponent implements OnInit, OnDestroy {
-	constructor() {
+	public user: string;
+	public pass: string;
+
+	constructor(private authService: AuthService) {
 
 	}
 
@@ -16,6 +20,15 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 	}
 
 	public ngOnDestroy() {
+
+	}
+
+	login() {
+		console.log(`login user:${this.user} with password: ${this.pass}`);
+		this.authService.login(this.user);
+
+		this.user = null;
+		this.pass = null;
 
 	}
 }

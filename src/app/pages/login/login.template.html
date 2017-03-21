@@ -1,3 +1,14 @@
 <div>
     <p>Login page</p>
+    Login:
+    <input type="text" [(ngModel)]="user" ><br>
+	Password: 
+    <input type="password" [(ngModel)]="pass" ><br>
+    <button 
+        type="submit" 
+        class="btn btn-primary btn-sm" 
+        (click)="login()"
+        [disabled]="!user || !pass"
+    >Login</button>
+
 </div>
