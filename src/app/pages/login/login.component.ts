@@ -24,11 +24,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 	}
 
 	login() {
-		console.log(`login user:${this.user} with password: ${this.pass}`);
-		this.authService.login(this.user);
-
+		this.authService.login({user: this.user, pass: this.pass});
 		this.user = null;
 		this.pass = null;
-
 	}
 }

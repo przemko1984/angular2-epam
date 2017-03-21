@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+import { ICredential } from '../../business-entities';
+
 @Injectable()
 export class AuthService {
 
@@ -8,8 +10,9 @@ export class AuthService {
 
     constructor() { }
 
-    login(user: string) {
-        this._user = user;
+    login(userCredential: ICredential) {
+        console.log(`login user:${userCredential.user} with password: ${userCredential.pass}`);
+        this._user = userCredential.user;
         this._isAuthenticated = true;
     }
 

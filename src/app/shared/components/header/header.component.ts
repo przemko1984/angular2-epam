@@ -14,7 +14,9 @@ export class HeaderComponent {
 	}
 
 	logout($event) {
-	    $event.preventDefault();
-        this.authService.logout();
+		if ($event) {
+			$event.preventDefault();
+		}
+		this.authService.logout();
 	}
 }
