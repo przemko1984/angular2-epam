@@ -24,7 +24,7 @@ import { AppComponent } from './app.component';
 import { NoContentComponent } from './pages/no-content';
 
 // Core components
-import { CoreModule } from './core';
+import { SharedModule } from './shared';
 
 // Pages
 import {
@@ -54,7 +54,7 @@ const APP_PROVIDERS = [
 		FormsModule,
 		HttpModule,
 		RouterModule.forRoot(ROUTES, {useHash: true, preloadingStrategy: PreloadAllModules}),
-		CoreModule,
+		SharedModule.forRoot(),
 		LoginPageModule,
 		CourseListPageModule,
 		CourseDetailsPageModule

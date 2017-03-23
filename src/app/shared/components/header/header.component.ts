@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { AuthService }  from './../../services';
 
 @Component({
 	selector: 'main-header',
@@ -8,7 +9,14 @@ import { Component, ViewEncapsulation } from '@angular/core';
 	encapsulation: ViewEncapsulation.None
 })
 export class HeaderComponent {
-	constructor() {
+	constructor(public authService: AuthService) {
 
+	}
+
+	logout($event) {
+		if ($event) {
+			$event.preventDefault();
+		}
+		this.authService.logout();
 	}
 }

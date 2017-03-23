@@ -5,12 +5,16 @@ import { CommonModule } from '@angular/common';
 
 // custom components
 import { LoginPageComponent } from './login.component';
+import { SharedModule } from './../../shared/shared.module';
 
 @NgModule({
 	declarations: [
 		LoginPageComponent
 	],
-	imports: [],
+	imports: [
+		CommonModule,
+		SharedModule
+	],
 	providers: []
 })
 export class LoginPageModule {

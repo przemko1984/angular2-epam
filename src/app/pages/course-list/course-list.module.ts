@@ -3,9 +3,11 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+import { ConfirmationPopoverModule } from 'angular-confirmation-popover';
+
 // custom components
 import { CourseListPageComponent } from './course-list.component';
-import { CoreModule } from './../../core/core.module';
+import { SharedModule } from './../../shared/shared.module';
 import { CourseItemComponent } from './course-item';
 
 @NgModule({
@@ -15,7 +17,10 @@ import { CourseItemComponent } from './course-item';
 	],
 	imports: [
 		CommonModule,
-		CoreModule
+		SharedModule,
+		ConfirmationPopoverModule.forRoot({
+			confirmButtonType: 'danger'
+		}),
 	],
 	providers: []
 })

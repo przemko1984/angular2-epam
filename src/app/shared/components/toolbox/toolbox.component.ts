@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { CourseService } from './../../services';
 
 @Component({
 	selector: 'toolbox',
@@ -10,7 +11,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 export class ToolboxComponent {
 	private search: string = '';
 
-	constructor() {
+	constructor(private courseService: CourseService) {
 
 	}
 
@@ -20,6 +21,7 @@ export class ToolboxComponent {
 
 	public addCourse() {
 		console.log('add course');
+		this.courseService.create();
 	}
 
 }
