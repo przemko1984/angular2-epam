@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { CourseService } from './../../services';
 
 @Component({
@@ -6,7 +6,8 @@ import { CourseService } from './../../services';
 	templateUrl: 'toolbox.component.html',
 	styles: [require('./toolbox.component.scss')],
 	providers: [],
-	encapsulation: ViewEncapsulation.None
+	encapsulation: ViewEncapsulation.None,
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ToolboxComponent {
 	private search: string = '';

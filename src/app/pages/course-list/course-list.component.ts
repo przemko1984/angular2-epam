@@ -2,7 +2,8 @@ import {
 	Component,
 	ViewEncapsulation,
 	OnInit,
-	OnDestroy
+	OnDestroy,
+	ChangeDetectionStrategy
 } from '@angular/core';
 
 import { ICourse } from './../../business-entities';
@@ -12,7 +13,8 @@ import { CourseService } from './../../shared/services';
 	selector: 'course-list-page',
 	encapsulation: ViewEncapsulation.None,
 	providers: [],
-	template: require('./course-list.template.html')
+	template: require('./course-list.template.html'),
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourseListPageComponent implements OnInit, OnDestroy {
 	private courses: ICourse[];

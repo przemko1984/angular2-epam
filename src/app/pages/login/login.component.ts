@@ -1,11 +1,12 @@
-import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService }  from './../../shared/services';
 
 @Component({
 	selector: 'login-page',
 	encapsulation: ViewEncapsulation.None,
 	providers: [],
-	template: require('./login.template.html')
+	template: require('./login.template.html'),
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginPageComponent implements OnInit, OnDestroy {
 	public user: string;
@@ -31,4 +32,5 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 		this.user = null;
 		this.pass = null;
 	}
+
 }
