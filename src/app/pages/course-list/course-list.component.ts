@@ -26,6 +26,7 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 
 	public ngOnInit() {
 		console.log('CourseListPageComponent: ngOnInit');
+		this.ref.markForCheck();
 		this.loadCourses();
 	}
 

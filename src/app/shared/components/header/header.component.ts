@@ -1,4 +1,6 @@
-import { Component, ViewEncapsulation, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnChanges } from '@angular/core';
+import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnChanges } from '@angular/core';
+import { Observable } from 'rxjs';
+
 import { AuthService }  from './../../services';
 
 @Component({
@@ -10,35 +12,28 @@ import { AuthService }  from './../../services';
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit, OnChanges {
-	public userInfo: string;
+	public _userInfo: string;
 
-	constructor(public authService: AuthService, private changeDetector: ChangeDetectorRef) {
+	@Input('userInfo')
+	public userInfo: Observable<string>;
+
+	constructor(public authService: AuthService, private ref: ChangeDetectorRef) {
 
 	}
 
 	ngOnInit() {
-		// this.authService.getUserInfo().subscribe(
-			setInterval( () => {
-				this.changeDetector.markForCheck();
-			}, 3000)
 
 	}
 
-	public ngOnChanges() {
-		console.log('>>>>>>>>>>>>>>>>>>>>>: ngOnDestroy');
-		this.authService.getUserInfo().subscribe(
+	ngOnChanges() {
+		this.userInfo.subscribe(
 			(resp: string) => {
-
-                console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>> authService', resp);
-				this.userInfo = resp;
-				// this.changeDetector.markForCheck();
+				this._userInfo = resp;
+			// this.ref.markForCheck();
             },
             (error) => {
                 console.error('error', error);
-            },
-			() => {
-				// this.changeDetector.markForCheck();
-			}
+            }
 		);
 	}
 
@@ -46,6 +41,17 @@ export class HeaderComponent implements OnInit, OnChanges {
 		if ($event) {
 			$event.preventDefault();
 		}
-		this.authService.logout();
+		this.authService.logout().subscribe(
+			(resp) => {
+				// this._userInfo = resp;
+				// this.ref.markForCheck();
+            },
+            (error) => {
+                console.error('error', error);
+            },
+			() => {
+				this.ref.markForCheck();
+			}
+		);
 	}
 }

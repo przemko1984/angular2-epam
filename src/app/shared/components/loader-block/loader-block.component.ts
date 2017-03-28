@@ -14,7 +14,7 @@ import { LoaderService } from './../../services';
 export class LoaderBlockComponent implements OnChanges {
 	public show: boolean = false;
 
-	@Input('show')
+	@Input()
 	public showLoader: Observable<boolean>;
 
 	private loaderTimeout: any;
@@ -29,7 +29,7 @@ export class LoaderBlockComponent implements OnChanges {
             (resp) => {
 				// this.show = resp;
 				// console.log('test ', resp);
-				if(resp) {
+				if (resp) {
 					clearTimeout(this.loaderTimeout);
 					// console.log('show ', resp);
 					this.show = resp;

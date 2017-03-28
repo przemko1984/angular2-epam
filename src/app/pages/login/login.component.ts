@@ -1,5 +1,5 @@
-import { Component, ViewEncapsulation, OnInit, OnDestroy, ChangeDetectionStrategy, NgZone, ChangeDetectorRef } from '@angular/core';
-import { AuthService }  from './../../shared/services';
+import { Component, ViewEncapsulation, OnInit, OnDestroy, OnChanges, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { AuthService, LoaderService }  from './../../shared/services';
 
 @Component({
 	selector: 'login-page',
@@ -8,18 +8,31 @@ import { AuthService }  from './../../shared/services';
 	template: require('./login.template.html'),
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginPageComponent implements OnInit, OnDestroy {
-	public user: string;
-	public pass: string;
-	progress: number = 0;
-  	label: string;
+export class LoginPageComponent implements OnInit, OnDestroy, OnChanges {
+	user: string;
+	pass: string;
+	isAuthenticated: boolean;
 
-	constructor(public ref: ChangeDetectorRef, private authService: AuthService, private _ngZone: NgZone) {
+	constructor(private ref: ChangeDetectorRef, private authService: AuthService, private loaderService: LoaderService) {
 
 	}
 
 	public ngOnInit() {
+		console.log('loginPage ngOnInit');
+		this.authService.userInfo.subscribe(
+			(resp) => {
+				this.user = resp;
+				this.isAuthenticated = !!resp;
+			},
+			(error) => {
+				console.log('error ', error);
+				this.isAuthenticated = false;
+			}
+		);
+	}
 
+	public ngOnChanges() {
+		console.log('loginPage ngOnChanges');
 	}
 
 	public ngOnDestroy() {
@@ -30,9 +43,36 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 		if (!this.user || !this.pass) {
 			return;
 		}
-		this.authService.login({user: this.user, pass: this.pass});
-		this.user = null;
-		this.pass = null;
+		this.loaderService.show();
+		this.authService.login({user: this.user, pass: this.pass})
+			.subscribe(
+				(resp) => {
+					this.isAuthenticated = resp;
+				},
+				(error) => {
+					console.log('error ', error);
+					this.isAuthenticated = false;
+				},
+				() => {
+					this.loaderService.hide();
+					this.ref.markForCheck();
+				}
+			);
+	}
+
+	logout() {
+		this.authService.logout()
+			.subscribe(
+				(resp) => {
+					this.isAuthenticated = !resp;
+					this.user = null;
+					this.pass = null;
+				},
+				(error) => {
+					console.log('error ', error);
+					this.isAuthenticated = false;
+				}
+			);
 	}
 
 }

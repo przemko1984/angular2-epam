@@ -9,7 +9,7 @@ import {
 	NgZone
 } from '@angular/core';
 
-import { LoaderService } from './shared/services';
+import { LoaderService, AuthService } from './shared/services';
 
 /*
  * App Component
@@ -30,7 +30,8 @@ export class AppComponent implements OnInit {
 
 	private start: Date;
 
-	constructor(private ngZone: NgZone, public loaderService: LoaderService) {
+	constructor(private ngZone: NgZone, private loaderService: LoaderService, private authService: AuthService) {
+
 	}
 
 	public ngOnInit() {

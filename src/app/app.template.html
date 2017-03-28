@@ -1,5 +1,5 @@
-<loader-block [show]="loaderService.showLoader"></loader-block>
-<main-header></main-header>
+<loader-block [showLoader]="loaderService.showLoader"></loader-block>
+<main-header [userInfo]="authService.userInfo"></main-header>
 
 <main class="container">
   <router-outlet></router-outlet>
