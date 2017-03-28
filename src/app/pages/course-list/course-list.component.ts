@@ -3,11 +3,12 @@ import {
 	ViewEncapsulation,
 	OnInit,
 	OnDestroy,
-	ChangeDetectionStrategy
+	ChangeDetectionStrategy,
+	ChangeDetectorRef
 } from '@angular/core';
 
 import { ICourse } from './../../business-entities';
-import { CourseService } from './../../shared/services';
+import { CourseService, LoaderService } from './../../shared/services';
 
 @Component({
 	selector: 'course-list-page',
@@ -19,13 +20,17 @@ import { CourseService } from './../../shared/services';
 export class CourseListPageComponent implements OnInit, OnDestroy {
 	private courses: ICourse[];
 
-	constructor(private courseService: CourseService) {
+	constructor(public ref: ChangeDetectorRef, private courseService: CourseService, private loaderService: LoaderService) {
 		console.log('CourseListPageComponent: constructor');
 	}
 
 	public ngOnInit() {
 		console.log('CourseListPageComponent: ngOnInit');
-		this.loadCourses();
+		this.loaderService.show();
+		setTimeout(() => {
+			this.loadCourses();
+		}, 5000);
+
 	}
 
 	public ngOnDestroy() {
@@ -64,13 +69,19 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 	}
 
 	private loadCourses() {
+		console.log('loadCourses');
 		this.courseService.getList().subscribe(
             (resp) => {
                 this.courses = resp;
+				this.ref.markForCheck();
             },
             (error) => {
                 console.error('error', error);
-            }
+            },
+			() => {
+				this.loaderService.hide();
+				this.ref.markForCheck();
+			}
         );
 	}
 }

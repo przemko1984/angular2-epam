@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, OnDestroy, ChangeDetectionStrategy, NgZone, ChangeDetectorRef } from '@angular/core';
 import { AuthService }  from './../../shared/services';
 
 @Component({
@@ -11,8 +11,10 @@ import { AuthService }  from './../../shared/services';
 export class LoginPageComponent implements OnInit, OnDestroy {
 	public user: string;
 	public pass: string;
+	progress: number = 0;
+  	label: string;
 
-	constructor(private authService: AuthService) {
+	constructor(public ref: ChangeDetectorRef, private authService: AuthService, private _ngZone: NgZone) {
 
 	}
 
@@ -29,6 +31,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 			return;
 		}
 		this.authService.login({user: this.user, pass: this.pass});
+		this.ref.markForCheck();
 		this.user = null;
 		this.pass = null;
 	}

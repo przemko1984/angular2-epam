@@ -5,8 +5,11 @@ import {
 	Component,
 	OnInit,
 	ViewEncapsulation,
-	ChangeDetectionStrategy
+	ChangeDetectionStrategy,
+	NgZone
 } from '@angular/core';
+
+import { LoaderService } from './shared/services'
 
 /*
  * App Component
@@ -21,14 +24,29 @@ import {
 		require('./app.styles.scss')
 	],
 	template: require('./app.template.html'),
-	changeDetection: ChangeDetectionStrategy.OnPush
+	// changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
 
-	constructor() {
+	private start: Date;
+
+	constructor(private ngZone: NgZone, public loaderService: LoaderService) {
 	}
 
 	public ngOnInit() {
+
+		// this.ngZone.onUnstable.subscribe(() => {
+		// 	this.start = new Date();
+		// 	console.log('onUnstable', this.start.getTime());
+		// });
+
+		// this.ngZone.onStable.subscribe(() => {
+		// 	const d = new Date();
+		// 	console.log('onStable', d.getTime());
+		// 	if (this.start) {
+		// 		console.log('onUnstable - onStable ', d.getTime() - this.start.getTime());
+		// 	}
+		// });
 	}
 
 }
