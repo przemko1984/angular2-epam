@@ -20,17 +20,13 @@ import { CourseService, LoaderService } from './../../shared/services';
 export class CourseListPageComponent implements OnInit, OnDestroy {
 	private courses: ICourse[];
 
-	constructor(public ref: ChangeDetectorRef, private courseService: CourseService, private loaderService: LoaderService) {
+	constructor(private ref: ChangeDetectorRef, private courseService: CourseService, private loaderService: LoaderService) {
 		console.log('CourseListPageComponent: constructor');
 	}
 
 	public ngOnInit() {
 		console.log('CourseListPageComponent: ngOnInit');
-		this.loaderService.show();
-		setTimeout(() => {
-			this.loadCourses();
-		}, 5000);
-
+		this.loadCourses();
 	}
 
 	public ngOnDestroy() {
@@ -60,28 +56,64 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 	// other stuff
 	public deleteCourse(id: string) {
 		console.log('Delete course id:', id);
-		this.courseService.remove(id);
+		this.loaderService.show();
+		this.courseService.remove(id).subscribe(
+			(resp) => {
+				this.loaderService.hide();
+				this.loadCourses();
+			},
+			(error) => {
+				this.loaderService.hide();
+				console.error('error', error);
+			}
+		);
 	}
 
 	public editCourse(id: string) {
 		console.log('Edit course id:', id);
-		this.courseService.update(id);
+		this.loaderService.show();
+		this.courseService.update(id).subscribe(
+			(resp) => {
+				this.loaderService.hide();
+				this.loadCourses();
+			},
+			(error) => {
+				this.loaderService.hide();
+				console.error('error', error);
+			}
+		);
+	}
+
+	public addCourse() {
+		console.log('Add course');
+		this.loaderService.show();
+		this.courseService.create().subscribe(
+			(resp) => {
+				this.loaderService.hide();
+				this.loadCourses();
+			},
+			(error) => {
+				this.loaderService.hide();
+				console.error('error', error);
+			}
+		);
 	}
 
 	private loadCourses() {
 		console.log('loadCourses');
-		this.courseService.getList().subscribe(
-            (resp) => {
-                this.courses = resp;
-				this.ref.markForCheck();
-            },
-            (error) => {
-                console.error('error', error);
-            },
-			() => {
-				this.loaderService.hide();
-				this.ref.markForCheck();
-			}
-        );
+		this.loaderService.show();
+		this.courseService.getList()
+			.subscribe(
+				(resp) => {
+					this.courses = resp;
+				},
+				(error) => {
+					console.error('error', error);
+				},
+				() => {
+					this.loaderService.hide();
+					this.ref.markForCheck();
+				}
+			);
 	}
 }

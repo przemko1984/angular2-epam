@@ -5,6 +5,8 @@ import 'rxjs/add/operator/map';
 
 import { ICourse } from '../../business-entities/';
 
+const DELAY = 1000;
+
 @Injectable()
 export class CourseService {
 
@@ -37,10 +39,10 @@ export class CourseService {
     constructor() { }
 
     getList(): Observable<ICourse[]> {
-        return Observable.of<ICourse[]>(this.courseList);
+        return Observable.of<ICourse[]>(this.courseList.slice()).delay(DELAY);
     }
 
-    create(): ICourse {
+    create(): Observable<ICourse> {
         let no: number = this.courseList.length;
         let newCourse: ICourse = {
             id: `uuid${no++}`,
@@ -54,28 +56,29 @@ export class CourseService {
 
         this.courseList.push(newCourse);
 
-        return newCourse;
+        return Observable.of<ICourse>(newCourse).delay(DELAY);
     }
 
-    getById(id: string): ICourse {
-        return this.courseList.find((item: ICourse) => item.id === id);
+    getById(id: string): Observable<ICourse> {
+        return Observable.of<ICourse>(this.courseList.find((item: ICourse) => item.id === id)).delay(DELAY);
     }
 
-    update(id: string): ICourse {
+    update(id: string): Observable<ICourse> {
         let course: ICourse = this.courseList.find((item: ICourse) => item.id === id);
         let updateCourse: any = {name: `${course.name} [edited]`};
 
         if (course) {
-            Object.assign(course, updateCourse);
-            this.courseList.splice(this.courseList.findIndex((item) => item.id === id), 1, course);
+            const updated = Object.assign({}, course, updateCourse);
+            this.courseList.splice(this.courseList.findIndex((item) => item.id === id), 1, updated);
 
-            return course;
+            return Observable.of<ICourse>(updated).delay(DELAY);
         }
-        return null;
+        return Observable.of<ICourse>(null);
     }
 
-    remove(id: string) {
+    remove(id: string): Observable<boolean> {
         this.courseList.splice(this.courseList.findIndex((item) => item.id === id), 1);
+        return Observable.of(true).delay(DELAY);
     }
 
 }

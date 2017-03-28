@@ -31,7 +31,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 			return;
 		}
 		this.authService.login({user: this.user, pass: this.pass});
-		this.ref.markForCheck();
 		this.user = null;
 		this.pass = null;
 	}

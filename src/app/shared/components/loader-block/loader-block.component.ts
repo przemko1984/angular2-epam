@@ -1,4 +1,6 @@
-import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy, OnInit, OnChanges } from '@angular/core';
+import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy, OnInit, OnChanges, ChangeDetectorRef } from '@angular/core';
+import { Observable } from 'rxjs';
+
 import { LoaderService } from './../../services';
 
 @Component({
@@ -9,20 +11,35 @@ import { LoaderService } from './../../services';
 	encapsulation: ViewEncapsulation.None,
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class loaderBlockComponent implements OnChanges {
-	// public show: boolean = false;
+export class LoaderBlockComponent implements OnChanges {
+	public show: boolean = false;
 
 	@Input('show')
-	private show: boolean;
+	public showLoader: Observable<boolean>;
 
-	constructor(private loaderService: LoaderService) {
+	private loaderTimeout: any;
 
+	constructor(private ref: ChangeDetectorRef) {
+		// this.showLoader = this.loaderService.showLoader;
 	}
 
 	ngOnChanges() {
-		this.loaderService.showLoader.subscribe(
+		console.log('LoaderBlockComponent onChanges');
+		this.showLoader.subscribe(
             (resp) => {
-                this.show = resp;
+				// this.show = resp;
+				// console.log('test ', resp);
+				if(resp) {
+					clearTimeout(this.loaderTimeout);
+					// console.log('show ', resp);
+					this.show = resp;
+				} else {
+					this.loaderTimeout = setTimeout(() => {
+						// console.log('hide soon', resp);
+						this.show = resp;
+						this.ref.markForCheck();
+					}, 250);
+				}
             },
             (error) => {
                 console.error('error', error);

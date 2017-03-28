@@ -9,7 +9,7 @@ import {
 	NgZone
 } from '@angular/core';
 
-import { LoaderService } from './shared/services'
+import { LoaderService } from './shared/services';
 
 /*
  * App Component
@@ -24,7 +24,7 @@ import { LoaderService } from './shared/services'
 		require('./app.styles.scss')
 	],
 	template: require('./app.template.html'),
-	// changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
 
