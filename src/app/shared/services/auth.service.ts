@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 
 import { ICredential } from '../../business-entities';
 
@@ -8,39 +8,30 @@ const DELAY = 500;
 @Injectable()
 export class AuthService {
 
-    userInfo: Observable<string> = Observable.of<string>(null);
-    private _isAuthenticated: boolean = false;
-    private _user: string;
+    userInfo$: Observable<string>;
+    isAuthenticated$: Observable<boolean>;
 
-    constructor() { }
+    private isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    private user: BehaviorSubject<string> = new BehaviorSubject<string>('');
+
+    constructor() {
+        this.userInfo$ = this.user.asObservable();
+        this.isAuthenticated$ = this.isAuthenticated.asObservable();
+    }
 
     login(userCredential: ICredential): Observable<boolean> {
         console.log(`login user:${userCredential.user} with password: ${userCredential.pass}`);
         const clonedUser = Object.assign({}, userCredential);
-        // this._user = userCredential.user;
-        // this._isAuthenticated = true;
 
-        this.userInfo = Observable.of<string>(clonedUser.user);
+        this.user.next(clonedUser.user);
+        this.isAuthenticated.next(true);
         return Observable.of<boolean>(true).delay(DELAY);
     }
 
     logout(): Observable<boolean> {
-        // this._isAuthenticated = false;
-        // this._user = null;
-        this.userInfo = Observable.of<string>('');
+        this.user.next(null);
+        this.isAuthenticated.next(false);
 
         return Observable.of<boolean>(true);
     }
-
-    isAuthenticated(): boolean {
-        return this._isAuthenticated;
-    }
-
-    // getUserInfo(): string {
-    //     return this._user;
-    // }
-
-    // getUserInfo(): Observable<string> {
-    //     return Observable.of<string>(this._user);
-    // }
 }

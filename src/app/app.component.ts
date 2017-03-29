@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
 
 	private start: Date;
 
-	constructor(private ngZone: NgZone, private loaderService: LoaderService, private authService: AuthService) {
+	constructor(private ngZone: NgZone, private loaderService: LoaderService) {
 
 	}
 

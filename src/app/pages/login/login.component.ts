@@ -1,4 +1,6 @@
 import { Component, Input, ViewEncapsulation, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Observable } from 'rxjs';
+
 import { AuthService, LoaderService }  from './../../shared/services';
 
 @Component({
@@ -11,24 +13,17 @@ import { AuthService, LoaderService }  from './../../shared/services';
 export class LoginPageComponent implements OnInit, OnDestroy {
 	user: string;
 	pass: string;
-	isAuthenticated: boolean;
+
+	isAuthenticated: Observable<boolean>;
+	userInfo: Observable<string>;
 
 	constructor(private ref: ChangeDetectorRef, private authService: AuthService, private loaderService: LoaderService) {
-
+		this.isAuthenticated = this.authService.isAuthenticated$;
+		this.userInfo = this.authService.userInfo$;
 	}
 
 	public ngOnInit() {
 		console.log('loginPage ngOnInit');
-		this.authService.userInfo.subscribe(
-			(resp) => {
-				this.user = resp;
-				this.isAuthenticated = !!resp;
-			},
-			(error) => {
-				console.log('error ', error);
-				this.isAuthenticated = false;
-			}
-		);
 	}
 
 	public ngOnDestroy() {
@@ -43,11 +38,10 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 		this.authService.login({user: this.user, pass: this.pass})
 			.subscribe(
 				(resp) => {
-					this.isAuthenticated = resp;
+					this.reset();
 				},
 				(error) => {
 					console.log('error ', error);
-					this.isAuthenticated = false;
 				},
 				() => {
 					this.loaderService.hide();
@@ -60,15 +54,16 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 		this.authService.logout()
 			.subscribe(
 				(resp) => {
-					this.isAuthenticated = !resp;
-					this.user = null;
-					this.pass = null;
+					this.reset();
 				},
 				(error) => {
 					console.log('error ', error);
-					this.isAuthenticated = false;
 				}
 			);
 	}
 
+	private reset() {
+		this.user = null;
+		this.pass = null;
+	}
 }

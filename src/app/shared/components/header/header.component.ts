@@ -1,5 +1,4 @@
-import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnChanges } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AuthService }  from './../../services';
@@ -12,29 +11,19 @@ import { AuthService }  from './../../services';
 	encapsulation: ViewEncapsulation.None,
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent implements OnInit, OnChanges {
+export class HeaderComponent implements OnInit {
 	public _userInfo: string;
 
-	@Input('userInfo')
-	public userInfo: Observable<string>;
+	userInfo: Observable<string>;
+	isAuthenticated: Observable<boolean>;
 
-	constructor(public authService: AuthService, private ref: ChangeDetectorRef, private router: Router) {
-
+	constructor(public authService: AuthService) {
+		this.isAuthenticated = this.authService.isAuthenticated$;
+		this.userInfo = this.authService.userInfo$;
 	}
 
 	ngOnInit() {
 
-	}
-
-	ngOnChanges() {
-		this.userInfo.subscribe(
-			(resp: string) => {
-				this._userInfo = resp;
-            },
-            (error) => {
-                console.error('error', error);
-            }
-		);
 	}
 
 	logout($event) {
@@ -47,10 +36,7 @@ export class HeaderComponent implements OnInit, OnChanges {
             },
             (error) => {
                 console.error('error', error);
-            },
-			() => {
-				this.router.navigate(['/']);
-			}
+            }
 		);
 	}
 }
