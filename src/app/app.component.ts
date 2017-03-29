@@ -6,7 +6,8 @@ import {
 	OnInit,
 	ViewEncapsulation,
 	ChangeDetectionStrategy,
-	NgZone
+	NgZone,
+	ChangeDetectorRef
 } from '@angular/core';
 
 import { LoaderService, AuthService } from './shared/services';
@@ -30,12 +31,16 @@ export class AppComponent implements OnInit {
 
 	private start: Date;
 
-	constructor(private ngZone: NgZone) {
-
+	constructor(private ngZone: NgZone, private ref: ChangeDetectorRef) {
+		// ref.detach();
+		// setInterval(() => {
+		// 	this.ref.detectChanges();
+		// }, 500);
 	}
 
 	public ngOnInit() {
 
+		// Tracking: start (unstable) and end (stable) states
 		// this.ngZone.onUnstable.subscribe(() => {
 		// 	this.start = new Date();
 		// 	console.log('onUnstable', this.start.getTime());
