@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnInit, OnDestroy, OnChanges, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, ViewEncapsulation, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { AuthService, LoaderService }  from './../../shared/services';
 
 @Component({
@@ -8,7 +8,7 @@ import { AuthService, LoaderService }  from './../../shared/services';
 	template: require('./login.template.html'),
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginPageComponent implements OnInit, OnDestroy, OnChanges {
+export class LoginPageComponent implements OnInit, OnDestroy {
 	user: string;
 	pass: string;
 	isAuthenticated: boolean;
@@ -29,10 +29,6 @@ export class LoginPageComponent implements OnInit, OnDestroy, OnChanges {
 				this.isAuthenticated = false;
 			}
 		);
-	}
-
-	public ngOnChanges() {
-		console.log('loginPage ngOnChanges');
 	}
 
 	public ngOnDestroy() {

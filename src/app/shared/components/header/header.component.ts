@@ -1,4 +1,5 @@
 import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { AuthService }  from './../../services';
@@ -17,7 +18,7 @@ export class HeaderComponent implements OnInit, OnChanges {
 	@Input('userInfo')
 	public userInfo: Observable<string>;
 
-	constructor(public authService: AuthService, private ref: ChangeDetectorRef) {
+	constructor(public authService: AuthService, private ref: ChangeDetectorRef, private router: Router) {
 
 	}
 
@@ -29,7 +30,6 @@ export class HeaderComponent implements OnInit, OnChanges {
 		this.userInfo.subscribe(
 			(resp: string) => {
 				this._userInfo = resp;
-			// this.ref.markForCheck();
             },
             (error) => {
                 console.error('error', error);
@@ -43,14 +43,13 @@ export class HeaderComponent implements OnInit, OnChanges {
 		}
 		this.authService.logout().subscribe(
 			(resp) => {
-				// this._userInfo = resp;
-				// this.ref.markForCheck();
+				console.log('mark logout');
             },
             (error) => {
                 console.error('error', error);
             },
 			() => {
-				this.ref.markForCheck();
+				this.router.navigate(['/']);
 			}
 		);
 	}

@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 
 import { ICourse } from '../../business-entities/';
 
-const DELAY = 1000;
+const DELAY = 500;
 
 @Injectable()
 export class CourseService {
