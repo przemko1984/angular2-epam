@@ -26,7 +26,7 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 
 	public ngOnInit() {
 		console.log('CourseListPageComponent: ngOnInit');
-		this.ref.markForCheck();
+		this.subscribeCoursesList();
 		this.loadCourses();
 	}
 
@@ -61,7 +61,6 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 		this.courseService.remove(id).subscribe(
 			(resp) => {
 				this.loaderService.hide();
-				this.loadCourses();
 			},
 			(error) => {
 				this.loaderService.hide();
@@ -76,7 +75,6 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 		this.courseService.update(id).subscribe(
 			(resp) => {
 				this.loaderService.hide();
-				this.loadCourses();
 			},
 			(error) => {
 				this.loaderService.hide();
@@ -91,7 +89,6 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 		this.courseService.create().subscribe(
 			(resp) => {
 				this.loaderService.hide();
-				this.loadCourses();
 			},
 			(error) => {
 				this.loaderService.hide();
@@ -100,21 +97,25 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 		);
 	}
 
-	private loadCourses() {
-		console.log('loadCourses');
+	private subscribeCoursesList() {
+		console.log('subscribe course list');
 		this.loaderService.show();
 		this.courseService.getList()
 			.subscribe(
 				(resp) => {
 					this.courses = resp;
+					this.loaderService.hide();
+					this.ref.markForCheck();
 				},
 				(error) => {
 					console.error('error', error);
-				},
-				() => {
 					this.loaderService.hide();
-					this.ref.markForCheck();
 				}
 			);
+	}
+
+	private loadCourses() {
+		console.log('loadCourses');
+		this.courseService.loadList();
 	}
 }

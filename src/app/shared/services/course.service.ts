@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 import { ICourse } from '../../business-entities/';
 
-const DELAY = 500;
+const DELAY = 1500;
 
 @Injectable()
 export class CourseService {
@@ -36,10 +36,20 @@ export class CourseService {
                 'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
         }];
 
-    constructor() { }
+    private courseList$: Observable<ICourse[]>;
+    private courseListSubject: Subject<ICourse[]> = new Subject<ICourse[]>();
+
+    constructor() {
+        this.courseList$ = this.courseListSubject.asObservable();
+
+    }
 
     getList(): Observable<ICourse[]> {
-        return Observable.of<ICourse[]>(this.courseList.slice()).delay(DELAY);
+        return this.courseList$.delay(DELAY);
+    }
+
+    loadList() {
+        this.courseListSubject.next(this.courseList.slice());
     }
 
     create(): Observable<ICourse> {
@@ -55,6 +65,7 @@ export class CourseService {
         };
 
         this.courseList.push(newCourse);
+        this.courseListSubject.next(this.courseList.slice());
 
         return Observable.of<ICourse>(newCourse).delay(DELAY);
     }
@@ -71,6 +82,7 @@ export class CourseService {
             const updated = Object.assign({}, course, updateCourse);
             this.courseList.splice(this.courseList.findIndex((item) => item.id === id), 1, updated);
 
+            this.courseListSubject.next(this.courseList.slice());
             return Observable.of<ICourse>(updated).delay(DELAY);
         }
         return Observable.of<ICourse>(null);
@@ -78,6 +90,7 @@ export class CourseService {
 
     remove(id: string): Observable<boolean> {
         this.courseList.splice(this.courseList.findIndex((item) => item.id === id), 1);
+        this.courseListSubject.next(this.courseList.slice());
         return Observable.of(true).delay(DELAY);
     }
 
