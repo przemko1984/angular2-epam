@@ -1,4 +1,6 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+
 import { AuthService }  from './../../services';
 
 @Component({
@@ -6,10 +8,21 @@ import { AuthService }  from './../../services';
 	templateUrl: 'header.component.html',
 	styles: [require('./header.component.scss')],
 	providers: [],
-	encapsulation: ViewEncapsulation.None
+	encapsulation: ViewEncapsulation.None,
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+	public _userInfo: string;
+
+	userInfo: Observable<string>;
+	isAuthenticated: Observable<boolean>;
+
 	constructor(public authService: AuthService) {
+		this.isAuthenticated = this.authService.isAuthenticated$;
+		this.userInfo = this.authService.userInfo$;
+	}
+
+	ngOnInit() {
 
 	}
 
@@ -17,6 +30,13 @@ export class HeaderComponent {
 		if ($event) {
 			$event.preventDefault();
 		}
-		this.authService.logout();
+		this.authService.logout().subscribe(
+			(resp) => {
+				console.log('mark logout');
+            },
+            (error) => {
+                console.error('error', error);
+            }
+		);
 	}
 }

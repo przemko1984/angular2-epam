@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 import { ICourse } from '../../business-entities/';
+
+const DELAY = 1500;
 
 @Injectable()
 export class CourseService {
@@ -34,13 +36,23 @@ export class CourseService {
                 'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
         }];
 
-    constructor() { }
+    private courseList$: Observable<ICourse[]>;
+    private courseListSubject: Subject<ICourse[]> = new Subject<ICourse[]>();
 
-    getList(): Observable<ICourse[]> {
-        return Observable.of<ICourse[]>(this.courseList);
+    constructor() {
+        this.courseList$ = this.courseListSubject.asObservable();
+
     }
 
-    create(): ICourse {
+    getList(): Observable<ICourse[]> {
+        return this.courseList$.delay(DELAY);
+    }
+
+    loadList() {
+        this.courseListSubject.next(this.courseList.slice());
+    }
+
+    create(): Observable<ICourse> {
         let no: number = this.courseList.length;
         let newCourse: ICourse = {
             id: `uuid${no++}`,
@@ -53,29 +65,33 @@ export class CourseService {
         };
 
         this.courseList.push(newCourse);
+        this.courseListSubject.next(this.courseList.slice());
 
-        return newCourse;
+        return Observable.of<ICourse>(newCourse).delay(DELAY);
     }
 
-    getById(id: string): ICourse {
-        return this.courseList.find((item: ICourse) => item.id === id);
+    getById(id: string): Observable<ICourse> {
+        return Observable.of<ICourse>(this.courseList.find((item: ICourse) => item.id === id)).delay(DELAY);
     }
 
-    update(id: string): ICourse {
+    update(id: string): Observable<ICourse> {
         let course: ICourse = this.courseList.find((item: ICourse) => item.id === id);
         let updateCourse: any = {name: `${course.name} [edited]`};
 
         if (course) {
-            Object.assign(course, updateCourse);
-            this.courseList.splice(this.courseList.findIndex((item) => item.id === id), 1, course);
+            const updated = Object.assign({}, course, updateCourse);
+            this.courseList.splice(this.courseList.findIndex((item) => item.id === id), 1, updated);
 
-            return course;
+            this.courseListSubject.next(this.courseList.slice());
+            return Observable.of<ICourse>(updated).delay(DELAY);
         }
-        return null;
+        return Observable.of<ICourse>(null);
     }
 
-    remove(id: string) {
+    remove(id: string): Observable<boolean> {
         this.courseList.splice(this.courseList.findIndex((item) => item.id === id), 1);
+        this.courseListSubject.next(this.courseList.slice());
+        return Observable.of(true).delay(DELAY);
     }
 
 }

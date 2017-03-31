@@ -2,27 +2,31 @@ import {
 	Component,
 	ViewEncapsulation,
 	OnInit,
-	OnDestroy
+	OnDestroy,
+	ChangeDetectionStrategy,
+	ChangeDetectorRef
 } from '@angular/core';
 
 import { ICourse } from './../../business-entities';
-import { CourseService } from './../../shared/services';
+import { CourseService, LoaderService } from './../../shared/services';
 
 @Component({
 	selector: 'course-list-page',
 	encapsulation: ViewEncapsulation.None,
 	providers: [],
-	template: require('./course-list.template.html')
+	template: require('./course-list.template.html'),
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourseListPageComponent implements OnInit, OnDestroy {
 	private courses: ICourse[];
 
-	constructor(private courseService: CourseService) {
+	constructor(private ref: ChangeDetectorRef, private courseService: CourseService, private loaderService: LoaderService) {
 		console.log('CourseListPageComponent: constructor');
 	}
 
 	public ngOnInit() {
 		console.log('CourseListPageComponent: ngOnInit');
+		this.subscribeCoursesList();
 		this.loadCourses();
 	}
 
@@ -53,22 +57,65 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 	// other stuff
 	public deleteCourse(id: string) {
 		console.log('Delete course id:', id);
-		this.courseService.remove(id);
+		this.loaderService.show();
+		this.courseService.remove(id).subscribe(
+			(resp) => {
+				this.loaderService.hide();
+			},
+			(error) => {
+				this.loaderService.hide();
+				console.error('error', error);
+			}
+		);
 	}
 
 	public editCourse(id: string) {
 		console.log('Edit course id:', id);
-		this.courseService.update(id);
+		this.loaderService.show();
+		this.courseService.update(id).subscribe(
+			(resp) => {
+				this.loaderService.hide();
+			},
+			(error) => {
+				this.loaderService.hide();
+				console.error('error', error);
+			}
+		);
+	}
+
+	public addCourse() {
+		console.log('Add course');
+		this.loaderService.show();
+		this.courseService.create().subscribe(
+			(resp) => {
+				this.loaderService.hide();
+			},
+			(error) => {
+				this.loaderService.hide();
+				console.error('error', error);
+			}
+		);
+	}
+
+	private subscribeCoursesList() {
+		console.log('subscribe course list');
+		this.loaderService.show();
+		this.courseService.getList()
+			.subscribe(
+				(resp) => {
+					this.courses = resp;
+					this.loaderService.hide();
+					this.ref.markForCheck();
+				},
+				(error) => {
+					console.error('error', error);
+					this.loaderService.hide();
+				}
+			);
 	}
 
 	private loadCourses() {
-		this.courseService.getList().subscribe(
-            (resp) => {
-                this.courses = resp;
-            },
-            (error) => {
-                console.error('error', error);
-            }
-        );
+		console.log('loadCourses');
+		this.courseService.loadList();
 	}
 }
