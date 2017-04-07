@@ -5,14 +5,23 @@ import { Directive, Input, ElementRef, OnInit } from '@angular/core';
 })
 export class CourseHighlightDirective implements OnInit {
 
-    // public elem: HTMLElement;
-    // @Input('courseHighlight') courseData: Date;
+    @Input('courseHighlight') courseData: Date;
 
     constructor(private el: ElementRef) {
-        // this.elem = this.el.nativeElement;
     }
 
     ngOnInit() {
-        this.el.nativeElement.classList.add('course-new');
+        this.setClassByDate();
+    }
+
+    private setClassByDate() {
+        const currentDate: Date = new Date();
+        const dayInMilisecond = 24 * 60 * 60 * 1000;
+        const lastDay = new Date(currentDate.getTime() - 14 * dayInMilisecond);
+        if (this.courseData < currentDate && this.courseData > lastDay) {
+            this.el.nativeElement.classList.add('course-new');
+        } else if (this.courseData > currentDate) {
+            this.el.nativeElement.classList.add('course-upcoming');
+        }
     }
 }

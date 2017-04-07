@@ -14,7 +14,7 @@ export class CourseService {
             id: 'uuid1',
             name: 'Course 1',
             duration: 10,
-            createDate: new Date('2016-08-10'),
+            createDate: new Date('2017-08-10'),
             description: 'Lorem ipsum dolor sit amet 1, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
                 'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla.' +
                 ' Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
@@ -30,7 +30,23 @@ export class CourseService {
             id: 'uuid3',
             name: 'Course 3',
             duration: 20,
-            createDate: new Date('2017-01-10'),
+            createDate: new Date('2017-04-01'),
+            description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
+                'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
+                'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
+        }, {
+            id: 'uuid4',
+            name: 'Course 4',
+            duration: 20,
+            createDate: new Date('2017-03-29'),
+            description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
+                'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
+                'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
+        }, {
+            id: 'uuid5',
+            name: 'Course 5',
+            duration: 20,
+            createDate: new Date('2017-04-11'),
             description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
                 'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
                 'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
