@@ -32,7 +32,9 @@
 	.top-rated {
 		&:after {
 			content: '\2605';
-			color: yellow;
+			color: #f5f523;
+			font-size: 1.1rem;
+			line-height: 1rem;
 		}
 	}
 
