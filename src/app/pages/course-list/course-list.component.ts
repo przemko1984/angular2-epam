@@ -15,6 +15,7 @@ import { CourseService, LoaderService } from './../../shared/services';
 	encapsulation: ViewEncapsulation.None,
 	providers: [],
 	template: require('./course-list.template.html'),
+	styles: [require('./course-list.component.scss')],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourseListPageComponent implements OnInit, OnDestroy {
