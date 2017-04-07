@@ -7,6 +7,7 @@
 		        </div>
                 <div class="col-sm-4">
                     <span>{{course.duration}}min</span>
+					<span [ngClass]="{'top-rated': course.topRated}"></span>
 		        </div>
                 <div class="col-sm-4 text-right">
                     <span >{{course.createDate | date}}</span>

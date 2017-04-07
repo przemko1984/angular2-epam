@@ -28,4 +28,12 @@
 	&.course-upcoming {
 		border-color: #31b0d5;
 	}
+
+	.top-rated {
+		&:after {
+			content: '\2605';
+			color: yellow;
+		}
+	}
+
 }
