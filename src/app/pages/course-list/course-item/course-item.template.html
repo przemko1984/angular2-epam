@@ -6,11 +6,11 @@
                     <h3>{{course.name | uppercase}}</h3>
 		        </div>
                 <div class="col-sm-4">
-                    <span>{{course.duration}}min</span>
+                    <span>{{ course.duration | duration }}</span>
 					<span [ngClass]="{'top-rated': course.topRated}"></span>
 		        </div>
                 <div class="col-sm-4 text-right">
-                    <span >{{course.createDate | date}}</span>
+                    <span >{{course.createDate | date:'dd/MM/yyyy'}}</span>
 		        </div>
             </div>
             <p class="desc">{{course.description}}</p>

@@ -6,6 +6,7 @@ import { FormsModule }   from '@angular/forms';
 import * as components from './components';
 import * as services from './services';
 import * as directives from './directives';
+import * as pipes from './pipes';
 
 const modules = [
     CommonModule,
@@ -13,7 +14,7 @@ const modules = [
     RouterModule
 ];
 
-const declarations = [components, directives].reduce(
+const declarations = [components, directives, pipes].reduce(
     (_declarations, declaration) => _declarations.concat(
 		Object.keys(declaration).map( (key) => declaration[key])),
     []

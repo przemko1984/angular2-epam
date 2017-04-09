@@ -22,7 +22,7 @@ export class CourseService {
         }, {
             id: 'uuid2',
             name: 'Course 2',
-            duration: 15,
+            duration: 60,
             createDate: new Date('2016-12-10'),
             topRated: true,
             description: 'Lorem ipsum dolor sit amet 2, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
@@ -40,7 +40,7 @@ export class CourseService {
         }, {
             id: 'uuid4',
             name: 'Course 4',
-            duration: 20,
+            duration: 200,
             createDate: new Date('2017-03-29'),
             topRated: false,
             description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
@@ -49,7 +49,7 @@ export class CourseService {
         }, {
             id: 'uuid5',
             name: 'Course 5',
-            duration: 20,
+            duration: 80,
             createDate: new Date('2017-04-11'),
             topRated: false,
             description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
