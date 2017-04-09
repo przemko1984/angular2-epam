@@ -4,6 +4,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 import { ICourse } from '../../business-entities/';
+import { FilterByNamePipe } from '../pipes';
 
 const DELAY = 1500;
 
@@ -60,7 +61,7 @@ export class CourseService {
     private courseList$: Observable<ICourse[]>;
     private courseListSubject: Subject<ICourse[]> = new Subject<ICourse[]>();
 
-    constructor() {
+    constructor(private _filterByName: FilterByNamePipe) {
         this.courseList$ = this.courseListSubject.asObservable();
 
     }
@@ -114,6 +115,10 @@ export class CourseService {
         this.courseList.splice(this.courseList.findIndex((item) => item.id === id), 1);
         this.courseListSubject.next(this.courseList.slice());
         return Observable.of(true).delay(DELAY);
+    }
+
+    search(name) {
+        this.courseListSubject.next(this._filterByName.transform(this.courseList.slice(), name));
     }
 
 }

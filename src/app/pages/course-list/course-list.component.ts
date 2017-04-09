@@ -9,19 +9,25 @@ import {
 
 import { ICourse } from './../../business-entities';
 import { CourseService, LoaderService } from './../../shared/services';
+import { FilterByNamePipe } from './../../shared/pipes/filterByName.pipe';
 
 @Component({
 	selector: 'course-list-page',
 	encapsulation: ViewEncapsulation.None,
-	providers: [],
 	template: require('./course-list.template.html'),
 	styles: [require('./course-list.component.scss')],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourseListPageComponent implements OnInit, OnDestroy {
 	private courses: ICourse[];
+	private coursesClone: ICourse[];
 
-	constructor(private ref: ChangeDetectorRef, private courseService: CourseService, private loaderService: LoaderService) {
+	constructor(
+		private ref: ChangeDetectorRef,
+		private courseService: CourseService,
+		private loaderService: LoaderService,
+		private _filterByName: FilterByNamePipe
+	) {
 		console.log('CourseListPageComponent: constructor');
 	}
 
@@ -98,6 +104,13 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 		);
 	}
 
+	public searchCourse(name: string) {
+		this.courses = this._filterByName.transform(this.coursesClone, name);
+		// Service example with filterByName pipe
+		// this.loaderService.show();
+		// this.courseService.search(name);
+	}
+
 	private subscribeCoursesList() {
 		console.log('subscribe course list');
 		this.loaderService.show();
@@ -105,6 +118,7 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 			.subscribe(
 				(resp) => {
 					this.courses = resp;
+					this.coursesClone = resp.slice();
 					this.loaderService.hide();
 					this.ref.markForCheck();
 				},
