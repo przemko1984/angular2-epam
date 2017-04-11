@@ -1,12 +1,11 @@
 import {
 	Component,
 	ViewEncapsulation,
-	OnInit,
-	OnDestroy,
 	ChangeDetectionStrategy,
 	ChangeDetectorRef
 } from '@angular/core';
 
+import { BasePage } from '../base.page.component';
 import { ICourse } from './../../business-entities';
 import { CourseService, LoaderService } from './../../shared/services';
 import { FilterByNamePipe } from './../../shared/pipes/filterByName.pipe';
@@ -18,7 +17,7 @@ import { FilterByNamePipe } from './../../shared/pipes/filterByName.pipe';
 	styles: [require('./course-list.component.scss')],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CourseListPageComponent implements OnInit, OnDestroy {
+export class CourseListPageComponent extends BasePage {
 	private courses: ICourse[];
 	private coursesClone: ICourse[];
 
@@ -28,16 +27,17 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 		private loaderService: LoaderService,
 		private _filterByName: FilterByNamePipe
 	) {
+		super();
 		console.log('CourseListPageComponent: constructor');
 	}
 
-	public ngOnInit() {
+	onInit() {
 		console.log('CourseListPageComponent: ngOnInit');
 		this.subscribeCoursesList();
 		this.loadCourses();
 	}
 
-	public ngOnDestroy() {
+	onDestroy() {
 		console.log('CourseListPageComponent: ngOnInit');
 	}
 
@@ -65,7 +65,7 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 	public deleteCourse(id: string) {
 		console.log('Delete course id:', id);
 		this.loaderService.show();
-		this.courseService.remove(id).subscribe(
+		let sub = this.courseService.remove(id).subscribe(
 			(resp) => {
 				this.loaderService.hide();
 			},
@@ -74,12 +74,13 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 				console.error('error', error);
 			}
 		);
+		this.registerSubscription(sub);
 	}
 
 	public editCourse(id: string) {
 		console.log('Edit course id:', id);
 		this.loaderService.show();
-		this.courseService.update(id).subscribe(
+		let sub = this.courseService.update(id).subscribe(
 			(resp) => {
 				this.loaderService.hide();
 			},
@@ -88,12 +89,13 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 				console.error('error', error);
 			}
 		);
+		this.registerSubscription(sub);
 	}
 
 	public addCourse() {
 		console.log('Add course');
 		this.loaderService.show();
-		this.courseService.create().subscribe(
+		let sub = this.courseService.create().subscribe(
 			(resp) => {
 				this.loaderService.hide();
 			},
@@ -102,6 +104,7 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 				console.error('error', error);
 			}
 		);
+		this.registerSubscription(sub);
 	}
 
 	public searchCourse(name: string) {
@@ -114,7 +117,7 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 	private subscribeCoursesList() {
 		console.log('subscribe course list');
 		this.loaderService.show();
-		this.courseService.getList()
+		let sub = this.courseService.getList()
 			.subscribe(
 				(resp) => {
 					this.courses = resp;
@@ -127,6 +130,7 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 					this.loaderService.hide();
 				}
 			);
+		this.registerSubscription(sub);
 	}
 
 	private loadCourses() {

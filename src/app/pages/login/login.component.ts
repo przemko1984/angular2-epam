@@ -1,6 +1,7 @@
-import { Component, Input, ViewEncapsulation, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 
+import { BasePage } from '../base.page.component';
 import { AuthService, LoaderService }  from './../../shared/services';
 
 @Component({
@@ -10,7 +11,7 @@ import { AuthService, LoaderService }  from './../../shared/services';
 	template: require('./login.template.html'),
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginPageComponent implements OnInit, OnDestroy {
+export class LoginPageComponent extends BasePage {
 	user: string;
 	pass: string;
 
@@ -18,16 +19,16 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 	userInfo: Observable<string>;
 
 	constructor(private ref: ChangeDetectorRef, private authService: AuthService, private loaderService: LoaderService) {
+		super();
 		this.isAuthenticated = this.authService.isAuthenticated$;
 		this.userInfo = this.authService.userInfo$;
 	}
 
-	public ngOnInit() {
+	onInit() {
 		console.log('loginPage ngOnInit');
 	}
 
-	public ngOnDestroy() {
-
+	onDestroy() {
 	}
 
 	login() {
@@ -35,7 +36,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 			return;
 		}
 		this.loaderService.show();
-		this.authService.login({user: this.user, pass: this.pass})
+		let sub = this.authService.login({user: this.user, pass: this.pass})
 			.subscribe(
 				(resp) => {
 					this.reset();
@@ -48,10 +49,11 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 					this.ref.markForCheck();
 				}
 			);
+		this.registerSubscription(sub);
 	}
 
 	logout() {
-		this.authService.logout()
+		let sub = this.authService.logout()
 			.subscribe(
 				(resp) => {
 					this.reset();
@@ -60,6 +62,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 					console.log('error ', error);
 				}
 			);
+		this.registerSubscription(sub);
 	}
 
 	private reset() {
