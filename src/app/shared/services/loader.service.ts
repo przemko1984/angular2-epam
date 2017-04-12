@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 
 @Injectable()
 export class LoaderService {
     showLoader$: Observable<boolean>;
-    private showLoaderSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    private showLoaderSubject: ReplaySubject<boolean> = new ReplaySubject<boolean>();
 
     constructor() {
         this.showLoader$ = this.showLoaderSubject.asObservable();
