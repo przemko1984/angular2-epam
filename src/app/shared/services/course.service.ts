@@ -3,7 +3,7 @@ import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
-import { ICourse } from '../../business-entities/';
+import { ICourse, INewCourse } from '../../business-entities/';
 import { FilterByNamePipe } from '../pipes';
 
 const DELAY = 1500;
@@ -75,24 +75,18 @@ export class CourseService {
         this.courseListSubject.next(this.courseList.slice());
     }
 
-    create(): Observable<ICourse> {
-        let no: number = this.courseList.length;
+    create(newCourse: INewCourse): Observable<ICourse> {
         let timestamp: number = new Date().getTime();
-        let newCourse: ICourse = {
+        let course: ICourse = Object.assign(newCourse, {
             id: `uuid${timestamp}`,
-            name: `Course ${no++}`,
-            duration: 10,
-            date: new Date(),
             topRated: false,
-            description: 'Lorem ipsum dolor sit amet 1, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
-                'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla.' +
-                ' Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
-        };
+            date: new Date(newCourse.date)
+        });
 
-        this.courseList.push(newCourse);
+        this.courseList.push(course);
         this.courseListSubject.next(this.courseList.slice());
 
-        return Observable.of<ICourse>(newCourse).delay(DELAY);
+        return Observable.of<ICourse>(course).delay(DELAY);
     }
 
     getById(id: string): Observable<ICourse> {
