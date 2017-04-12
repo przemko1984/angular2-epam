@@ -16,7 +16,7 @@ export class OutdatedCourseFilterPipe implements PipeTransform {
         const lastDay = new Date(currentDate.getTime() - 14 * dayInMilisecond);
 
         return array.filter((item: ICourse) => {
-            return item.createDate >= lastDay;
+            return item.date >= lastDay;
         });
     }
 }
