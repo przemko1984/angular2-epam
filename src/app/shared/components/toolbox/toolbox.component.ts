@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { CourseService, LoaderService } from './../../services';
+import { CourseService } from './../../services';
 
 @Component({
 	selector: 'toolbox',
@@ -18,7 +18,7 @@ export class ToolboxComponent {
 	@Output()
 	private searchCourse: EventEmitter<any>;
 
-	constructor(public ref: ChangeDetectorRef, private courseService: CourseService, private loaderService: LoaderService) {
+	constructor(public ref: ChangeDetectorRef, private courseService: CourseService) {
 		this.addCourse = new EventEmitter<any>();
 		this.searchCourse = new EventEmitter<any>();
 	}

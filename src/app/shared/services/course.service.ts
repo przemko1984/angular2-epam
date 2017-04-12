@@ -62,8 +62,9 @@ export class CourseService {
     private courseListSubject: Subject<ICourse[]> = new Subject<ICourse[]>();
 
     constructor(private _filterByName: FilterByNamePipe) {
-        this.courseList$ = this.courseListSubject.asObservable();
-
+        this.courseList$ = this.courseListSubject
+            .asObservable()
+            .map(this.mapData);
     }
 
     getList(): Observable<ICourse[]> {
@@ -80,7 +81,7 @@ export class CourseService {
             id: `uuid${no++}`,
             name: `Course ${no++}`,
             duration: 10,
-            createDate: new Date('2016-08-10'),
+            createDate: new Date(),
             topRated: false,
             description: 'Lorem ipsum dolor sit amet 1, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
                 'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla.' +
@@ -119,6 +120,14 @@ export class CourseService {
 
     search(name) {
         this.courseListSubject.next(this._filterByName.transform(this.courseList.slice(), name));
+    }
+
+    private mapData(res: ICourse[]) {
+        console.log('mapping', res);
+        // res.map((item) => {
+        //     return Object.assign(item, {name: `-${item.name}-`});
+        // });
+        return res;
     }
 
 }
