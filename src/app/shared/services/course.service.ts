@@ -77,8 +77,9 @@ export class CourseService {
 
     create(): Observable<ICourse> {
         let no: number = this.courseList.length;
+        let timestamp: number = new Date().getTime();
         let newCourse: ICourse = {
-            id: `uuid${no++}`,
+            id: `uuid${timestamp}`,
             name: `Course ${no++}`,
             duration: 10,
             date: new Date(),

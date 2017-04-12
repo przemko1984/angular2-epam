@@ -5,12 +5,16 @@ import { CommonModule } from '@angular/common';
 
 // custom components
 import { CourseDetailsPageComponent } from './course-details.component';
+import { SharedModule } from './../../shared/shared.module';
 
 @NgModule({
 	declarations: [
 		CourseDetailsPageComponent
 	],
-	imports: [],
+	imports: [
+		CommonModule,
+		SharedModule,
+	],
 	providers: []
 })
 export class CourseDetailsPageModule {
