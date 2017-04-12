@@ -1,5 +1,5 @@
 import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subscriber } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { AuthService }  from './../../services';
 
@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 	userInfo: Observable<string>;
 	isAuthenticated: Observable<boolean>;
 
-	private sub: Subscriber;
+	private sub: Subscription;
 
 	constructor(public authService: AuthService) {
 		this.isAuthenticated = this.authService.isAuthenticated$;

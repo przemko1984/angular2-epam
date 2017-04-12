@@ -94,17 +94,17 @@ export class CourseListPageComponent extends BasePage {
 
 	public addCourse() {
 		console.log('Add course');
-		this.loaderService.show();
-		let sub = this.courseService.create().subscribe(
-			(resp) => {
-				this.loaderService.hide();
-			},
-			(error) => {
-				this.loaderService.hide();
-				console.error('error', error);
-			}
-		);
-		this.registerSubscription(sub);
+		// this.loaderService.show();
+		// let sub = this.courseService.create().subscribe(
+		// 	(resp) => {
+		// 		this.loaderService.hide();
+		// 	},
+		// 	(error) => {
+		// 		this.loaderService.hide();
+		// 		console.error('error', error);
+		// 	}
+		// );
+		// this.registerSubscription(sub);
 	}
 
 	public searchCourse(name: string) {
