@@ -26,7 +26,7 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 		private ref: ChangeDetectorRef,
 		private courseService: CourseService,
 		private loaderService: LoaderService,
-		private _filterByName: FilterByNamePipe
+		private filterByName: FilterByNamePipe
 	) {
 		console.log('CourseListPageComponent: constructor');
 	}
@@ -105,7 +105,7 @@ export class CourseListPageComponent implements OnInit, OnDestroy {
 	}
 
 	public searchCourse(name: string) {
-		this.courses = this._filterByName.transform(this.coursesClone, name);
+		this.courses = this.filterByName.transform(this.coursesClone, name);
 		// Service example with filterByName pipe
 		// this.loaderService.show();
 		// this.courseService.search(name);
