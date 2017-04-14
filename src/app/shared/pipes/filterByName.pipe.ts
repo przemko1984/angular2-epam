@@ -1,16 +1,15 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+import { ICourse } from '../../business-entities';
+
 @Pipe({name: 'filterByName'})
 export class FilterByNamePipe implements PipeTransform {
-    constructor() { }
 
-    transform(array: any[], field: any): any[] {
+    transform(array: ICourse[], field: string): ICourse[] {
         if (!array) {
             return;
         }
 
-        return array.filter((item) => {
-            return !!item.name.match(new RegExp(`^.*${field}.*\$`, 'i'));
-        });
+        return array.filter(({name}) => name.toLowerCase().includes(field));
     }
 }
