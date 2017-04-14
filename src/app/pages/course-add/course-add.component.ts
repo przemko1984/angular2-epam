@@ -37,7 +37,7 @@ export class CourseAddPageComponent extends BasePage {
 
 	public createCourse(courseForm: NgForm) {
 		this.loaderService.show();
-		let sub = this.courseService.create(courseForm.value)
+		const sub = this.courseService.create(courseForm.value)
 			.subscribe(
 				(resp) => {
 					console.log('course added', resp);
