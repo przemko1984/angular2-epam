@@ -36,13 +36,13 @@
 		"no-access-missing-member": true,
 		"no-attribute-parameter-decorator": true,
 		"no-forward-ref": true,
-		"no-input-rename": true,
+		"no-input-rename": false,
 		"no-output-rename": true,
-		"pipe-naming": [
-			true,
-			"camelCase",
-			"my"
-		],
+		// "pipe-naming": [
+		// 	true,
+		// 	"camelCase",
+		// 	"my"
+		// ],
 		"templates-use-public": false,
 		"use-host-property-decorator": true,
 		"use-input-property-decorator": true,

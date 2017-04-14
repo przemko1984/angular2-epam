@@ -1,7 +1,13 @@
-<toolbox (addCourse)="addCourse($event)"></toolbox>
+<toolbox
+    (addCourse)="addCourse($event)"
+    (searchCourse)="searchCourse($event)"
+></toolbox>
 <div class="container">
     <h2>Course list:</h2>
     <div class="course-list">
-        <course-item *ngFor="let course of courses" [course]="course" (deleteCourse)="deleteCourse($event)" (editCourse)="editCourse($event)"></course-item>
+        <course-item *ngFor="let course of (courses | orderBy:'createDate')" [course]="course" (deleteCourse)="deleteCourse($event)" (editCourse)="editCourse($event)"></course-item>
+    </div>
+    <div class="course-list-empty" *ngIf="courses && courses.length === 0">
+        <p>No data. Feel free to add new course.</p>
     </div>
 </div>

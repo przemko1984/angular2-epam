@@ -1,7 +1,7 @@
 @import "../../../styles/variables/colors.scss";
 
 .course-item {
-	border: 1px solid $c-primary;
+	border: 2px solid $c-primary;
 	margin: 0.5rem 0;
 	padding: 0.5rem;
 	font-size: 0.9rem;
@@ -20,4 +20,22 @@
 		width: 100%;
 		margin: 0.2rem 0;
 	}
+
+	&.course-new {
+		border-color: #60e160;
+	}
+
+	&.course-upcoming {
+		border-color: #31b0d5;
+	}
+
+	.top-rated {
+		&:after {
+			content: '\2605';
+			color: #f5f523;
+			font-size: 1.1rem;
+			line-height: 1rem;
+		}
+	}
+
 }

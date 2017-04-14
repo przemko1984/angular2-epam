@@ -5,6 +5,9 @@ import { FormsModule }   from '@angular/forms';
 
 import * as components from './components';
 import * as services from './services';
+import * as directives from './directives';
+import * as pipes from './pipes';
+import { FilterByNamePipe } from './pipes';
 
 const modules = [
     CommonModule,
@@ -12,7 +15,7 @@ const modules = [
     RouterModule
 ];
 
-const declarations = [components].reduce(
+const declarations = [components, directives, pipes].reduce(
     (_declarations, declaration) => _declarations.concat(
 		Object.keys(declaration).map( (key) => declaration[key])),
     []
@@ -28,7 +31,8 @@ const providers = Object.keys(services)
 @NgModule({
 	declarations: declarations,
 	imports: modules,
-	exports: modules.concat(declarations)
+	exports: modules.concat(declarations),
+    providers: [ FilterByNamePipe ]
 })
 export class SharedModule {
 

@@ -4,6 +4,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 import { ICourse } from '../../business-entities/';
+import { FilterByNamePipe } from '../pipes';
 
 const DELAY = 1500;
 
@@ -14,15 +15,17 @@ export class CourseService {
             id: 'uuid1',
             name: 'Course 1',
             duration: 10,
-            createDate: new Date('2016-08-10'),
+            createDate: new Date('2017-08-10'),
+            topRated: false,
             description: 'Lorem ipsum dolor sit amet 1, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
                 'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla.' +
                 ' Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
         }, {
             id: 'uuid2',
             name: 'Course 2',
-            duration: 15,
+            duration: 60,
             createDate: new Date('2016-12-10'),
+            topRated: true,
             description: 'Lorem ipsum dolor sit amet 2, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
                 'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
                 'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. .'
@@ -30,7 +33,26 @@ export class CourseService {
             id: 'uuid3',
             name: 'Course 3',
             duration: 20,
-            createDate: new Date('2017-01-10'),
+            createDate: new Date('2017-04-01'),
+            topRated: true,
+            description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
+                'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
+                'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
+        }, {
+            id: 'uuid4',
+            name: 'Course 4',
+            duration: 200,
+            createDate: new Date('2017-03-29'),
+            topRated: false,
+            description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
+                'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
+                'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
+        }, {
+            id: 'uuid5',
+            name: 'Course 5',
+            duration: 80,
+            createDate: new Date('2017-04-11'),
+            topRated: false,
             description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
                 'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
                 'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
@@ -39,7 +61,7 @@ export class CourseService {
     private courseList$: Observable<ICourse[]>;
     private courseListSubject: Subject<ICourse[]> = new Subject<ICourse[]>();
 
-    constructor() {
+    constructor(private _filterByName: FilterByNamePipe) {
         this.courseList$ = this.courseListSubject.asObservable();
 
     }
@@ -59,6 +81,7 @@ export class CourseService {
             name: `Course ${no++}`,
             duration: 10,
             createDate: new Date('2016-08-10'),
+            topRated: false,
             description: 'Lorem ipsum dolor sit amet 1, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
                 'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla.' +
                 ' Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
@@ -92,6 +115,10 @@ export class CourseService {
         this.courseList.splice(this.courseList.findIndex((item) => item.id === id), 1);
         this.courseListSubject.next(this.courseList.slice());
         return Observable.of(true).delay(DELAY);
+    }
+
+    search(name) {
+        this.courseListSubject.next(this._filterByName.transform(this.courseList.slice(), name));
     }
 
 }

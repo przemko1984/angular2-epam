@@ -1,23 +1,24 @@
-<div class="container course-item">
+<div class="container course-item" [courseHighlight]="course.createDate">
 	<div class="row">
 		<div class="col-sm-10">
             <div class="row">
 		        <div class="col-sm-4">
-                    <h3>{{course.name}}</h3>
+                    <h3>{{course.name | uppercase}}</h3>
 		        </div>
                 <div class="col-sm-4">
-                    <span>{{course.duration}}min</span>
+                    <span>{{ course.duration | duration }}</span>
+					<span [ngClass]="{'top-rated': course.topRated}"></span>
 		        </div>
                 <div class="col-sm-4 text-right">
-                    <span >{{course.createDate | date}}</span>
+                    <span >{{course.createDate | date:'dd/MM/yyyy'}}</span>
 		        </div>
             </div>
             <p class="desc">{{course.description}}</p>
 		</div>
 		<div class="col-sm-2 text-right">
 			<button type="submit" class="btn btn-primary btn-sm" (click)="edit()">edit</button>
-            <button 
-				class="btn btn-danger btn-sm" 				
+            <button
+				class="btn btn-danger btn-sm"
 				mwlConfirmationPopover
 				title="Are you sure?"
 				placement="top"
