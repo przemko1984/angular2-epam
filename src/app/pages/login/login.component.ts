@@ -14,6 +14,7 @@ import { AuthService, LoaderService }  from './../../shared/services';
 export class LoginPageComponent extends BasePage {
 	user: string;
 	pass: string;
+	errorMsg: string;
 
 	isAuthenticated: Observable<boolean>;
 	userInfo: Observable<string>;
@@ -32,6 +33,7 @@ export class LoginPageComponent extends BasePage {
 	}
 
 	login() {
+		this.errorMsg = '';
 		if (!this.user || !this.pass) {
 			return;
 		}
@@ -39,10 +41,35 @@ export class LoginPageComponent extends BasePage {
 		let sub = this.authService.login({user: this.user, pass: this.pass})
 			.subscribe(
 				(resp) => {
+					// this.reset();
+					this.getUserInfo();
+
+					// this.loaderService.hide();
+					// this.ref.markForCheck();
+				},
+				(error) => {
+					// console.log('error ', error);
+                	this.errorMsg = 'Wrong user or password';
+
+					this.loaderService.hide();
+					this.ref.markForCheck();
+				},
+				() => {
+					this.loaderService.hide();
+					this.ref.markForCheck();
+				}
+			);
+		this.registerSubscription(sub);
+	}
+
+	getUserInfo() {
+		let sub = this.authService.userInfo()
+			.subscribe(
+				(resp) => {
 					this.reset();
 				},
 				(error) => {
-					console.log('error ', error);
+
 				},
 				() => {
 					this.loaderService.hide();
