@@ -1,5 +1,5 @@
-import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 
 import { AuthService }  from './../../services';
 
@@ -11,11 +11,13 @@ import { AuthService }  from './../../services';
 	encapsulation: ViewEncapsulation.None,
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
 	public _userInfo: string;
 
 	userInfo: Observable<string>;
 	isAuthenticated: Observable<boolean>;
+
+	private sub: Subscription;
 
 	constructor(public authService: AuthService) {
 		this.isAuthenticated = this.authService.isAuthenticated$;
@@ -26,11 +28,17 @@ export class HeaderComponent implements OnInit {
 
 	}
 
+	ngOnDestroy() {
+		if (this.sub) {
+			this.sub.unsubscribe();
+		}
+	}
+
 	logout($event) {
 		if ($event) {
 			$event.preventDefault();
 		}
-		this.authService.logout().subscribe(
+		this.sub = this.authService.logout().subscribe(
 			(resp) => {
 				console.log('mark logout');
             },

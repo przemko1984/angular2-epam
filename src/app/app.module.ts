@@ -30,7 +30,8 @@ import { SharedModule } from './shared';
 import {
 	LoginPageModule,
 	CourseListPageModule,
-	CourseDetailsPageModule
+	CourseDetailsPageModule,
+	CourseAddPageModule
 } from './pages';
 
 // Services
@@ -57,7 +58,8 @@ const APP_PROVIDERS = [
 		SharedModule.forRoot(),
 		LoginPageModule,
 		CourseListPageModule,
-		CourseDetailsPageModule
+		CourseDetailsPageModule,
+		CourseAddPageModule
 	],
 	providers: [ // expose our Services and Providers into Angular's dependency injection
 		ENV_PROVIDERS,

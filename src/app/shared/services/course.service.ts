@@ -3,7 +3,7 @@ import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
-import { ICourse } from '../../business-entities/';
+import { ICourse, INewCourse } from '../../business-entities/';
 import { FilterByNamePipe } from '../pipes';
 
 const DELAY = 1500;
@@ -15,7 +15,7 @@ export class CourseService {
             id: 'uuid1',
             name: 'Course 1',
             duration: 10,
-            createDate: new Date('2017-08-10'),
+            date: new Date('2017-08-10'),
             topRated: false,
             description: 'Lorem ipsum dolor sit amet 1, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
                 'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla.' +
@@ -24,7 +24,7 @@ export class CourseService {
             id: 'uuid2',
             name: 'Course 2',
             duration: 60,
-            createDate: new Date('2016-12-10'),
+            date: new Date('2016-12-10'),
             topRated: true,
             description: 'Lorem ipsum dolor sit amet 2, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
                 'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
@@ -33,7 +33,7 @@ export class CourseService {
             id: 'uuid3',
             name: 'Course 3',
             duration: 20,
-            createDate: new Date('2017-04-01'),
+            date: new Date('2017-04-01'),
             topRated: true,
             description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
                 'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
@@ -42,7 +42,7 @@ export class CourseService {
             id: 'uuid4',
             name: 'Course 4',
             duration: 200,
-            createDate: new Date('2017-03-29'),
+            date: new Date('2017-03-30'),
             topRated: false,
             description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
                 'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
@@ -51,7 +51,7 @@ export class CourseService {
             id: 'uuid5',
             name: 'Course 5',
             duration: 80,
-            createDate: new Date('2017-04-11'),
+            date: new Date('2017-04-11'),
             topRated: false,
             description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
                 'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
@@ -62,8 +62,9 @@ export class CourseService {
     private courseListSubject: Subject<ICourse[]> = new Subject<ICourse[]>();
 
     constructor(private _filterByName: FilterByNamePipe) {
-        this.courseList$ = this.courseListSubject.asObservable();
-
+        this.courseList$ = this.courseListSubject
+            .asObservable()
+            .map(this.mapData);
     }
 
     getList(): Observable<ICourse[]> {
@@ -74,23 +75,18 @@ export class CourseService {
         this.courseListSubject.next(this.courseList.slice());
     }
 
-    create(): Observable<ICourse> {
-        let no: number = this.courseList.length;
-        let newCourse: ICourse = {
-            id: `uuid${no++}`,
-            name: `Course ${no++}`,
-            duration: 10,
-            createDate: new Date('2016-08-10'),
+    create(newCourse: INewCourse): Observable<ICourse> {
+        let timestamp: number = new Date().getTime();
+        let course: ICourse = Object.assign(newCourse, {
+            id: `uuid${timestamp}`,
             topRated: false,
-            description: 'Lorem ipsum dolor sit amet 1, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
-                'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla.' +
-                ' Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
-        };
+            date: new Date(newCourse.date)
+        });
 
-        this.courseList.push(newCourse);
+        this.courseList.push(course);
         this.courseListSubject.next(this.courseList.slice());
 
-        return Observable.of<ICourse>(newCourse).delay(DELAY);
+        return Observable.of<ICourse>(course).delay(DELAY);
     }
 
     getById(id: string): Observable<ICourse> {
@@ -119,6 +115,14 @@ export class CourseService {
 
     search(name) {
         this.courseListSubject.next(this._filterByName.transform(this.courseList.slice(), name));
+    }
+
+    private mapData(res: ICourse[]) {
+        console.log('mapping', res);
+        // res.map((item) => {
+        //     return Object.assign(item, {name: `-${item.name}-`});
+        // });
+        return res;
     }
 
 }

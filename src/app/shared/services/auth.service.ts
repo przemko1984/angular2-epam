@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, ReplaySubject } from 'rxjs';
 
 import { ICredential } from '../../business-entities';
 
@@ -12,7 +12,7 @@ export class AuthService {
     isAuthenticated$: Observable<boolean>;
 
     private isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    private user: BehaviorSubject<string> = new BehaviorSubject<string>('');
+    private user: ReplaySubject<string> = new ReplaySubject<string>();
 
     constructor() {
         this.userInfo$ = this.user.asObservable();

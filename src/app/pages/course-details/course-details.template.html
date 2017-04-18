@@ -1,3 +1,9 @@
-<div>
-    <p>Course details</p>
+<div *ngIf="course">
+    <h2>Course details</h2>
+    <p>{{course.name}}</p>
+
+    <a
+        class="btn btn-default btn-sm"
+        [routerLink]="['']"
+    >Back</a>
 </div>
