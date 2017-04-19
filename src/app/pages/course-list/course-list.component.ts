@@ -19,9 +19,9 @@ import { FilterByNamePipe } from './../../shared/pipes/filterByName.pipe';
 })
 export class CourseListPageComponent extends BasePage {
 	private courses: ICourse[] = [];
-	// private coursesClone: ICourse[];
 	private loadMoreCounter: number = 1;
 	private isCourseListFull: boolean = false;
+	private resetListOnLoad: boolean = false;
 	private search: string;
 
 	constructor(
@@ -70,7 +70,9 @@ export class CourseListPageComponent extends BasePage {
 		this.loaderService.show();
 		let sub = this.courseService.remove(id).subscribe(
 			(resp) => {
-				this.loaderService.hide();
+				// this.loaderService.hide();
+				this.resetCourseList();
+				this.loadCourses(this.courses.length);
 			},
 			(error) => {
 				this.loaderService.hide();
@@ -114,13 +116,14 @@ export class CourseListPageComponent extends BasePage {
 		// this.courses = this.filterByName.transform(this.coursesClone, name);
 		this.loaderService.show();
 		this.resetCourseList();
+		this.loadMoreCounter = 1;
 		this.search = name;
-		this.courseService.loadList('0', name);
+		this.courseService.loadList(0, name);
 	}
 
 	public loadMore() {
 		this.loaderService.show();
-		this.courseService.loadList((this.loadMoreCounter * this.courseService.limit).toString(), this.search);
+		this.courseService.loadList((this.loadMoreCounter * this.courseService.limit), this.search);
 		this.loadMoreCounter += 1;
 	}
 
@@ -130,9 +133,8 @@ export class CourseListPageComponent extends BasePage {
 		let sub = this.courseService.getList()
 			.subscribe(
 				(resp) => {
-					this.courses = this.courses.concat(resp);
-					// this.coursesClone = this.courses.slice();
-
+					this.courses = this.resetListOnLoad ? resp : this.courses.concat(resp);
+					this.resetListOnLoad = false;
 					this.isCourseListFull = this.courses.length < (this.loadMoreCounter * this.courseService.limit);
 					this.loaderService.hide();
 					this.ref.markForCheck();
@@ -145,13 +147,12 @@ export class CourseListPageComponent extends BasePage {
 		this.registerSubscription(sub);
 	}
 
-	private loadCourses() {
+	private loadCourses(limit?: number) {
 		console.log('loadCourses');
-		this.courseService.loadList();
+		this.courseService.loadList(0, this.search, limit);
 	}
 
 	private resetCourseList() {
-		this.courses = [];
-		this.loadMoreCounter = 1;
+		this.resetListOnLoad = true;
 	}
 }

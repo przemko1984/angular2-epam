@@ -74,14 +74,14 @@ export class CourseService {
         return this.courseList$.delay(DELAY);
     }
 
-    loadList(start: string = '0', search: string = '') {
+    loadList(start: number = 0, search: string = '', limit: number = this.limit) {
         // this.courseListSubject.next(this.courseList.slice());
         let requestOptions = new RequestOptions();
         let params = new URLSearchParams();
-        params.set('start', start);
-        params.set('count', this.limit.toString());
+        params.set('start', start.toString());
+        params.set('count', limit.toString());
         if (!!search) {
-            params.set('search', search);
+            params.set('query', search);
         }
         requestOptions.search = params;
 
@@ -117,11 +117,11 @@ export class CourseService {
     getById(id: number): Observable<ICourse> {
         return this.http.get(`${this.serviceUrl}/${id}`)
             .map(this.mapData)
+            .map(this.mapToCourse)
             .catch((error) => {
                 console.error('error', error);
                 return Observable.throw(error);
-            })
-            .map(this.mapToCourse);
+            });
     }
 
     update(id: number): Observable<ICourse> {
@@ -140,10 +140,19 @@ export class CourseService {
     }
 
     remove(id: number): Observable<boolean> {
-        console.warn('this method doesn\'t work now');
         // this.courseList.splice(this.courseList.findIndex((item) => item.id === id), 1);
         // this.courseListSubject.next(this.courseList.slice());
-        return Observable.of(true).delay(DELAY);
+        // return Observable.of(true).delay(DELAY);
+
+        return this.http.delete(`${this.serviceUrl}/${id}`)
+            .map(this.mapData)
+            .map((res) => {
+                return true;
+            })
+            .catch((error) => {
+                console.error('error', error);
+                return Observable.throw(error);
+            });
     }
 
     search(name) {
