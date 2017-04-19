@@ -65,7 +65,7 @@ export class CourseService {
     private courseList$: Observable<ICourse[]>;
     private courseListSubject: Subject<ICourse[]> = new Subject<ICourse[]>();
 
-    constructor(private http: Http, private _filterByName: FilterByNamePipe) {
+    constructor(private http: AuthorizedHttp, private _filterByName: FilterByNamePipe) {
         this.courseList$ = this.courseListSubject
             .asObservable();
     }

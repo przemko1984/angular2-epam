@@ -3,6 +3,7 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable, BehaviorSubject, ReplaySubject } from 'rxjs';
 
 import { ICredential, IToken, IUser } from '../../business-entities';
+import { AuthorizedHttp } from './authorized-http.service';
 
 const DELAY = 500;
 
@@ -17,7 +18,7 @@ export class AuthService {
     private isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private user: ReplaySubject<IUser> = new ReplaySubject<IUser>();
 
-    constructor(private http: Http) {
+    constructor(private http: Http, private authorizedHttp: AuthorizedHttp) {
         this.userInfo$ = this.user.asObservable();
         this.isAuthenticated$ = this.isAuthenticated.asObservable();
     }
@@ -34,7 +35,8 @@ export class AuthService {
                 console.log('response', res);
                 if (res.token) {
                     this.authToken = res.token;
-                    const clonedUser = Object.assign({}, userCredential);
+                    this.authorizedHttp.setAuthorization(res.token);
+                    // const clonedUser = Object.assign({}, userCredential);
                     // this.user.next(clonedUser.user);
                     this.isAuthenticated.next(true);
                     return true;
@@ -78,6 +80,7 @@ export class AuthService {
         this.authToken = null;
         this.user.next(null);
         this.isAuthenticated.next(false);
+        this.authorizedHttp.setAuthorization(null);
 
         return Observable.of<boolean>(true);
     }
