@@ -19,9 +19,10 @@ import { FilterByNamePipe } from './../../shared/pipes/filterByName.pipe';
 })
 export class CourseListPageComponent extends BasePage {
 	private courses: ICourse[] = [];
-	private coursesClone: ICourse[];
-	private loadMoreCounter: number = 0;
+	// private coursesClone: ICourse[];
+	private loadMoreCounter: number = 1;
 	private isCourseListFull: boolean = false;
+	private search: string;
 
 	constructor(
 		private ref: ChangeDetectorRef,
@@ -110,15 +111,17 @@ export class CourseListPageComponent extends BasePage {
 	}
 
 	public searchCourse(name: string) {
-		this.courses = this.filterByName.transform(this.coursesClone, name);
-		// Service example with filterByName pipe
-		// this.loaderService.show();
-		// this.courseService.search(name);
+		// this.courses = this.filterByName.transform(this.coursesClone, name);
+		this.loaderService.show();
+		this.resetCourseList();
+		this.search = name;
+		this.courseService.loadList('0', name);
 	}
 
 	public loadMore() {
 		this.loaderService.show();
-		this.courseService.loadList((this.loadMoreCounter * this.courseService.limit).toString());
+		this.courseService.loadList((this.loadMoreCounter * this.courseService.limit).toString(), this.search);
+		this.loadMoreCounter += 1;
 	}
 
 	private subscribeCoursesList() {
@@ -128,9 +131,8 @@ export class CourseListPageComponent extends BasePage {
 			.subscribe(
 				(resp) => {
 					this.courses = this.courses.concat(resp);
-					this.coursesClone = this.courses.slice();
+					// this.coursesClone = this.courses.slice();
 
-					this.loadMoreCounter += 1;
 					this.isCourseListFull = this.courses.length < (this.loadMoreCounter * this.courseService.limit);
 					this.loaderService.hide();
 					this.ref.markForCheck();
@@ -146,5 +148,10 @@ export class CourseListPageComponent extends BasePage {
 	private loadCourses() {
 		console.log('loadCourses');
 		this.courseService.loadList();
+	}
+
+	private resetCourseList() {
+		this.courses = [];
+		this.loadMoreCounter = 1;
 	}
 }

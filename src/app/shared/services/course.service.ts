@@ -15,52 +15,52 @@ export class CourseService {
 
     limit: number = 5;
     private serviceUrl: string = 'http://localhost:3004/courses';
-    private courseList: ICourse[] = [{
-            id: 1,
-            name: 'Course 1',
-            length: 10,
-            date: new Date('2017-08-10'),
-            isTopRated: false,
-            description: 'Lorem ipsum dolor sit amet 1, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
-                'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla.' +
-                ' Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
-        }, {
-            id: 2,
-            name: 'Course 2',
-            length: 60,
-            date: new Date('2016-12-10'),
-            isTopRated: true,
-            description: 'Lorem ipsum dolor sit amet 2, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
-                'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
-                'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. .'
-        }, {
-            id: 3,
-            name: 'Course 3',
-            length: 20,
-            date: new Date('2017-04-01'),
-            isTopRated: true,
-            description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
-                'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
-                'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
-        }, {
-            id: 4,
-            name: 'Course 4',
-            length: 200,
-            date: new Date('2017-03-30'),
-            isTopRated: false,
-            description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
-                'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
-                'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
-        }, {
-            id: 5,
-            name: 'Course 5',
-            length: 80,
-            date: new Date('2017-04-11'),
-            isTopRated: false,
-            description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
-                'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
-                'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
-        }];
+    // private courseList: ICourse[] = [{
+    //         id: 1,
+    //         name: 'Course 1',
+    //         length: 10,
+    //         date: new Date('2017-08-10'),
+    //         isTopRated: false,
+    //         description: 'Lorem ipsum dolor sit amet 1, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
+    //             'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla.' +
+    //             ' Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
+    //     }, {
+    //         id: 2,
+    //         name: 'Course 2',
+    //         length: 60,
+    //         date: new Date('2016-12-10'),
+    //         isTopRated: true,
+    //         description: 'Lorem ipsum dolor sit amet 2, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
+    //             'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
+    //             'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. .'
+    //     }, {
+    //         id: 3,
+    //         name: 'Course 3',
+    //         length: 20,
+    //         date: new Date('2017-04-01'),
+    //         isTopRated: true,
+    //         description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
+    //             'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
+    //             'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
+    //     }, {
+    //         id: 4,
+    //         name: 'Course 4',
+    //         length: 200,
+    //         date: new Date('2017-03-30'),
+    //         isTopRated: false,
+    //         description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
+    //             'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
+    //             'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
+    //     }, {
+    //         id: 5,
+    //         name: 'Course 5',
+    //         length: 80,
+    //         date: new Date('2017-04-11'),
+    //         isTopRated: false,
+    //         description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
+    //             'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
+    //             'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
+    //     }];
 
     private courseList$: Observable<ICourse[]>;
     private courseListSubject: Subject<ICourse[]> = new Subject<ICourse[]>();
@@ -74,12 +74,15 @@ export class CourseService {
         return this.courseList$.delay(DELAY);
     }
 
-    loadList(start: string = '0') {
+    loadList(start: string = '0', search: string = '') {
         // this.courseListSubject.next(this.courseList.slice());
         let requestOptions = new RequestOptions();
         let params = new URLSearchParams();
         params.set('start', start);
         params.set('count', this.limit.toString());
+        if (!!search) {
+            params.set('search', search);
+        }
         requestOptions.search = params;
 
         this.http.get(this.serviceUrl, requestOptions)
@@ -90,7 +93,7 @@ export class CourseService {
                 return Observable.throw(error);
             })
             .subscribe((courses: ICourse[]) => {
-                console.log(courses);
+                console.log('loaded courses:', courses);
                 this.courseListSubject.next(courses);
             });
     }
@@ -103,8 +106,10 @@ export class CourseService {
             date: new Date(newCourse.date)
         });
 
-        this.courseList.push(course);
-        this.courseListSubject.next(this.courseList.slice());
+        console.warn('this method doesn\'t work now');
+
+        // this.courseList.push(course);
+        // this.courseListSubject.next(this.courseList.slice());
 
         return Observable.of<ICourse>(course).delay(DELAY);
     }
@@ -120,27 +125,30 @@ export class CourseService {
     }
 
     update(id: number): Observable<ICourse> {
-        let course: ICourse = this.courseList.find((item: ICourse) => item.id === id);
-        let updateCourse: any = {name: `${course.name} [edited]`};
+        console.warn('this method doesn\'t work now');
+        // let course: ICourse = this.courseList.find((item: ICourse) => item.id === id);
+        // let updateCourse: any = {name: `${course.name} [edited]`};
 
-        if (course) {
-            const updated = Object.assign({}, course, updateCourse);
-            this.courseList.splice(this.courseList.findIndex((item) => item.id === id), 1, updated);
+        // if (course) {
+        //     const updated = Object.assign({}, course, updateCourse);
+        //     this.courseList.splice(this.courseList.findIndex((item) => item.id === id), 1, updated);
 
-            this.courseListSubject.next(this.courseList.slice());
-            return Observable.of<ICourse>(updated).delay(DELAY);
-        }
+        //     this.courseListSubject.next(this.courseList.slice());
+        //     return Observable.of<ICourse>(updated).delay(DELAY);
+        // }
         return Observable.of<ICourse>(null);
     }
 
     remove(id: number): Observable<boolean> {
-        this.courseList.splice(this.courseList.findIndex((item) => item.id === id), 1);
-        this.courseListSubject.next(this.courseList.slice());
+        console.warn('this method doesn\'t work now');
+        // this.courseList.splice(this.courseList.findIndex((item) => item.id === id), 1);
+        // this.courseListSubject.next(this.courseList.slice());
         return Observable.of(true).delay(DELAY);
     }
 
     search(name) {
-        this.courseListSubject.next(this._filterByName.transform(this.courseList.slice(), name));
+        console.warn('this method doesn\'t work now');
+        // this.courseListSubject.next(this._filterByName.transform(this.courseList.slice(), name));
     }
 
     private mapData(res: Response) {
