@@ -18,8 +18,10 @@ import { FilterByNamePipe } from './../../shared/pipes/filterByName.pipe';
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourseListPageComponent extends BasePage {
-	private courses: ICourse[];
+	private courses: ICourse[] = [];
 	private coursesClone: ICourse[];
+	private loadMoreCounter: number = 0;
+	private isCourseListFull: boolean = false;
 
 	constructor(
 		private ref: ChangeDetectorRef,
@@ -62,7 +64,7 @@ export class CourseListPageComponent extends BasePage {
 	// }
 
 	// other stuff
-	public deleteCourse(id: string) {
+	public deleteCourse(id: number) {
 		console.log('Delete course id:', id);
 		this.loaderService.show();
 		let sub = this.courseService.remove(id).subscribe(
@@ -77,7 +79,7 @@ export class CourseListPageComponent extends BasePage {
 		this.registerSubscription(sub);
 	}
 
-	public editCourse(id: string) {
+	public editCourse(id: number) {
 		console.log('Edit course id:', id);
 		this.loaderService.show();
 		let sub = this.courseService.update(id).subscribe(
@@ -114,14 +116,22 @@ export class CourseListPageComponent extends BasePage {
 		// this.courseService.search(name);
 	}
 
+	public loadMore() {
+		this.loaderService.show();
+		this.courseService.loadList((this.loadMoreCounter * this.courseService.limit).toString());
+	}
+
 	private subscribeCoursesList() {
 		console.log('subscribe course list');
 		this.loaderService.show();
 		let sub = this.courseService.getList()
 			.subscribe(
 				(resp) => {
-					this.courses = resp;
-					this.coursesClone = resp.slice();
+					this.courses = this.courses.concat(resp);
+					this.coursesClone = this.courses.slice();
+
+					this.loadMoreCounter += 1;
+					this.isCourseListFull = this.courses.length < (this.loadMoreCounter * this.courseService.limit);
 					this.loaderService.hide();
 					this.ref.markForCheck();
 				},

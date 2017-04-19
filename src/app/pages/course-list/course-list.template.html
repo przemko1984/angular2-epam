@@ -6,11 +6,25 @@
     <h2>Course list:</h2>
     <div class="course-list">
         <course-item
-            *ngFor="let course of (courses | outdatedCourseFilter | orderBy:'date')"
+            *ngFor="let course of (courses | orderBy:'date')"
             [course]="course"
             (deleteCourse)="deleteCourse($event)"
             (editCourse)="editCourse($event)"
         ></course-item>
+        <!--| outdatedCourseFilter-->
+    </div>
+    <div class="row" *ngIf="courses && courses.length !== 0">
+        <div class="col-8">
+            <button
+                *ngIf="!isCourseListFull"
+                class="btn btn-primary btn-sm"
+                (click)="loadMore()"
+            >Load more</button>
+            <p *ngIf="isCourseListFull">All courses already loaded.</p>
+        </div>
+        <div class="col-4 text-right">
+            <p> Course loaded: {{courses.length}}</p>
+        </div>
     </div>
     <div class="course-list-empty" *ngIf="courses && courses.length === 0">
         <p>No data. Feel free to add new course.</p>
