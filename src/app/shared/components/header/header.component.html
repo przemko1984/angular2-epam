@@ -6,7 +6,7 @@
 				<p *ngIf="isAuthenticated | async" class="breadcrumbs"> Home / Courses </p>
 			</div>
 			<div *ngIf="isAuthenticated | async" class="col-sm-4 text-right user">
-				<p>user login: <a href="#/login">{{userInfo | async}}</a></p>
+				<p>user login: <a href="#/login">{{(userInfo | async)?.login}}</a></p>
 				<p><a href="#" (click)="logout($event)">log off</a></p>
 			</div>
 			<div *ngIf="!(isAuthenticated | async)" class="col-sm-4 text-right user">

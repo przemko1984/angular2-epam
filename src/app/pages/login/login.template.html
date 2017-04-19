@@ -37,8 +37,9 @@
                 <h2>User info:</h2>
             </div>
             <div class="row">
-                <div class="col-12">
-                    <p>User: {{userInfo | async}}<p>
+                <div class="col-12" *ngIf="userInfo">
+                    <p>User: {{userInfo.login}}<p>
+                    <p>Name: {{userInfo.name.first}} {{userInfo.name.last}}<p>
                     <p>
                         <button
                             type="submit"

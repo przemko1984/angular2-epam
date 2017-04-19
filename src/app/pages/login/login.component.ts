@@ -2,7 +2,8 @@ import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy, ChangeDet
 import { Observable, Subscription } from 'rxjs';
 
 import { BasePage } from '../base.page.component';
-import { AuthService, LoaderService }  from './../../shared/services';
+import { AuthService, LoaderService } from './../../shared/services';
+import { IUser } from './../../business-entities';
 
 @Component({
 	selector: 'login-page',
@@ -17,16 +18,18 @@ export class LoginPageComponent extends BasePage {
 	errorMsg: string;
 
 	isAuthenticated: Observable<boolean>;
-	userInfo: Observable<string>;
+	userInfo: IUser;
 
 	constructor(private ref: ChangeDetectorRef, private authService: AuthService, private loaderService: LoaderService) {
 		super();
 		this.isAuthenticated = this.authService.isAuthenticated$;
-		this.userInfo = this.authService.userInfo$;
 	}
 
 	onInit() {
 		console.log('loginPage ngOnInit');
+		this.authService.userInfo$.subscribe((user: IUser) => {
+			this.userInfo = user;
+		});
 	}
 
 	onDestroy() {
@@ -38,27 +41,17 @@ export class LoginPageComponent extends BasePage {
 			return;
 		}
 		this.loaderService.show();
-		let sub = this.authService.login({user: this.user, pass: this.pass})
-			.subscribe(
-				(resp) => {
-					// this.reset();
-					this.getUserInfo();
-
-					// this.loaderService.hide();
-					// this.ref.markForCheck();
-				},
-				(error) => {
-					// console.log('error ', error);
-                	this.errorMsg = 'Wrong user or password';
-
-					this.loaderService.hide();
-					this.ref.markForCheck();
-				},
-				() => {
-					this.loaderService.hide();
-					this.ref.markForCheck();
-				}
-			);
+		let sub = this.authService.login({user: this.user, pass: this.pass}).subscribe(
+			(resp) => {
+				this.getUserInfo();
+			},
+			(error) => {
+				// console.log('error ', error);
+				this.errorMsg = 'Wrong user or password';
+				this.loaderService.hide();
+				this.ref.markForCheck();
+			}
+		);
 		this.registerSubscription(sub);
 	}
 
@@ -69,7 +62,7 @@ export class LoginPageComponent extends BasePage {
 					this.reset();
 				},
 				(error) => {
-
+					console.log('error ', error);
 				},
 				() => {
 					this.loaderService.hide();

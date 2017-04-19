@@ -17,7 +17,7 @@ export class AuthService {
     private isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private user: ReplaySubject<IUser> = new ReplaySubject<IUser>();
 
-    constructor(private http: Http,) {
+    constructor(private http: Http) {
         this.userInfo$ = this.user.asObservable();
         this.isAuthenticated$ = this.isAuthenticated.asObservable();
     }
@@ -39,7 +39,7 @@ export class AuthService {
                     this.isAuthenticated.next(true);
                     return true;
                 } else {
-                    return false
+                    return false;
                 }
             })
             .catch((error) => {
