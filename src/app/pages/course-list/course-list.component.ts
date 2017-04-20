@@ -70,7 +70,6 @@ export class CourseListPageComponent extends BasePage {
 		this.loaderService.show();
 		let sub = this.courseService.remove(id).subscribe(
 			(resp) => {
-				// this.loaderService.hide();
 				this.resetCourseList();
 				this.loadCourses(this.courses.length);
 			},

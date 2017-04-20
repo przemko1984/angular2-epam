@@ -7,11 +7,6 @@ export class AuthorizedHttp extends Http {
     private defaultOptions: RequestOptions;
 
     constructor(backend: ConnectionBackend, defaultOptions: RequestOptions ) {
-        console.log('AuthorizedHttp constructor', defaultOptions);
-        // this.headers = new Headers();
-        // this.headers.set('Authorization', 'test');
-        // defaultOptions.headers = this.headers;
-
         super(backend, defaultOptions);
         this.defaultOptions = defaultOptions;
     }

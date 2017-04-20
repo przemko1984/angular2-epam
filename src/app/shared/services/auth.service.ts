@@ -29,15 +29,12 @@ export class AuthService {
 
         return this.http
             .post(loginUrl, {login: userCredential.user, password: userCredential.pass})
-            // .delay(DELAY)
             .map(this.mapData)
             .map((res: IToken) => {
                 console.log('response', res);
                 if (res.token) {
                     this.authToken = res.token;
                     this.authorizedHttp.setAuthorization(res.token);
-                    // const clonedUser = Object.assign({}, userCredential);
-                    // this.user.next(clonedUser.user);
                     this.isAuthenticated.next(true);
                     return true;
                 } else {
@@ -49,7 +46,6 @@ export class AuthService {
                 return Observable.throw(error);
             });
 
-        // return Observable.of<boolean>(true).delay(DELAY);
     }
 
     userInfo(): Observable<IUser> {
@@ -61,7 +57,6 @@ export class AuthService {
 
         return this.http
             .post(userInfoUrl, {}, requestOptions)
-            // .delay(DELAY)
             .map(this.mapData)
             .map((user: IUser) => {
                 console.log('user', user);
@@ -73,7 +68,6 @@ export class AuthService {
                 return Observable.throw(error);
             });
 
-        // return Observable.of<boolean>(true).delay(DELAY);
     }
 
     logout(): Observable<boolean> {

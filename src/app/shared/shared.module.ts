@@ -23,14 +23,14 @@ const declarations = [components, directives, pipes].reduce(
     []
 );
 
+// services which will be loaded in different way
+const skipServices = ['AuthorizedHttp'];
 // Get only providers, not types or other objects
 const providers = Object.keys(services)
 					.map((key) => services[key])
                     .filter((provider) => {
-                        return typeof provider === 'function';
+                        return typeof provider === 'function' && skipServices.indexOf(provider.name) === -1;
                     });
-
-console.log('providers', providers);
 
 @NgModule({
 	declarations: declarations,
@@ -44,8 +44,8 @@ console.log('providers', providers);
             },
             deps: [ XHRBackend, RequestOptions]
         },
-        FilterByNamePipe ],
-
+        FilterByNamePipe
+    ]
 })
 export class SharedModule {
 
