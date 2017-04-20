@@ -8,19 +8,21 @@
                 <div class="form-group row">
                     <label for="name-input" class="col-4 col-form-label">Title:</label>
                     <div class="col-8">
-                        <input type="text" name="name" [(ngModel)]="name" id="name-input" placeholder="Course title" required>
+                        <input type="text" name="name" id="name-input" #name="ngModel" [ngModel]="formModel.name" placeholder="Course title" required maxlength="50">
+                        <span class="status-message error-message" *ngIf="name.invalid && name.touched">Pole jest wymagane</span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="desc-input" class="col-4 col-form-label">Description:</label>
                     <div class="col-8">
-                        <textarea name="description"  [(ngModel)]="description" id="desc-input" placeholder="Course description" required></textarea>
+                        <textarea name="description"  #description="ngModel" [ngModel]="formModel.description" id="desc-input" placeholder="Course description" required maxlength="500"></textarea>
+                        <span class="status-message error-message" *ngIf="description.invalid && description.touched">Pole jest wymagane</span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="date-input" class="col-4 col-form-label">Date:</label>
                     <div class="col-8">
-                        <input type="date" name="date"  [(ngModel)]="date" id="date-input" required>
+                        <input type="date" name="date" [(ngModel)]="date" id="date-input" required>
                     </div>
                 </div>
 
@@ -37,6 +39,7 @@
                         <button
                             type="submit"
                             class="btn btn-primary btn-sm"
+                            [disabled]="courseForm.untouched || courseForm.invalid"
                         >Save</button>
                         <a
                             class="btn btn-default btn-sm"

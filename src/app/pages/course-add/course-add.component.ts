@@ -16,6 +16,7 @@ import { CourseService, LoaderService } from './../../shared/services';
 })
 export class CourseAddPageComponent extends BasePage {
 
+	formModel: any;
 	private courseId: string;
 	private course: ICourse;
 
@@ -28,7 +29,10 @@ export class CourseAddPageComponent extends BasePage {
 	}
 
 	onInit() {
-
+		this.formModel = {
+			name: '',
+			description: ''
+		};
 	}
 
 	onDestroy() {
