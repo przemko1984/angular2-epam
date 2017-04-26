@@ -22,10 +22,11 @@
                 <div class="form-group row">
                     <label for="date-input" class="col-4 col-form-label">Date:</label>
                     <div class="col-8">
-                        <date-input name="date" [nameOption]="date" id="date-input"  [ngModel]="formModel.date" required></date-input>
+                        <date-input name="date" #date="ngModel" [nameOption]="date" id="date-input" [ngModel]="formModel.date" validateDate required></date-input>
                         <!--<input type="date" name="date" [(ngModel)]="date" id="date-input" required>-->
+                        <span class="status-message error-message" *ngIf="date.invalid && date.touched">{{date.errors | json}}</span>
                     </div>
-                     <!--<span class="status-message error-message" *ngIf="date.invalid && date.touched">{{date.errors | json}}</span>-->
+
                 </div>
 
                 <div class="form-group row">

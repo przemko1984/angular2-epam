@@ -13,17 +13,16 @@ const CUSTOM_DATE_INPUT_VALUE_ACCESSOR = {
    providers: [CUSTOM_DATE_INPUT_VALUE_ACCESSOR]
 })
 export class DateInputComponent implements ControlValueAccessor {
-    // @Input() items: string[];
     @Input() nameOption: string;
 
-    currentValue: any;
+    private currentValue: any;
 
     setValue(item) {
         this.value = item.target.value;
     }
 
     set value(newValue) {
-        if (newValue) {
+        if (newValue !== this.currentValue) {
             this.currentValue = newValue;
             this.onChange(newValue);
         }
@@ -52,6 +51,6 @@ export class DateInputComponent implements ControlValueAccessor {
 
     setDisabledState(isDisabled) {
         let warning = isDisabled ? 'disabled' : 'enabled';
-        console.warn(warning);
+        console.info(warning);
     }
 }
