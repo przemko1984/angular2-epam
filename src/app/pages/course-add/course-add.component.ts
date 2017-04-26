@@ -31,7 +31,8 @@ export class CourseAddPageComponent extends BasePage {
 	onInit() {
 		this.formModel = {
 			name: '',
-			description: ''
+			description: '',
+			date: ''
 		};
 	}
 
@@ -40,20 +41,21 @@ export class CourseAddPageComponent extends BasePage {
 	}
 
 	public createCourse(courseForm: NgForm) {
-		this.loaderService.show();
-		const sub = this.courseService.create(courseForm.value)
-			.subscribe(
-				(resp) => {
-					console.log('course added', resp);
-					this.loaderService.hide();
-					this.router.navigate(['']);
-				},
-				(error) => {
-					console.error('error', error);
-					this.loaderService.hide();
-				}
-			);
-		this.registerSubscription(sub);
+		console.log('add', courseForm.value);
+		// this.loaderService.show();
+		// const sub = this.courseService.create(courseForm.value)
+		// 	.subscribe(
+		// 		(resp) => {
+		// 			console.log('course added', resp);
+		// 			this.loaderService.hide();
+		// 			this.router.navigate(['']);
+		// 		},
+		// 		(error) => {
+		// 			console.error('error', error);
+		// 			this.loaderService.hide();
+		// 		}
+		// 	);
+		// this.registerSubscription(sub);
 	}
 
 }

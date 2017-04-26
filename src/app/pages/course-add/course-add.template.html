@@ -15,15 +15,17 @@
                 <div class="form-group row">
                     <label for="desc-input" class="col-4 col-form-label">Description:</label>
                     <div class="col-8">
-                        <textarea name="description"  #description="ngModel" [ngModel]="formModel.description" id="desc-input" placeholder="Course description" required maxlength="500"></textarea>
+                        <textarea name="description" #description="ngModel" [ngModel]="formModel.description" id="desc-input" placeholder="Course description" required maxlength="500"></textarea>
                         <span class="status-message error-message" *ngIf="description.invalid && description.touched">Pole jest wymagane</span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="date-input" class="col-4 col-form-label">Date:</label>
                     <div class="col-8">
-                        <input type="date" name="date" [(ngModel)]="date" id="date-input" required>
+                        <date-input name="date" [nameOption]="date" id="date-input"  [ngModel]="formModel.date" required></date-input>
+                        <!--<input type="date" name="date" [(ngModel)]="date" id="date-input" required>-->
                     </div>
+                     <!--<span class="status-message error-message" *ngIf="date.invalid && date.touched">{{date.errors | json}}</span>-->
                 </div>
 
                 <div class="form-group row">
