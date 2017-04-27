@@ -63,15 +63,25 @@ export class CourseService implements OnDestroy {
         let course: ICourse = Object.assign(newCourse, {
             id: timestamp,
             isTopRated: false,
-            date: new Date(newCourse.date)
+            date: new Date(newCourse.date).toString()
         });
 
         console.warn('This method doesn\'t work now');
 
+        return this.http.post(this.serviceUrl, course)
+            .map(this.mapData)
+            .map((res) => {
+                return res;
+            })
+            .catch((error) => {
+                console.error('error', error);
+                return Observable.throw(error);
+            });
+
         // this.courseList.push(course);
         // this.courseListSubject.next(this.courseList.slice());
 
-        return Observable.of<ICourse>(course).delay(DELAY);
+        // return Observable.of<ICourse>(course).delay(DELAY);
     }
 
     getById(id: number): Observable<ICourse> {

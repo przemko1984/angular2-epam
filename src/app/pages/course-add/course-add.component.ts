@@ -56,20 +56,20 @@ export class CourseAddPageComponent extends BasePage {
 
 	public createCourse(courseForm: NgForm) {
 		console.log('add', courseForm.value);
-		// this.loaderService.show();
-		// const sub = this.courseService.create(courseForm.value)
-		// 	.subscribe(
-		// 		(resp) => {
-		// 			console.log('course added', resp);
-		// 			this.loaderService.hide();
-		// 			this.router.navigate(['']);
-		// 		},
-		// 		(error) => {
-		// 			console.error('error', error);
-		// 			this.loaderService.hide();
-		// 		}
-		// 	);
-		// this.registerSubscription(sub);
+		this.loaderService.show();
+		const sub = this.courseService.create(courseForm.value)
+			.subscribe(
+				(resp) => {
+					console.log('course added', resp);
+					this.loaderService.hide();
+					this.router.navigate(['']);
+				},
+				(error) => {
+					console.error('error', error);
+					this.loaderService.hide();
+				}
+			);
+		this.registerSubscription(sub);
 	}
 
 }
