@@ -1,10 +1,10 @@
-import { Component, ViewEncapsulation, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
 import { BasePage } from '../base.page.component';
 import { ICourse } from './../../business-entities';
-import { CourseService, LoaderService } from './../../shared/services';
+import { CourseService, LoaderService, AuthorService } from './../../shared/services';
 
 @Component({
 	selector: 'course-add-page',
@@ -17,13 +17,16 @@ import { CourseService, LoaderService } from './../../shared/services';
 export class CourseAddPageComponent extends BasePage {
 
 	formModel: any;
+	authors: string[];
 	private courseId: string;
 	private course: ICourse;
 
 	constructor(
+		private ref: ChangeDetectorRef,
 		private router: Router,
 		private courseService: CourseService,
-		private loaderService: LoaderService
+		private loaderService: LoaderService,
+		private authorService: AuthorService
 	) {
 		super();
 	}
@@ -32,8 +35,20 @@ export class CourseAddPageComponent extends BasePage {
 		this.formModel = {
 			name: '',
 			description: '',
-			date: ''
+			date: '',
+			length: null,
+			authors: []
 		};
+
+		this.authorService.loadList();
+		let sub = this.authorService.getList()
+			.subscribe((authors) => {
+				console.log('->', authors);
+				this.authors = authors;
+				this.ref.markForCheck();
+			});
+
+		this.registerSubscription(sub);
 	}
 
 	onDestroy() {

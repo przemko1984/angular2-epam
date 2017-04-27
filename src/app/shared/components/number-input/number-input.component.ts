@@ -7,26 +7,26 @@ import {
     Validator
 } from '@angular/forms';
 
-import { validateDate } from './../../validators/date.validator';
+import { validateNumber } from './../../validators/number.validator';
 
 const CUSTOM_DATE_INPUT_VALUE_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => DateInputComponent),
+    useExisting: forwardRef(() => NumberInputComponent),
     multi: true
 };
 
 const CUSTOM_DATE_INPUT_VALIDATOR = {
     provide: NG_VALIDATORS,
-    useExisting: forwardRef(() => DateInputComponent),
+    useExisting: forwardRef(() => NumberInputComponent),
     multi: true
 };
 
 @Component({
-   selector: 'date-input',
-   templateUrl: './date-input.component.html',
+   selector: 'number-input',
+   templateUrl: './number-input.component.html',
    providers: [CUSTOM_DATE_INPUT_VALUE_ACCESSOR, CUSTOM_DATE_INPUT_VALIDATOR]
 })
-export class DateInputComponent implements ControlValueAccessor, Validator {
+export class NumberInputComponent implements ControlValueAccessor, Validator {
     @Input() nameOption: string;
 
     private currentValue: any;
@@ -69,6 +69,6 @@ export class DateInputComponent implements ControlValueAccessor, Validator {
     }
 
     validate(c: FormControl) {
-        return validateDate(c);
+        return validateNumber(c);
     }
 }

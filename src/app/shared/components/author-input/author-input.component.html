@@ -1,0 +1,20 @@
+<p *ngFor="let item of items">
+    <label>
+        <input type="checkbox"
+            (change)="setValue($event)"
+            [value]="item"
+            [checked]="value === item"
+            name="{{nameOption}}[]"
+            (blur)="onTouched($event)"
+        >
+        {{item}}
+    </label>
+</p>
+
+         <!--<input type="radio"
+           (change)="setValue($event)"
+           [value]="item"
+           [checked]="value === item"
+           name="{{nameOption}}">
+             {{item}}
+       </label>-->

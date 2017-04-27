@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef } from '@angular/core';
+import { Component, Input, forwardRef, OnInit } from '@angular/core';
 import {
     NG_VALUE_ACCESSOR,
     ControlValueAccessor,
@@ -7,39 +7,54 @@ import {
     Validator
 } from '@angular/forms';
 
-import { validateDate } from './../../validators/date.validator';
+import { validateAuthor } from './../../validators/author.validator';
 
 const CUSTOM_DATE_INPUT_VALUE_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => DateInputComponent),
+    useExisting: forwardRef(() => AuthorInputComponent),
     multi: true
 };
 
 const CUSTOM_DATE_INPUT_VALIDATOR = {
     provide: NG_VALIDATORS,
-    useExisting: forwardRef(() => DateInputComponent),
+    useExisting: forwardRef(() => AuthorInputComponent),
     multi: true
 };
 
 @Component({
-   selector: 'date-input',
-   templateUrl: './date-input.component.html',
+   selector: 'author-input',
+   templateUrl: './author-input.component.html',
    providers: [CUSTOM_DATE_INPUT_VALUE_ACCESSOR, CUSTOM_DATE_INPUT_VALIDATOR]
 })
-export class DateInputComponent implements ControlValueAccessor, Validator {
+export class AuthorInputComponent implements ControlValueAccessor, Validator, OnInit {
     @Input() nameOption: string;
+    @Input() items: string[];
 
-    private currentValue: any;
+    private currentValue: any[];
 
     setValue(item) {
+        console.log('setValue',  item.target.value);
         this.value = item.target.value;
     }
 
+    ngOnInit() {
+        console.log('--->', this.items);
+    }
+
     set value(newValue) {
-        if (newValue !== this.currentValue) {
-            this.currentValue = newValue;
-            this.onChange(newValue);
+        console.log('value', newValue);
+        let index = this.currentValue.indexOf(newValue);
+        if (index === -1) {
+            this.currentValue.push(newValue);
+        } else {
+            this.currentValue.splice(index, 1);
         }
+        this.onChange(this.currentValue);
+
+        // if (newValue !== this.currentValue) {
+        //     this.currentValue = newValue;
+        //     this.onChange(newValue);
+        // }
     }
 
     get value() {
@@ -58,6 +73,7 @@ export class DateInputComponent implements ControlValueAccessor, Validator {
     }
 
     writeValue(value: any) {
+        console.log('writeValue', value);
         if (value !== this.currentValue) {
             this.currentValue = value;
         }
@@ -69,6 +85,6 @@ export class DateInputComponent implements ControlValueAccessor, Validator {
     }
 
     validate(c: FormControl) {
-        return validateDate(c);
+        return validateAuthor(c);
     }
 }
