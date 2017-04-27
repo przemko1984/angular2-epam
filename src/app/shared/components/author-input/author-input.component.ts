@@ -24,6 +24,7 @@ const CUSTOM_DATE_INPUT_VALIDATOR = {
 @Component({
    selector: 'author-input',
    templateUrl: './author-input.component.html',
+   styles: [require('./author-input.component.scss')],
    providers: [CUSTOM_DATE_INPUT_VALUE_ACCESSOR, CUSTOM_DATE_INPUT_VALIDATOR]
 })
 export class AuthorInputComponent implements ControlValueAccessor, Validator, OnInit {
@@ -38,7 +39,7 @@ export class AuthorInputComponent implements ControlValueAccessor, Validator, On
     }
 
     ngOnInit() {
-        console.log('--->', this.items);
+        // console.log('--->', this.items);
     }
 
     set value(newValue) {
@@ -51,10 +52,6 @@ export class AuthorInputComponent implements ControlValueAccessor, Validator, On
         }
         this.onChange(this.currentValue);
 
-        // if (newValue !== this.currentValue) {
-        //     this.currentValue = newValue;
-        //     this.onChange(newValue);
-        // }
     }
 
     get value() {
@@ -73,7 +70,7 @@ export class AuthorInputComponent implements ControlValueAccessor, Validator, On
     }
 
     writeValue(value: any) {
-        console.log('writeValue', value);
+        // console.log('writeValue', value);
         if (value !== this.currentValue) {
             this.currentValue = value;
         }
@@ -86,5 +83,9 @@ export class AuthorInputComponent implements ControlValueAccessor, Validator, On
 
     validate(c: FormControl) {
         return validateAuthor(c);
+    }
+
+    isChecked(item: string) {
+        return this.currentValue.indexOf(item) > -1;
     }
 }

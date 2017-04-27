@@ -43,7 +43,6 @@ export class CourseAddPageComponent extends BasePage {
 		this.authorService.loadList();
 		let sub = this.authorService.getList()
 			.subscribe((authors) => {
-				console.log('->', authors);
 				this.authors = authors;
 				this.ref.markForCheck();
 			});

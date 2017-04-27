@@ -34,8 +34,8 @@
                     <div class="col-8">
                         <!--<input type="number" name="length" [(ngModel)]="length" id="duration-input" min="0" required>-->
                         <number-input name="length" #length="ngModel" [nameOption]="length" id="duration-input" [(ngModel)]="formModel.length" required></number-input>
-                        <span class="status-message error-message" *ngIf="length.invalid && length.touched">{{length.errors | json}}</span>
                         <span>{{formModel.length | duration}}</span>
+                        <span class="status-message error-message" *ngIf="length.invalid && length.touched">{{length.errors | json}}</span>
                     </div>
                 </div>
 
@@ -43,15 +43,14 @@
                     <label for="author-input" class="col-4 col-form-label">Authors:</label>
                     <div class="col-8">
                         <author-input
-                            *ngIf="authors && authors.length > 0"
-                            name="author"
+                            name="authors"
                             [items]="authors"
-                            [nameOption]="author"
+                            [nameOption]="authors"
                             id="author-input"
                             [ngModel]="formModel.authors"
-
+                            #authorInput="ngModel"
                         ></author-input>
-                        <!--<span class="status-message error-message" *ngIf="author.invalid && author.touched">{{author.errors | json}}</span>-->
+                        <span class="status-message error-message" *ngIf="authorInput.invalid && authorInput.touched">{{authorInput.errors | json}}</span>
                     </div>
                 </div>
 

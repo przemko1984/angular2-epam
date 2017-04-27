@@ -1,20 +1,14 @@
-<p *ngFor="let item of items">
-    <label>
-        <input type="checkbox"
-            (change)="setValue($event)"
-            [value]="item"
-            [checked]="value === item"
-            name="{{nameOption}}[]"
-            (blur)="onTouched($event)"
-        >
-        {{item}}
-    </label>
-</p>
-
-         <!--<input type="radio"
-           (change)="setValue($event)"
-           [value]="item"
-           [checked]="value === item"
-           name="{{nameOption}}">
-             {{item}}
-       </label>-->
+<div>
+    <p *ngFor="let item of items">
+        <label>
+            <input type="checkbox"
+                (change)="setValue($event)"
+                [value]="item"
+                [checked]="isChecked(item)"
+                name="{{nameOption}}[]"
+                (blur)="onTouched($event)"
+            >
+            <span>{{item}}</span>
+        </label>
+    </p>
+</div>
