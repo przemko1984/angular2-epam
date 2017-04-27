@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
 import { BasePage } from '../base.page.component';
-import { ICourse } from './../../business-entities';
+import { ICourse, IAuthor } from './../../business-entities';
 import { CourseService, LoaderService, AuthorService } from './../../shared/services';
 
 @Component({
@@ -17,7 +17,7 @@ import { CourseService, LoaderService, AuthorService } from './../../shared/serv
 export class CourseAddPageComponent extends BasePage {
 
 	formModel: any;
-	authors: string[];
+	authors: IAuthor[];
 	private courseId: string;
 	private course: ICourse;
 

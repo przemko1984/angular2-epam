@@ -4,7 +4,7 @@ import { Observable, ReplaySubject, Subscription } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
-import { ICourse, INewCourse } from '../../business-entities/';
+import { IAuthor } from '../../business-entities/';
 import { FilterByNamePipe } from '../pipes';
 import { AuthorizedHttp } from './authorized-http.service';
 
@@ -15,8 +15,8 @@ export class AuthorService {
 
     private serviceUrl: string = 'http://localhost:3004/authors';
 
-    private authorList$: Observable<string[]>;
-    private authorListSubject: ReplaySubject<string[]> = new ReplaySubject<string[]>(1);
+    private authorList$: Observable<IAuthor[]>;
+    private authorListSubject: ReplaySubject<IAuthor[]> = new ReplaySubject<IAuthor[]>(1);
     private sub: Subscription;
 
     constructor(private http: AuthorizedHttp, private _filterByName: FilterByNamePipe) {
@@ -24,7 +24,7 @@ export class AuthorService {
             .asObservable();
     }
 
-    getList(): Observable<string[]> {
+    getList(): Observable<strinIAuthorg[]> {
         return this.authorList$.delay(DELAY);
     }
 
@@ -35,7 +35,7 @@ export class AuthorService {
                 console.error('error', error);
                 return Observable.throw(error);
             })
-            .subscribe((authors: string[]) => {
+            .subscribe((authors: IAuthor[]) => {
 
                 this.authorListSubject.next(authors);
                 this.sub.unsubscribe();
