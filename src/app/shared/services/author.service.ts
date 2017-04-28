@@ -36,7 +36,6 @@ export class AuthorService {
                 return Observable.throw(error);
             })
             .subscribe((authors: IAuthor[]) => {
-
                 this.authorListSubject.next(authors);
                 this.sub.unsubscribe();
             });

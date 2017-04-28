@@ -6,6 +6,7 @@ import {
     FormControl,
     Validator
 } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 import { validateDate } from './../../validators/date.validator';
 
@@ -31,6 +32,8 @@ export class DateInputComponent implements ControlValueAccessor, Validator {
 
     private currentValue: any;
 
+    constructor(private datePipe: DatePipe) { }
+
     setValue(item) {
         this.value = item.target.value;
     }
@@ -38,6 +41,7 @@ export class DateInputComponent implements ControlValueAccessor, Validator {
     set value(newValue) {
         if (newValue !== this.currentValue) {
             this.currentValue = newValue;
+            console.log('onChange', newValue);
             this.onChange(newValue);
         }
     }
@@ -58,8 +62,9 @@ export class DateInputComponent implements ControlValueAccessor, Validator {
     }
 
     writeValue(value: any) {
-        if (value !== this.currentValue) {
-            this.currentValue = value;
+        if (value && value !== this.currentValue) {
+            let date = new Date(value);
+            this.currentValue = this.datePipe.transform(date, 'dd/MM/yyyy');
         }
     }
 

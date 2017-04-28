@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import _  from 'lodash';
 
 import { BasePage } from '../base.page.component';
 import { ICourse, IAuthor } from './../../business-entities';
@@ -40,18 +41,19 @@ export class CourseAddPageComponent extends BasePage {
 	}
 
 	onDestroy() {
-
+		console.log('remove authors');
+		this.authors = [];
 	}
 
 	saveCourse(courseForm: NgForm) {
-		this.loaderService.show();
-
-		courseForm.value.date = new Date();
-		if (this.courseId) {
-			this.updateCourse(courseForm);
-		} else {
-			this.addCourse(courseForm);
-		}
+		console.log(courseForm.value);
+		// this.loaderService.show();
+		// courseForm.value.date = new Date();
+		// if (this.courseId) {
+		// 	this.updateCourse(courseForm);
+		// } else {
+		// 	this.addCourse(courseForm);
+		// }
 	}
 
 	private updateCourse(courseForm: NgForm) {
@@ -105,7 +107,7 @@ export class CourseAddPageComponent extends BasePage {
 		let sub = this.authorService.getList()
 			.subscribe((authors) => {
 				console.log('authors', authors);
-				this.authors = this.authors.concat(authors);
+				this.authors = _.uniqBy(this.authors.concat(authors), 'id');
 				console.log('this.authors', this.authors);
 				this.ref.markForCheck();
 			});
@@ -117,10 +119,10 @@ export class CourseAddPageComponent extends BasePage {
 		let sub = this.route.params.subscribe((params) => {
 			this.courseId = params['id'];
 			if (this.courseId) {
-				console.log('<<<<<<<<<<<< edit >>>>>>>>>>>> ');
+				console.log('<<<<<<<<<<<< edit >>>>>>>>>>>>');
 				this.subscribeCourse();
 			} else {
-				console.log('<<<<<<<<<<<< add >>>>>>>>>>>> ');
+				console.log('<<<<<<<<<<<< add >>>>>>>>>>>>>');
 			}
 		});
 		this.registerSubscription(sub);
@@ -131,12 +133,8 @@ export class CourseAddPageComponent extends BasePage {
 		let sub = this.courseService.getById(+this.courseId)
 			.subscribe(
 				(resp) => {
-					// this.course = resp;
 					this.formModel = resp;
-
-					this.authors = this.authors.concat(resp.authors);
-
-					console.log('course loaded', this.course);
+					this.authors = _.uniqBy(this.authors.concat(resp.authors), 'id');
 					this.loaderService.hide();
 					this.ref.markForCheck();
 				},
