@@ -24,7 +24,7 @@ export class AuthorService {
             .asObservable();
     }
 
-    getList(): Observable<strinIAuthorg[]> {
+    getList(): Observable<IAuthor[]> {
         return this.authorList$.delay(DELAY);
     }
 

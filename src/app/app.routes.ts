@@ -9,7 +9,7 @@ export const ROUTES: Routes = [
 	{path: '', component: CourseListPageComponent},
 	{path: 'login', component: LoginPageComponent},
 	{path: 'list', component: CourseListPageComponent},
-	{path: 'edit/:id', component: CourseDetailsPageComponent},
+	{path: 'edit/:id', component: CourseAddPageComponent},
 	{path: 'add', component: CourseAddPageComponent},
 	{path: '**', component: NoContentComponent},
 ];

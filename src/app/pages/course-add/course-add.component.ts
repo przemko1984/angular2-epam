@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
 import { BasePage } from '../base.page.component';
@@ -17,13 +17,14 @@ import { CourseService, LoaderService, AuthorService } from './../../shared/serv
 export class CourseAddPageComponent extends BasePage {
 
 	formModel: any;
-	authors: IAuthor[];
+	authors: IAuthor[] ;
 	private courseId: string;
 	private course: ICourse;
 
 	constructor(
 		private ref: ChangeDetectorRef,
 		private router: Router,
+		private route: ActivatedRoute,
 		private courseService: CourseService,
 		private loaderService: LoaderService,
 		private authorService: AuthorService
@@ -32,6 +33,64 @@ export class CourseAddPageComponent extends BasePage {
 	}
 
 	onInit() {
+		this.authors = [];
+		this.initEmptyCourse();
+		this.loadAuthors();
+		this.subscribeCourseId();
+	}
+
+	onDestroy() {
+
+	}
+
+	saveCourse(courseForm: NgForm) {
+		this.loaderService.show();
+
+		courseForm.value.date = new Date();
+		if (this.courseId) {
+			this.updateCourse(courseForm);
+		} else {
+			this.addCourse(courseForm);
+		}
+	}
+
+	private updateCourse(courseForm: NgForm) {
+		console.log('edit', courseForm.value);
+		// this.loaderService.show();
+		const sub = this.courseService.update(+this.courseId, courseForm.value)
+			.subscribe(
+				(resp) => {
+					console.log('course edited', resp);
+					this.loaderService.hide();
+					this.router.navigate(['']);
+				},
+				(error) => {
+					console.error('error', error);
+					this.loaderService.hide();
+				}
+			);
+		this.registerSubscription(sub);
+	}
+
+	private addCourse(courseForm: NgForm) {
+		console.log('add', courseForm.value);
+		// this.loaderService.show();
+		const sub = this.courseService.create(courseForm.value)
+			.subscribe(
+				(resp) => {
+					console.log('course added', resp);
+					this.loaderService.hide();
+					this.router.navigate(['']);
+				},
+				(error) => {
+					console.error('error', error);
+					this.loaderService.hide();
+				}
+			);
+		this.registerSubscription(sub);
+	}
+
+	private initEmptyCourse() {
 		this.formModel = {
 			name: '',
 			description: '',
@@ -39,30 +98,47 @@ export class CourseAddPageComponent extends BasePage {
 			length: null,
 			authors: []
 		};
+	}
 
+	private loadAuthors() {
 		this.authorService.loadList();
 		let sub = this.authorService.getList()
 			.subscribe((authors) => {
-				this.authors = authors;
+				console.log('authors', authors);
+				this.authors = this.authors.concat(authors);
+				console.log('this.authors', this.authors);
 				this.ref.markForCheck();
 			});
 
 		this.registerSubscription(sub);
 	}
 
-	onDestroy() {
-
+	private subscribeCourseId() {
+		let sub = this.route.params.subscribe((params) => {
+			this.courseId = params['id'];
+			if (this.courseId) {
+				console.log('<<<<<<<<<<<< edit >>>>>>>>>>>> ');
+				this.subscribeCourse();
+			} else {
+				console.log('<<<<<<<<<<<< add >>>>>>>>>>>> ');
+			}
+		});
+		this.registerSubscription(sub);
 	}
 
-	public createCourse(courseForm: NgForm) {
-		console.log('add', courseForm.value);
+	private subscribeCourse() {
 		this.loaderService.show();
-		const sub = this.courseService.create(courseForm.value)
+		let sub = this.courseService.getById(+this.courseId)
 			.subscribe(
 				(resp) => {
-					console.log('course added', resp);
+					// this.course = resp;
+					this.formModel = resp;
+
+					this.authors = this.authors.concat(resp.authors);
+
+					console.log('course loaded', this.course);
 					this.loaderService.hide();
-					this.router.navigate(['']);
+					this.ref.markForCheck();
 				},
 				(error) => {
 					console.error('error', error);

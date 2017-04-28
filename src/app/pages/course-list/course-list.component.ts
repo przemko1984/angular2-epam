@@ -83,17 +83,17 @@ export class CourseListPageComponent extends BasePage {
 
 	public editCourse(id: number) {
 		console.log('Edit course id:', id);
-		this.loaderService.show();
-		let sub = this.courseService.update(id).subscribe(
-			(resp) => {
-				this.loaderService.hide();
-			},
-			(error) => {
-				this.loaderService.hide();
-				console.error('error', error);
-			}
-		);
-		this.registerSubscription(sub);
+		// this.loaderService.show();
+		// let sub = this.courseService.update(id).subscribe(
+		// 	(resp) => {
+		// 		this.loaderService.hide();
+		// 	},
+		// 	(error) => {
+		// 		this.loaderService.hide();
+		// 		console.error('error', error);
+		// 	}
+		// );
+		// this.registerSubscription(sub);
 	}
 
 	public addCourse() {
