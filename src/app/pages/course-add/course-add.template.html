@@ -28,7 +28,7 @@
                     <div class="col-8">
                         <date-input name="date" #date="ngModel" [nameOption]="date" id="date-input" [ngModel]="formModel.date" required></date-input>
                         <span class="status-message error-message" *ngIf="date.invalid && date.touched">
-                            <span *ngIf="date.errors.required">Pole jest wymagane</span>
+                            <span *ngIf="!date.errors.invalidDate && date.errors.required">Pole jest wymagane</span>
                             <span *ngIf="date.errors.invalidDate">Nieprawidłowy format daty, proszę wpisz: dd/mm/rrrr</span>
                         </span>
                     </div>
