@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="formModel">
     <form class="course-add" (ngSubmit)="saveCourse(courseForm)" #courseForm="ngForm">
         <div class="row">
             <div class="col-sm-4 offset-sm-4">
@@ -27,8 +27,10 @@
                     <label for="date-input" class="col-4 col-form-label">Date:</label>
                     <div class="col-8">
                         <date-input name="date" #date="ngModel" [nameOption]="date" id="date-input" [ngModel]="formModel.date" required></date-input>
-                        <!--<input type="date" name="date" [(ngModel)]="date" id="date-input" required>-->
-                        <span class="status-message error-message" *ngIf="date.invalid && date.touched">{{date.errors | json}}</span>
+                        <span class="status-message error-message" *ngIf="date.invalid && date.touched">
+                            <span *ngIf="date.errors.required">Pole jest wymagane</span>
+                            <span *ngIf="date.errors.invalidDate">Nieprawidłowy format daty, proszę wpisz: dd/mm/rrrr</span>
+                        </span>
                     </div>
 
                 </div>
@@ -36,10 +38,12 @@
                 <div class="form-group row">
                     <label for="duration-input" class="col-4 col-form-label">Duration:</label>
                     <div class="col-8">
-                        <!--<input type="number" name="length" [(ngModel)]="length" id="duration-input" min="0" required>-->
                         <number-input name="length" #length="ngModel" [nameOption]="length" id="duration-input" [(ngModel)]="formModel.length" required></number-input>
                         <span>{{formModel.length | duration}}</span>
-                        <span class="status-message error-message" *ngIf="length.invalid && length.touched">{{length.errors | json}}</span>
+                        <span class="status-message error-message" *ngIf="length.invalid && length.touched">
+                            <span *ngIf="length.errors.required">Pole jest wymagane</span>
+                            <span *ngIf="length.errors.invalidNumber">Nieprawidłowa wartość</span>
+                        </span>
                     </div>
                 </div>
 
@@ -54,7 +58,9 @@
                             [ngModel]="formModel.authors"
                             #authorInput="ngModel"
                         ></author-input>
-                        <span class="status-message error-message" *ngIf="authorInput.invalid && authorInput.touched">{{authorInput.errors | json}}</span>
+                        <span class="status-message error-message" *ngIf="authorInput.invalid && authorInput.touched">
+                            Pole jest wymagane, zaznacz przynajmniej jednego autora
+                        </span>
                     </div>
                 </div>
 

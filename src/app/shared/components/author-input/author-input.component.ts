@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef, OnInit } from '@angular/core';
+import { Component, Input, forwardRef } from '@angular/core';
 import {
     NG_VALUE_ACCESSOR,
     ControlValueAccessor,
@@ -28,34 +28,25 @@ const CUSTOM_DATE_INPUT_VALIDATOR = {
    styles: [require('./author-input.component.scss')],
    providers: [CUSTOM_DATE_INPUT_VALUE_ACCESSOR, CUSTOM_DATE_INPUT_VALIDATOR]
 })
-export class AuthorInputComponent implements ControlValueAccessor, Validator, OnInit {
+export class AuthorInputComponent implements ControlValueAccessor, Validator {
     @Input() nameOption: string;
     @Input() items: IAuthor[];
 
-    private currentValue: any[];
+    private currentValue: any[] = [];
 
     setValue(item) {
-        // console.log('setValue',  item);
         this.value = item;
-    }
-
-    ngOnInit() {
-        // console.log('--->', this.items);
     }
 
     set value(newValue: IAuthor) {
         let index = this.currentValue.findIndex((item) => item.id === newValue.id);
-        if (index === -1) {
+        if (index === -1) { // if not exist, add to array
             this.currentValue.push(newValue);
-        } else {
+        } else { // if exist, remov from array
             this.currentValue.splice(index, 1);
         }
         this.onChange(this.currentValue);
     }
-
-    // get value() {
-    //     return this.currentValue;
-    // }
 
     onChange = (_) => {};
     onTouched = () => {};
@@ -69,9 +60,8 @@ export class AuthorInputComponent implements ControlValueAccessor, Validator, On
     }
 
     writeValue(value: any) {
-        // console.log('writeValue', value);
         if (value !== this.currentValue) {
-            this.currentValue = value;
+            this.currentValue = value || [];
         }
     }
 

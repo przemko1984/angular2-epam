@@ -8,8 +8,6 @@ import {
 } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
-import { validateDate } from './../../validators/date.validator';
-
 const CUSTOM_DATE_INPUT_VALUE_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => DateInputComponent),
@@ -30,6 +28,7 @@ const CUSTOM_DATE_INPUT_VALIDATOR = {
 export class DateInputComponent implements ControlValueAccessor, Validator {
     @Input() nameOption: string;
 
+    private dateRegExp = new RegExp(/^(\d{2})\/(\d{2})\/(\d{4})$/);
     private currentValue: any;
 
     constructor(private datePipe: DatePipe) { }
@@ -41,8 +40,13 @@ export class DateInputComponent implements ControlValueAccessor, Validator {
     set value(newValue) {
         if (newValue !== this.currentValue) {
             this.currentValue = newValue;
-            console.log('onChange', newValue);
-            this.onChange(newValue);
+            let matchValue = newValue.match(this.dateRegExp);
+            if (matchValue) {
+                let onChangeDate = new Date(matchValue[3], +matchValue[2] - 1, matchValue[1]);
+                this.onChange(onChangeDate.toISOString());
+            } else {
+                this.onChange(null);
+            }
         }
     }
 
@@ -73,7 +77,11 @@ export class DateInputComponent implements ControlValueAccessor, Validator {
         console.info(warning);
     }
 
-    validate(c: FormControl) {
-        return validateDate(c);
+    validate() {
+        // nothing to validate
+        if (!this.value) {
+            return null;
+        }
+        return  this.dateRegExp.test(this.value) ? null : { invalidDate: true };
     }
 }

@@ -35,30 +35,24 @@ export class CourseAddPageComponent extends BasePage {
 
 	onInit() {
 		this.authors = [];
-		this.initEmptyCourse();
-		this.loadAuthors();
+		this.loadDefaultAuthors();
 		this.subscribeCourseId();
 	}
 
 	onDestroy() {
-		console.log('remove authors');
-		this.authors = [];
+
 	}
 
 	saveCourse(courseForm: NgForm) {
-		console.log(courseForm.value);
-		// this.loaderService.show();
-		// courseForm.value.date = new Date();
-		// if (this.courseId) {
-		// 	this.updateCourse(courseForm);
-		// } else {
-		// 	this.addCourse(courseForm);
-		// }
+		this.loaderService.show();
+		if (this.courseId) {
+			this.updateCourse(courseForm);
+		} else {
+			this.addCourse(courseForm);
+		}
 	}
 
 	private updateCourse(courseForm: NgForm) {
-		console.log('edit', courseForm.value);
-		// this.loaderService.show();
 		const sub = this.courseService.update(+this.courseId, courseForm.value)
 			.subscribe(
 				(resp) => {
@@ -75,8 +69,6 @@ export class CourseAddPageComponent extends BasePage {
 	}
 
 	private addCourse(courseForm: NgForm) {
-		console.log('add', courseForm.value);
-		// this.loaderService.show();
 		const sub = this.courseService.create(courseForm.value)
 			.subscribe(
 				(resp) => {
@@ -92,7 +84,7 @@ export class CourseAddPageComponent extends BasePage {
 		this.registerSubscription(sub);
 	}
 
-	private initEmptyCourse() {
+	private initEmptyCourseForm() {
 		this.formModel = {
 			name: '',
 			description: '',
@@ -102,13 +94,11 @@ export class CourseAddPageComponent extends BasePage {
 		};
 	}
 
-	private loadAuthors() {
+	private loadDefaultAuthors() {
 		this.authorService.loadList();
 		let sub = this.authorService.getList()
-			.subscribe((authors) => {
-				console.log('authors', authors);
-				this.authors = _.uniqBy(this.authors.concat(authors), 'id');
-				console.log('this.authors', this.authors);
+			.subscribe((dafaultAuthors) => {
+				this.authors = _.uniqBy(this.authors.concat(dafaultAuthors), 'id');
 				this.ref.markForCheck();
 			});
 
@@ -119,10 +109,12 @@ export class CourseAddPageComponent extends BasePage {
 		let sub = this.route.params.subscribe((params) => {
 			this.courseId = params['id'];
 			if (this.courseId) {
-				console.log('<<<<<<<<<<<< edit >>>>>>>>>>>>');
+				// console.log('<<<<<<<<<<<< edit >>>>>>>>>>>>');
 				this.subscribeCourse();
 			} else {
-				console.log('<<<<<<<<<<<< add >>>>>>>>>>>>>');
+				// console.log('<<<<<<<<<<<< add >>>>>>>>>>>>>');
+				this.initEmptyCourseForm();
+
 			}
 		});
 		this.registerSubscription(sub);
