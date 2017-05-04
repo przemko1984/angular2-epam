@@ -40,7 +40,7 @@ export class CourseService implements OnDestroy {
         let params = new URLSearchParams();
         params.set('start', start.toString());
         params.set('count', limit.toString());
-        if (!!search) {
+        if (search) {
             params.set('query', search);
         }
         requestOptions.search = params;

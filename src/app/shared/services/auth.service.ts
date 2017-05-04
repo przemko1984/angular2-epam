@@ -33,6 +33,8 @@ export class AuthService {
             .map((res: IToken) => {
                 console.log('response', res);
                 if (res.token) {
+                    // TODO:
+                    // add external method for assing `authToken`
                     this.authToken = res.token;
                     this.authorizedHttp.setAuthorization(res.token);
                     this.isAuthenticated.next(true);
@@ -50,9 +52,9 @@ export class AuthService {
 
     userInfo(): Observable<IUser> {
         const userInfoUrl = `${this.authServiceUrl}/userInfo`;
-        let headers = new Headers();
+        const headers = new Headers();
         headers.set('Authorization', this.authToken);
-        let requestOptions = new RequestOptions();
+        const requestOptions = new RequestOptions();
         requestOptions.headers = headers;
 
         return this.http
