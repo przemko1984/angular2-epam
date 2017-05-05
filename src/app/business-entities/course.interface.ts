@@ -1,11 +1,18 @@
+export interface IAuthor {
+    id: number;
+    firstName: string;
+    lastName: string;
+}
+
 export interface INewCourse {
     name: string;
     date: Date;
-    duration: number;
+    length: number;
     description?: string;
+    authors?: IAuthor[];
 }
 
 export interface ICourse extends INewCourse {
-    id: string;
-    topRated: boolean;
+    id: number;
+    isTopRated: boolean;
 }

@@ -2,7 +2,8 @@ import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy, ChangeDet
 import { Observable, Subscription } from 'rxjs';
 
 import { BasePage } from '../base.page.component';
-import { AuthService, LoaderService }  from './../../shared/services';
+import { AuthService, LoaderService } from './../../shared/services';
+import { IUser } from './../../business-entities';
 
 @Component({
 	selector: 'login-page',
@@ -14,29 +15,48 @@ import { AuthService, LoaderService }  from './../../shared/services';
 export class LoginPageComponent extends BasePage {
 	user: string;
 	pass: string;
+	errorMsg: string;
 
 	isAuthenticated: Observable<boolean>;
-	userInfo: Observable<string>;
+	userInfo: IUser;
 
 	constructor(private ref: ChangeDetectorRef, private authService: AuthService, private loaderService: LoaderService) {
 		super();
 		this.isAuthenticated = this.authService.isAuthenticated$;
-		this.userInfo = this.authService.userInfo$;
 	}
 
 	onInit() {
 		console.log('loginPage ngOnInit');
+		this.authService.userInfo$.subscribe((user: IUser) => {
+			this.userInfo = user;
+		});
 	}
 
 	onDestroy() {
 	}
 
 	login() {
+		this.errorMsg = '';
 		if (!this.user || !this.pass) {
 			return;
 		}
 		this.loaderService.show();
-		let sub = this.authService.login({user: this.user, pass: this.pass})
+		let sub = this.authService.login({user: this.user, pass: this.pass}).subscribe(
+			(resp) => {
+				this.getUserInfo();
+			},
+			(error) => {
+				// console.log('error ', error);
+				this.errorMsg = 'Wrong user or password';
+				this.loaderService.hide();
+				this.ref.markForCheck();
+			}
+		);
+		this.registerSubscription(sub);
+	}
+
+	getUserInfo() {
+		let sub = this.authService.userInfo()
 			.subscribe(
 				(resp) => {
 					this.reset();

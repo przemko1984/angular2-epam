@@ -15,14 +15,14 @@ export class CourseItemComponent {
 	private course: ICourse;
 
 	@Output()
-	private deleteCourse: EventEmitter<string>;
+	private deleteCourse: EventEmitter<number>;
 
 	@Output()
-	private editCourse: EventEmitter<string>;
+	private editCourse: EventEmitter<number>;
 
 	constructor() {
-		this.deleteCourse = new EventEmitter<string>();
-		this.editCourse = new EventEmitter<string>();
+		this.deleteCourse = new EventEmitter<number>();
+		this.editCourse = new EventEmitter<number>();
 	}
 
 	public delete($event) {

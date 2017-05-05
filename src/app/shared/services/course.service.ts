@@ -1,128 +1,119 @@
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Http, Response, RequestOptions, URLSearchParams } from '@angular/http';
+import { Observable, Subject, Subscription } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 import { ICourse, INewCourse } from '../../business-entities/';
 import { FilterByNamePipe } from '../pipes';
+import { AuthorizedHttp } from './authorized-http.service';
 
-const DELAY = 1500;
+const DELAY = 500;
 
 @Injectable()
-export class CourseService {
+export class CourseService implements OnDestroy {
 
-    private courseList: ICourse[] = [{
-            id: 'uuid1',
-            name: 'Course 1',
-            duration: 10,
-            date: new Date('2017-08-10'),
-            topRated: false,
-            description: 'Lorem ipsum dolor sit amet 1, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
-                'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla.' +
-                ' Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
-        }, {
-            id: 'uuid2',
-            name: 'Course 2',
-            duration: 60,
-            date: new Date('2016-12-10'),
-            topRated: true,
-            description: 'Lorem ipsum dolor sit amet 2, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
-                'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
-                'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. .'
-        }, {
-            id: 'uuid3',
-            name: 'Course 3',
-            duration: 20,
-            date: new Date('2017-04-01'),
-            topRated: true,
-            description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
-                'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
-                'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
-        }, {
-            id: 'uuid4',
-            name: 'Course 4',
-            duration: 200,
-            date: new Date('2017-03-30'),
-            topRated: false,
-            description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
-                'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
-                'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
-        }, {
-            id: 'uuid5',
-            name: 'Course 5',
-            duration: 80,
-            date: new Date('2017-04-11'),
-            topRated: false,
-            description: 'Lorem ipsum dolor sit amet 3, consectetur adipiscing elit. Sed id lacus ut elit mollis facilisis sed sit amet justo. ' +
-                'Curabitur dapibus dictum odio, eu eleifend massa ultricies ac. Aenean aliquam est sit amet ante bibendum, eu egestas massa fringilla. ' +
-                'Suspendisse sit amet orci eget velit egestas pellentesque at quis lectus. '
-        }];
+    limit: number = 5;
+    private serviceUrl: string = 'http://localhost:3004/courses';
 
     private courseList$: Observable<ICourse[]>;
     private courseListSubject: Subject<ICourse[]> = new Subject<ICourse[]>();
+    private sub: Subscription;
 
-    constructor(private _filterByName: FilterByNamePipe) {
+    constructor(private http: AuthorizedHttp, private _filterByName: FilterByNamePipe) {
         this.courseList$ = this.courseListSubject
-            .asObservable()
-            .map(this.mapData);
+            .asObservable();
+    }
+
+    ngOnDestroy() {
+        if (this.sub) {
+            this.sub.unsubscribe();
+        }
     }
 
     getList(): Observable<ICourse[]> {
         return this.courseList$.delay(DELAY);
     }
 
-    loadList() {
-        this.courseListSubject.next(this.courseList.slice());
+    loadList(start: number = 0, search: string = '', limit: number = this.limit) {
+        let requestOptions = new RequestOptions();
+        let params = new URLSearchParams();
+        params.set('start', start.toString());
+        params.set('count', limit.toString());
+        if (search) {
+            params.set('query', search);
+        }
+        requestOptions.search = params;
+
+        this.sub = this.http.get(this.serviceUrl, requestOptions)
+            .map(this.mapData)
+            .map(this.mapToCourses)
+            .catch((error) => {
+                console.error('error', error);
+                return Observable.throw(error);
+            })
+            .subscribe((courses: ICourse[]) => {
+                console.log('loaded courses:', courses);
+                this.courseListSubject.next(courses);
+            });
     }
 
     create(newCourse: INewCourse): Observable<ICourse> {
         let timestamp: number = new Date().getTime();
         let course: ICourse = Object.assign(newCourse, {
-            id: `uuid${timestamp}`,
-            topRated: false,
+            id: timestamp,
+            isTopRated: false,
             date: new Date(newCourse.date)
         });
 
-        this.courseList.push(course);
-        this.courseListSubject.next(this.courseList.slice());
+        console.warn('This method doesn\'t work now');
+
+        // this.courseList.push(course);
+        // this.courseListSubject.next(this.courseList.slice());
 
         return Observable.of<ICourse>(course).delay(DELAY);
     }
 
-    getById(id: string): Observable<ICourse> {
-        return Observable.of<ICourse>(this.courseList.find((item: ICourse) => item.id === id)).delay(DELAY);
+    getById(id: number): Observable<ICourse> {
+        return this.http.get(`${this.serviceUrl}/${id}`)
+            .map(this.mapData)
+            .map(this.mapToCourse)
+            .catch((error) => {
+                console.error('error', error);
+                return Observable.throw(error);
+            });
     }
 
-    update(id: string): Observable<ICourse> {
-        let course: ICourse = this.courseList.find((item: ICourse) => item.id === id);
-        let updateCourse: any = {name: `${course.name} [edited]`};
+    update(id: number): Observable<ICourse> {
+        console.warn('this method doesn\'t work now');
 
-        if (course) {
-            const updated = Object.assign({}, course, updateCourse);
-            this.courseList.splice(this.courseList.findIndex((item) => item.id === id), 1, updated);
-
-            this.courseListSubject.next(this.courseList.slice());
-            return Observable.of<ICourse>(updated).delay(DELAY);
-        }
         return Observable.of<ICourse>(null);
     }
 
-    remove(id: string): Observable<boolean> {
-        this.courseList.splice(this.courseList.findIndex((item) => item.id === id), 1);
-        this.courseListSubject.next(this.courseList.slice());
-        return Observable.of(true).delay(DELAY);
+    remove(id: number): Observable<boolean> {
+        return this.http.delete(`${this.serviceUrl}/${id}`)
+            .map(this.mapData)
+            .map((res) => {
+                return true;
+            })
+            .catch((error) => {
+                console.error('error', error);
+                return Observable.throw(error);
+            });
     }
 
-    search(name) {
-        this.courseListSubject.next(this._filterByName.transform(this.courseList.slice(), name));
+    private mapData(res: Response) {
+        return res.json();
     }
 
-    private mapData(res: ICourse[]) {
-        console.log('mapping', res);
-        // res.map((item) => {
-        //     return Object.assign(item, {name: `-${item.name}-`});
-        // });
-        return res;
+    private mapToCourses(res: ICourse[]) {
+        return res.map((course: ICourse) => {
+            return Object.assign(course, {date: new Date(course.date)});
+        });
+    }
+
+    private mapToCourse(course: ICourse) {
+        return Object.assign(course, {date: new Date(course.date)});
     }
 
 }

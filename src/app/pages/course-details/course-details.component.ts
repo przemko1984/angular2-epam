@@ -44,7 +44,7 @@ export class CourseDetailsPageComponent extends BasePage {
 
 	private subscribeCourse() {
 		this.loaderService.show();
-		let sub = this.courseService.getById(this.courseId)
+		let sub = this.courseService.getById(+this.courseId)
 			.subscribe(
 				(resp) => {
 					this.course = resp;
