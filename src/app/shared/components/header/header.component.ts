@@ -1,4 +1,5 @@
 import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 
 import { IUser } from '../../../business-entities';
@@ -20,7 +21,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 	private sub: Subscription;
 
-	constructor(public authService: AuthService) {
+	constructor(
+		public authService: AuthService,
+		private router: Router
+	) {
 		this.isAuthenticated = this.authService.isAuthenticated$;
 		this.userInfo = this.authService.userInfo$;
 	}
@@ -42,6 +46,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 		this.sub = this.authService.logout().subscribe(
 			(resp) => {
 				console.log('mark logout');
+				this.router.navigate(['login']);
             },
             (error) => {
                 console.error('error', error);

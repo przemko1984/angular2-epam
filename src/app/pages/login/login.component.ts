@@ -1,4 +1,5 @@
 import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 
 import { BasePage } from '../base.page.component';
@@ -20,7 +21,12 @@ export class LoginPageComponent extends BasePage {
 	isAuthenticated: Observable<boolean>;
 	userInfo: IUser;
 
-	constructor(private ref: ChangeDetectorRef, private authService: AuthService, private loaderService: LoaderService) {
+	constructor(
+		private ref: ChangeDetectorRef,
+		private authService: AuthService,
+		private loaderService: LoaderService,
+		private router: Router
+	) {
 		super();
 		this.isAuthenticated = this.authService.isAuthenticated$;
 	}
@@ -60,6 +66,7 @@ export class LoginPageComponent extends BasePage {
 			.subscribe(
 				(resp) => {
 					this.reset();
+					this.router.navigate(['']);
 				},
 				(error) => {
 					console.log('error ', error);

@@ -6,10 +6,10 @@ import { CourseListPageComponent } from './pages/course-list';
 import { NoContentComponent } from './pages/no-content';
 
 export const ROUTES: Routes = [
-	{path: '', component: CourseListPageComponent},
+	{path: '', redirectTo: '/courses', pathMatch: 'full' },
 	{path: 'login', component: LoginPageComponent},
-	{path: 'list', component: CourseListPageComponent},
-	{path: 'edit/:id', component: CourseAddPageComponent},
-	{path: 'add', component: CourseAddPageComponent},
+	{path: 'courses', component: CourseListPageComponent},
+	{path: 'courses/new', component: CourseAddPageComponent},
+	{path: 'courses/:id', component: CourseAddPageComponent},
 	{path: '**', component: NoContentComponent},
 ];
