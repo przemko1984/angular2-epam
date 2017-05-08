@@ -5,7 +5,7 @@ import _  from 'lodash';
 
 import { BasePage } from '../base.page.component';
 import { ICourse, IAuthor } from './../../business-entities';
-import { CourseService, LoaderService, AuthorService } from './../../shared/services';
+import { CourseService, LoaderService, AuthorService, BreadcrumbService } from './../../shared/services';
 
 @Component({
 	selector: 'course-add-page',
@@ -28,7 +28,8 @@ export class CourseAddPageComponent extends BasePage {
 		private route: ActivatedRoute,
 		private courseService: CourseService,
 		private loaderService: LoaderService,
-		private authorService: AuthorService
+		private authorService: AuthorService,
+		private breadcrumbService: BreadcrumbService
 	) {
 		super();
 	}
@@ -129,13 +130,8 @@ export class CourseAddPageComponent extends BasePage {
 					this.authors = _.uniqBy(this.authors.concat(resp.authors), 'id');
 					this.loaderService.hide();
 					this.ref.markForCheck();
-					this.route.data
-						.subscribe((data: {breadcrumb: string}) => {
-
-							data.breadcrumb = resp.name;
-							console.log('data', data);
-							this.ref.markForCheck();
-						});
+					// set dynamic breadcrumb for this route
+					this.breadcrumbService.changeBreadcrumb(this.route.snapshot, resp.name);
 				},
 				(error) => {
 					console.error('error', error);
