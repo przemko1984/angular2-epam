@@ -42,48 +42,51 @@ export class BreadcrumbComponent implements OnInit {
   	}
 
 	private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: IBreadcrumb[] = []): IBreadcrumb[] {
-    	const ROUTE_DATA_BREADCRUMB: string = 'breadcrumb';
+		return [];
 
-		// get the child routes
-		let children: ActivatedRoute[] = route.children;
+    	// const ROUTE_DATA_BREADCRUMB: string = 'breadcrumb';
 
-		// return if there are no more children
-		if (children.length === 0) {
-				return breadcrumbs;
-		}
+		// // get the child routes
+		// let children: ActivatedRoute[] = route.children;
 
-		// iterate over each children
-		for (let child of children) {
-		// verify primary route
-		if (child.outlet !== PRIMARY_OUTLET) {
-			continue;
-		}
+		// // return if there are no more children
+		// if (children.length === 0) {
+		// 		return breadcrumbs;
+		// }
+		// console.log('children ', children)
 
-		// verify the custom data property "breadcrumb" is specified on the route
-		if (!child.snapshot.data.hasOwnProperty(ROUTE_DATA_BREADCRUMB)) {
-			return this.getBreadcrumbs(child, url, breadcrumbs);
-		}
+		// // iterate over each children
+		// for (let child of children) {
+		// // verify primary route
+		// if (child.outlet !== PRIMARY_OUTLET) {
+		// 	continue;
+		// }
 
-		// get the route's URL segment
-		let routeURL: string = child.snapshot.url.map((segment) => segment.path).join('/');
+		// // verify the custom data property "breadcrumb" is specified on the route
+		// if (!child.snapshot.data.hasOwnProperty(ROUTE_DATA_BREADCRUMB)) {
+		// 	return this.getBreadcrumbs(child, url, breadcrumbs);
+		// }
 
-		// append route URL to URL
-		url += `/${routeURL}`;
+		// // get the route's URL segment
+		// let routeURL: string = child.snapshot.url.map((segment) => segment.path).join('/');
 
-		// add breadcrumb
-		let breadcrumb: IBreadcrumb = {
-			label: child.snapshot.data[ROUTE_DATA_BREADCRUMB],
-			params: child.snapshot.params,
-			url: url
-		};
-		breadcrumbs.push(breadcrumb);
+		// // append route URL to URL
+		// url += `/${routeURL}`;
 
-		// recursive
-		return this.getBreadcrumbs(child, url, breadcrumbs);
-		}
+		// // add breadcrumb
+		// let breadcrumb: IBreadcrumb = {
+		// 	label: child.snapshot.data[ROUTE_DATA_BREADCRUMB],
+		// 	params: child.snapshot.params,
+		// 	url: url
+		// };
+		// breadcrumbs.push(breadcrumb);
 
-		// we should never get here, but just in case
-		return breadcrumbs;
+		// // recursive
+		// return this.getBreadcrumbs(child, url, breadcrumbs);
+		// }
+
+		// // we should never get here, but just in case
+		// return breadcrumbs;
 	}
 
 }

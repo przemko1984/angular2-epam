@@ -29,6 +29,7 @@ import { SharedModule } from './shared';
 // Pages
 import {
 	LoginPageModule,
+	CoursePageModule,
 	CourseListPageModule,
 	CourseDetailsPageModule,
 	CourseAddPageModule
@@ -57,6 +58,7 @@ const APP_PROVIDERS = [
 		RouterModule.forRoot(ROUTES, {useHash: true, preloadingStrategy: PreloadAllModules}),
 		SharedModule.forRoot(),
 		LoginPageModule,
+		CoursePageModule,
 		CourseListPageModule,
 		CourseDetailsPageModule,
 		CourseAddPageModule
