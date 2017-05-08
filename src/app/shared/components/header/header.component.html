@@ -3,7 +3,10 @@
 		<div class="row">
 			<div class="col-sm-8">
 				<logo></logo>
-				<p *ngIf="isAuthenticated | async" class="breadcrumbs"> Home / Courses </p>
+				<div *ngIf="isAuthenticated | async" class="breadcrumbs">
+					<breadcrumb></breadcrumb>
+				</div>
+				<breadcrumb class="breadcrumbs"></breadcrumb>
 			</div>
 			<div *ngIf="isAuthenticated | async" class="col-sm-4 text-right user">
 				<p>user login: <a href="#/login">{{(userInfo | async)?.login}}</a></p>

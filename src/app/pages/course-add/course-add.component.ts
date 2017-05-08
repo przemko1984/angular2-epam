@@ -129,6 +129,13 @@ export class CourseAddPageComponent extends BasePage {
 					this.authors = _.uniqBy(this.authors.concat(resp.authors), 'id');
 					this.loaderService.hide();
 					this.ref.markForCheck();
+					this.route.data
+						.subscribe((data: {breadcrumb: string}) => {
+
+							data.breadcrumb = resp.name;
+							console.log('data', data);
+							this.ref.markForCheck();
+						});
 				},
 				(error) => {
 					console.error('error', error);
