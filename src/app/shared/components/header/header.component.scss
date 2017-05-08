@@ -5,16 +5,8 @@
 	color: $white;
 	min-height: 75px;
 
-	.breadcrumbs, .user {
-		padding: 1.3rem 0 0;
-	}
-
-	.breadcrumbs {
-		float: left;
-		margin-left: 1rem;
-	}
-
 	.user {
+		padding: 1.3rem 0 0;
 		p {
 			margin: 0.1rem 0;
 			padding: 0;
