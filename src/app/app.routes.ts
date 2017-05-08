@@ -5,7 +5,7 @@ import { CourseDetailsPageComponent } from './pages/course-details';
 import { CourseAddPageComponent } from './pages/course-add';
 import { CourseListPageComponent } from './pages/course-list';
 import { NoContentComponent } from './pages/no-content';
-import { AuthGuard } from './shared/services';
+import { AuthGuard, PageTitleResolver } from './shared/services';
 
 export const ROUTES: Routes = [
 	{path: '', redirectTo: '/courses', pathMatch: 'full' },
@@ -14,13 +14,13 @@ export const ROUTES: Routes = [
 		path: 'courses',
 		component: CoursePageComponent,
 		// canActivate: [AuthGuard],
+		data: {
+			breadcrumb: 'Courses'
+		},
 		children: [
 			{
 				path: '',
-				component: CourseListPageComponent,
-				data: {
-					breadcrumb: 'Courses'
-				}
+				component: CourseListPageComponent
 			},
 			{
 				path: 'new',
@@ -32,6 +32,7 @@ export const ROUTES: Routes = [
 			{
 				path: ':id',
 				component: CourseAddPageComponent,
+				resolve: [PageTitleResolver],
 				data: {
 					breadcrumb: 'Edit Course'
 				}

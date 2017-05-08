@@ -22,7 +22,4 @@ export class CoursePageComponent extends BasePage {
 	onDestroy() {
 
 	}
-
-
-
 }
