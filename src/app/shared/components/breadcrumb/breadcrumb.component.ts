@@ -1,6 +1,12 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import 'rxjs/add/operator/filter';
-import _  from 'lodash';
+import {
+	Component,
+	OnInit,
+	OnDestroy,
+	ViewEncapsulation,
+	ChangeDetectionStrategy,
+	ChangeDetectorRef
+} from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { IBreadcrumb, BreadcrumbService } from './../../services';
 
@@ -11,9 +17,10 @@ import { IBreadcrumb, BreadcrumbService } from './../../services';
 	encapsulation: ViewEncapsulation.None,
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BreadcrumbComponent implements OnInit {
+export class BreadcrumbComponent implements OnInit, OnDestroy {
 
 	breadcrumbs: IBreadcrumb[];
+	private sub: Subscription;
 
     constructor(
 		private ref: ChangeDetectorRef,
@@ -23,12 +30,16 @@ export class BreadcrumbComponent implements OnInit {
   	}
 
   	ngOnInit() {
-		this.breadcrumbService.breadcrumb$
+		this.sub = this.breadcrumbService.breadcrumb$
 		.subscribe((crumbs: IBreadcrumb[]) => {
 			this.breadcrumbs = crumbs;
 
 			this.ref.markForCheck();
 		});
   	}
+
+	ngOnDestroy() {
+		this.sub.unsubscribe();
+	}
 
 }
