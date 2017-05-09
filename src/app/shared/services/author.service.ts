@@ -31,13 +31,13 @@ export class AuthorService {
     loadList() {
         this.sub = this.http.get(this.serviceUrl)
             .map(this.mapData)
+            .first()
             .catch((error) => {
                 console.error('error', error);
                 return Observable.throw(error);
             })
             .subscribe((authors: IAuthor[]) => {
                 this.authorListSubject.next(authors);
-                this.sub.unsubscribe();
             });
     }
 

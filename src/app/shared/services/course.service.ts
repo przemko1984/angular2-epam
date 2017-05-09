@@ -68,9 +68,7 @@ export class CourseService implements OnDestroy {
 
         return this.http.post(this.serviceUrl, course)
             .map(this.mapData)
-            .map((res) => {
-                return res;
-            })
+            // .map((res) => res)
             .catch((error) => {
                 console.error('error', error);
                 return Observable.throw(error);
@@ -91,9 +89,7 @@ export class CourseService implements OnDestroy {
 
         return this.http.put(`${this.serviceUrl}/${id}`, course)
             .map(this.mapData)
-            .map((res) => {
-                return res;
-            })
+            // .map((res) => res)
             .catch((error) => {
                 console.error('error', error);
                 return Observable.throw(error);
@@ -103,9 +99,7 @@ export class CourseService implements OnDestroy {
     remove(id: number): Observable<boolean> {
         return this.http.delete(`${this.serviceUrl}/${id}`)
             .map(this.mapData)
-            .map((res) => {
-                return true;
-            })
+            .map((res) => true)
             .catch((error) => {
                 console.error('error', error);
                 return Observable.throw(error);

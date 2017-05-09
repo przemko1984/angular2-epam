@@ -97,7 +97,7 @@ export class CourseAddPageComponent extends BasePage {
 
 	private loadDefaultAuthors() {
 		this.authorService.loadList();
-		let sub = this.authorService.getList()
+		const sub = this.authorService.getList()
 			.subscribe((dafaultAuthors) => {
 				this.authors = _.uniqBy(this.authors.concat(dafaultAuthors), 'id');
 				this.ref.markForCheck();
@@ -107,7 +107,7 @@ export class CourseAddPageComponent extends BasePage {
 	}
 
 	private subscribeCourseId() {
-		let sub = this.route.params.subscribe((params) => {
+		const sub = this.route.params.subscribe((params) => {
 			this.courseId = params['id'];
 			if (this.courseId) {
 				// console.log('<<<<<<<<<<<< edit >>>>>>>>>>>>');
@@ -123,7 +123,7 @@ export class CourseAddPageComponent extends BasePage {
 
 	private subscribeCourse() {
 		this.loaderService.show();
-		let sub = this.courseService.getById(+this.courseId)
+		const sub = this.courseService.getById(+this.courseId)
 			.subscribe(
 				(resp) => {
 					this.formModel = resp;
