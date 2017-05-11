@@ -1,5 +1,11 @@
 <div class="container ">
     <div class="row">
+        <!-- ngrx example-->
+        <span>{{counter | async}}</span>
+        <br>
+        <button (click)="increment()">+</button>
+        <button (click)="decrement()">-</button>
+
         <div class="col-sm-4 offset-sm-4" *ngIf="!(isAuthenticated | async)">
             <form (ngSubmit)="login()" #loginForm="ngForm">
                 <div class="row">
