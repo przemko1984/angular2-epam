@@ -19,3 +19,9 @@ export interface IUser {
     login: string;
     password: string;
 }
+
+export interface IAuth {
+  token: string;
+  error: string;
+  current: IUser;
+}
