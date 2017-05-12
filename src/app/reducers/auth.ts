@@ -22,7 +22,7 @@ var initialState: IAuth = {
   current: null
 };
 
-export const authReducer = (state = initialState, action: Action = {type: INIT}) => {
+export const authReducer = (state: IAuth = initialState, action: Action = {type: INIT}) => {
 
   switch (action.type) {
     case USER_AUTHENTICATED:
