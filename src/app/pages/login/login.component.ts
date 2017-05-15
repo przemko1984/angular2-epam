@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 
 // ngrx example
 import { Store } from '@ngrx/store';
-import {INCREMENT, DECREMENT} from "../../reducers";
+import { INCREMENT, DECREMENT } from '../../reducers';
 
 import { BasePage } from '../base.page.component';
 import { AuthService, LoaderService } from './../../shared/services';
