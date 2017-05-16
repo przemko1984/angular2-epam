@@ -13,7 +13,7 @@ export const ROUTES: Routes = [
 	{
 		path: 'courses',
 		component: CoursePageComponent,
-		canActivate: [AuthGuard],
+		// canActivate: [AuthGuard],
 		data: {
 			breadcrumb: 'Courses'
 		},

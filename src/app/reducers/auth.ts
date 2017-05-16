@@ -8,7 +8,7 @@ export const USER_INFO = 'USER_INFO';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const LOGOUT_USER = 'LOGOUT_USER';
 
-export const INIT = 'INIT';
+export const INIT_AUTH = 'INIT_AUTH';
 
 const initialState: IAuth = {
   error: null,
@@ -16,7 +16,7 @@ const initialState: IAuth = {
   current: null
 };
 
-export const authReducer = (state: IAuth = initialState, action: Action = {type: INIT}) => {
+export const authReducer = (state: IAuth = initialState, action: Action = {type: INIT_AUTH}) => {
 
   switch (action.type) {
     case USER_AUTHENTICATED:

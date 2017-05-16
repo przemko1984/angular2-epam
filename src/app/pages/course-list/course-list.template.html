@@ -15,11 +15,11 @@
     <div class="row" *ngIf="courses && courses.length !== 0">
         <div class="col-8">
             <button
-                *ngIf="!isCourseListFull"
+                *ngIf="!(noMoreResults | async)"
                 class="btn btn-primary btn-sm"
                 (click)="loadMore()"
             >Load more</button>
-            <p *ngIf="isCourseListFull">All courses already loaded.</p>
+            <p *ngIf="noMoreResults | async">All courses already loaded.</p>
         </div>
         <div class="col-4 text-right">
             <p> Course loaded: {{courses.length}}</p>

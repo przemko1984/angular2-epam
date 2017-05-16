@@ -17,7 +17,7 @@ import {
 // NGRX
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { counterReducer, authReducer } from './reducers';
+import { counterReducer, authReducer, courseReducer } from './reducers';
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -62,7 +62,8 @@ const APP_PROVIDERS = [
 		RouterModule.forRoot(ROUTES, {useHash: true, preloadingStrategy: PreloadAllModules}),
 		StoreModule.provideStore({
 			counter: counterReducer,
-			auth: authReducer
+			auth: authReducer,
+			course: courseReducer
 		}),
 		StoreDevtoolsModule.instrumentOnlyWithExtension({
 			maxAge: 5

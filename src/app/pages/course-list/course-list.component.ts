@@ -4,6 +4,7 @@ import {
 	ChangeDetectionStrategy,
 	ChangeDetectorRef
 } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { BasePage } from '../base.page.component';
 import { ICourse } from './../../business-entities';
@@ -20,8 +21,8 @@ import { FilterByNamePipe } from './../../shared/pipes/filterByName.pipe';
 export class CourseListPageComponent extends BasePage {
 	private courses: ICourse[] = [];
 	private loadMoreCounter: number = 1;
-	private isCourseListFull: boolean = false;
-	private resetListOnLoad: boolean = false;
+	private noMoreResults: Observable<boolean>;
+	// private resetListOnLoad: boolean = false;
 	private search: string;
 
 	constructor(
@@ -38,6 +39,7 @@ export class CourseListPageComponent extends BasePage {
 		console.log('CourseListPageComponent: ngOnInit');
 		this.subscribeCoursesList();
 		this.loadCourses();
+		this.noMoreResults = this.courseService.noMoreResults$;
 	}
 
 	onDestroy() {
@@ -70,7 +72,7 @@ export class CourseListPageComponent extends BasePage {
 		this.loaderService.show();
 		let sub = this.courseService.remove(id).subscribe(
 			(resp) => {
-				this.resetCourseList();
+				// this.resetCourseList();
 				this.loadCourses(this.courses.length);
 			},
 			(error) => {
@@ -84,10 +86,11 @@ export class CourseListPageComponent extends BasePage {
 	public searchCourse(name: string) {
 		// this.courses = this.filterByName.transform(this.coursesClone, name);
 		this.loaderService.show();
-		this.resetCourseList();
+		// this.resetCourseList();
 		this.loadMoreCounter = 1;
 		this.search = name;
-		this.courseService.loadList(0, name);
+		// this.courseService.loadList(0, name);
+		this.courseService.search(name);
 	}
 
 	public loadMore() {
@@ -102,9 +105,10 @@ export class CourseListPageComponent extends BasePage {
 		let sub = this.courseService.getList()
 			.subscribe(
 				(resp) => {
-					this.courses = this.resetListOnLoad ? resp : this.courses.concat(resp);
-					this.resetListOnLoad = false;
-					this.isCourseListFull = this.courses.length < (this.loadMoreCounter * this.courseService.limit);
+					this.courses = resp;
+					// this.courses = this.resetListOnLoad ? resp : this.courses.concat(resp);
+					// this.resetListOnLoad = false;
+					// this.isCourseListFull = this.courses.length < (this.loadMoreCounter * this.courseService.limit);
 					this.loaderService.hide();
 					this.ref.markForCheck();
 				},
@@ -121,7 +125,8 @@ export class CourseListPageComponent extends BasePage {
 		this.courseService.loadList(0, this.search, limit);
 	}
 
-	private resetCourseList() {
-		this.resetListOnLoad = true;
-	}
+	// private resetCourseList() {
+	// 	this.resetListOnLoad = true;
+	// }
+
 }
