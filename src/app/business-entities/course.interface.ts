@@ -13,6 +13,6 @@ export interface INewCourse {
 }
 
 export interface ICourse extends INewCourse {
-    id: number;
-    isTopRated: boolean;
+    id?: number;
+    isTopRated?: boolean;
 }

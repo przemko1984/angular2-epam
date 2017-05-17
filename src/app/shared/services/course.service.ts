@@ -9,10 +9,9 @@ import { ICourse, INewCourse } from '../../business-entities/';
 import { FilterByNamePipe } from '../pipes';
 import { AuthorizedHttp } from './authorized-http.service';
 import {
-    counterReducer,
     COURSES_LOADED,
-    RESET_COURSES,
-    ICourseReducer
+    INIT_COURSES,
+    ICoursesReducer
 } from '../../reducers';
 
 const DELAY = 500;
@@ -35,7 +34,7 @@ export class CourseService implements OnDestroy {
     ) {
         // this.courseList$ = this.courseListSubject
         //     .asObservable();
-        const store$ = this.store.select<ICourseReducer>('course');
+        const store$ = this.store.select<ICoursesReducer>('courses');
         this.courseList$ = store$.map((data) => data['list']);
         this.noMoreResults$ = store$.map((data) => data['noMoreResults']);
     }
@@ -80,7 +79,7 @@ export class CourseService implements OnDestroy {
     }
 
     search(search: string = '') {
-        this.store.dispatch({ type: RESET_COURSES});
+        this.store.dispatch({ type: INIT_COURSES});
         this.loadList(0, search);
     }
 

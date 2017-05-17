@@ -5,6 +5,9 @@ import {
 	ChangeDetectorRef
 } from '@angular/core';
 import { Observable } from 'rxjs';
+// ngrx
+import { Store } from '@ngrx/store';
+import { INIT_COURSES, ICoursesReducer } from '../../reducers';
 
 import { BasePage } from '../base.page.component';
 import { ICourse } from './../../business-entities';
@@ -29,7 +32,8 @@ export class CourseListPageComponent extends BasePage {
 		private ref: ChangeDetectorRef,
 		private courseService: CourseService,
 		private loaderService: LoaderService,
-		private filterByName: FilterByNamePipe
+		private filterByName: FilterByNamePipe,
+		private store: Store<ICoursesReducer>
 	) {
 		super();
 		console.log('CourseListPageComponent: constructor');
@@ -40,6 +44,7 @@ export class CourseListPageComponent extends BasePage {
 		this.subscribeCoursesList();
 		this.loadCourses();
 		this.noMoreResults = this.courseService.noMoreResults$;
+		this.store.dispatch({type: INIT_COURSES});
 	}
 
 	onDestroy() {

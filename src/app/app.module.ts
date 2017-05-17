@@ -17,7 +17,12 @@ import {
 // NGRX
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { counterReducer, authReducer, courseReducer } from './reducers';
+import {
+	counterReducer,
+	authReducer,
+	coursesReducer,
+	courseReducer
+} from './reducers';
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -63,6 +68,7 @@ const APP_PROVIDERS = [
 		StoreModule.provideStore({
 			counter: counterReducer,
 			auth: authReducer,
+			courses: coursesReducer,
 			course: courseReducer
 		}),
 		StoreDevtoolsModule.instrumentOnlyWithExtension({
