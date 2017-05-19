@@ -2,10 +2,6 @@ import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy, ChangeDet
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 
-// ngrx example
-import { Store } from '@ngrx/store';
-import { INCREMENT, DECREMENT } from '../../reducers';
-
 import { BasePage } from '../base.page.component';
 import { AuthService, LoaderService } from './../../shared/services';
 import { IUser } from './../../business-entities';
@@ -32,13 +28,10 @@ export class LoginPageComponent extends BasePage {
 		private ref: ChangeDetectorRef,
 		private authService: AuthService,
 		private loaderService: LoaderService,
-		private router: Router,
-		private store: Store<any>
+		private router: Router
 	) {
 		super();
 		this.isAuthenticated = this.authService.isAuthenticated$;
-		// ngrx example
-		this.counter = store.select<number>('counter');
 	}
 
 	onInit() {
@@ -100,16 +93,6 @@ export class LoginPageComponent extends BasePage {
 				}
 			);
 		this.registerSubscription(sub);
-	}
-
-	// ngrx example
-	increment() {
-    	this.store.dispatch({type: INCREMENT});
-  	}
-
-	// ngrx example
-  	decrement() {
-    	this.store.dispatch({type: DECREMENT});
 	}
 
 	private reset() {

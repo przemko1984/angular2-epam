@@ -18,7 +18,6 @@ import {
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import {
-	counterReducer,
 	authReducer,
 	coursesReducer,
 	courseReducer
@@ -66,7 +65,6 @@ const APP_PROVIDERS = [
 		HttpModule,
 		RouterModule.forRoot(ROUTES, {useHash: true, preloadingStrategy: PreloadAllModules}),
 		StoreModule.provideStore({
-			counter: counterReducer,
 			auth: authReducer,
 			courses: coursesReducer,
 			course: courseReducer

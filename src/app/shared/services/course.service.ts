@@ -125,7 +125,7 @@ export class CourseService implements OnDestroy {
         return this.http.delete(`${this.serviceUrl}/${id}`)
             .map(this.mapData)
             .map((res) => {
-                this.store.dispatch({ type: RESET_COURSES});
+                this.store.dispatch({ type: INIT_COURSES});
 
                 return true;
             })
