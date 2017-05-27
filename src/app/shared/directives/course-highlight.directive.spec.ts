@@ -11,28 +11,28 @@ import { CourseHighlightDirective } from './course-highlight.directive';
 
 @Component({
   template: `
-  <h2 [courseHighlight]="date_new">Course 1</h2>
-  <h2 [courseHighlight]="date_upcoming">Course 2</h2>
-  <h2 [courseHighlight]="date_old">Course 3</h2>
+  <h2 [courseHighlight]="dateNew">Course 1</h2>
+  <h2 [courseHighlight]="dateUpcoming">Course 2</h2>
+  <h2 [courseHighlight]="dateOld">Course 3</h2>
   `
 })
 class TestComponent {
-    date_new: Date;
-    date_upcoming: Date;
-    date_old: Date;
+    dateNew: Date;
+    dateUpcoming: Date;
+    dateOld: Date;
 
     constructor() {
         const currentDate: Date = new Date();
         const dayInMilisecond = 24 * 60 * 60 * 1000;
 
-        this.date_new = new Date(currentDate.getTime());
-        this.date_upcoming = new Date(currentDate.getTime() + 1 * dayInMilisecond);
-        this.date_old = new Date(currentDate.getTime() - 14 * dayInMilisecond - 1);
+        this.dateNew = new Date(currentDate.getTime());
+        this.dateUpcoming = new Date(currentDate.getTime() + 1 * dayInMilisecond);
+        this.dateOld = new Date(currentDate.getTime() - 14 * dayInMilisecond - 1);
 
     }
  }
 
-describe(`App`, () => {
+describe(`Directive courseHighlight`, () => {
     let comp: TestComponent;
     let fixture: ComponentFixture<TestComponent>;
     let directiveEl: any[];
