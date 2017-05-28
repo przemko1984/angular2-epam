@@ -25,7 +25,7 @@ class TestComponent {
         const currentDate: Date = new Date();
         const dayInMilisecond = 24 * 60 * 60 * 1000;
 
-        this.dateNew = new Date(currentDate.getTime());
+        this.dateNew = new Date(currentDate.getTime() - 1 * dayInMilisecond);
         this.dateUpcoming = new Date(currentDate.getTime() + 1 * dayInMilisecond);
         this.dateOld = new Date(currentDate.getTime() - 14 * dayInMilisecond - 1);
 
