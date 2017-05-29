@@ -9,55 +9,55 @@ import { SharedModule } from './../../shared/shared.module';
 import { CourseService, LoaderService, AuthorService, BreadcrumbService } from './../../shared/services';
 
 import { CourseAddPageComponent } from './course-add.component';
-import { MockStore } from '../../test-helper.spec';
+import { MockStore } from '../../test-helpers';
 
-describe('CourseAddPageComponent component: ', function () {
-  let comp: CourseAddPageComponent;
-  let fixture: ComponentFixture<CourseAddPageComponent>;
-  let courseServiceStub;
-  let loaderServiceStub;
-  let authorServiceStub;
-  let breadcrumbServiceStub;
+describe('CourseAddPageComponent component: ', () => {
+    let comp: CourseAddPageComponent;
+    let fixture: ComponentFixture<CourseAddPageComponent>;
+    let courseServiceStub;
+    let loaderServiceStub;
+    let authorServiceStub;
+    let breadcrumbServiceStub;
 
-  beforeEach(() => {
-	courseServiceStub = {
+    beforeEach(() => {
+        courseServiceStub = {
 
-    };
+        };
 
-	loaderServiceStub = {
+        loaderServiceStub = {
 
-    };
+        };
 
-	authorServiceStub = {
+        authorServiceStub = {
 
-    };
+        };
 
-	breadcrumbServiceStub = {
+        breadcrumbServiceStub = {
 
-    };
+        };
 
-    fixture = TestBed.configureTestingModule({
-      	imports: [
-        	CourseAddPageModule,
-			SharedModule.forRoot()
-      	],
-     	providers: [
-			{provide: Router, useClass: RouterModule},
-			{provide: ActivatedRoute, useValue: {params: Observable.of({})}},
-			{provide: CourseService, useValue: courseServiceStub },
-			{provide: LoaderService, useValue: loaderServiceStub },
-			{provide: AuthorService, useValue: authorServiceStub },
-			{provide: BreadcrumbService, useValue: breadcrumbServiceStub },
-			{
-				provide: Store,
-				useClass: MockStore
-			}
+        fixture = TestBed.configureTestingModule({
+            imports: [
+                CourseAddPageModule,
+                SharedModule.forRoot()
+            ],
+            providers: [
+                {provide: Router, useClass: RouterModule},
+                {provide: ActivatedRoute, useValue: {params: Observable.of({})}},
+                {provide: CourseService, useValue: courseServiceStub },
+                {provide: LoaderService, useValue: loaderServiceStub },
+                {provide: AuthorService, useValue: authorServiceStub },
+                {provide: BreadcrumbService, useValue: breadcrumbServiceStub },
+                {
+                    provide: Store,
+                    useClass: MockStore
+                }
 
-      	]
-	}).createComponent(CourseAddPageComponent);
+            ]
+        }).createComponent(CourseAddPageComponent);
 
-    comp = fixture.componentInstance;
-  });
+        comp = fixture.componentInstance;
+    });
 
-  it('should create component', () => expect(comp).toBeDefined() );
+    it('should create component', () => expect(comp).toBeDefined() );
 });

@@ -24,7 +24,7 @@ import { AuthorizedHttp } from './authorized-http.service';
 import { CourseService } from './course.service';
 import { FilterByNamePipe } from '../pipes';
 import { ICourse, INewCourse } from '../../business-entities/';
-import { MockStore } from '../../test-helper.spec';
+import { MockStore } from '../../test-helpers';
 
 describe('Course Service:', () => {
     let backend;
@@ -72,17 +72,17 @@ describe('Course Service:', () => {
 
     it('should return course on getById()', () => {
         const testCourse = {
-            'id': 1,
-            'name': 'name',
-            'description': 'description',
-            'isTopRated': false,
-            'date': '2017-09-28T04:39:24+00:00',
-            'authors': [{
-                'id': 1370,
-                'firstName': 'Polly',
-                'lastName': 'Sosa'
+            id: 1,
+            name: 'name',
+            description: 'description',
+            isTopRated: false,
+            date: '2017-09-28T04:39:24+00:00',
+            authors: [{
+                id: 1370,
+                firstName: 'Polly',
+                lastName: 'Sosa'
             }],
-            'length': 157
+            length: 157
         };
 
         setupConnections(backend, {

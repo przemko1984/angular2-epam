@@ -1,35 +1,12 @@
 import { Action, ActionReducer, Store } from '@ngrx/store';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operator/map';
-import { Observer } from 'rxjs/Observer';
-
-export class ObservableMock implements Observer<any> {
-    closed?: boolean = false; // inherited from Observer
-    nextVal: any = ''; // variable I made up
-
-    constructor() {
-    }
-
-    next = (value: any): void => {
-        this.nextVal = value;
-    };
-    error = (err: any): void => {
-        console.error(err);
-    };
-    complete = (): void => {
-        this.closed = true;
-    }
-}
+// import { map } from 'rxjs/operator/map';
+import { ObservableMock } from './observable.mock';
 
 const reducerMock: ObservableMock = new ObservableMock();
 const dispatcherMock: ObservableMock = new ObservableMock();
 const stateMock: Observable<any> = new Observable<any>();
-
-// // TODO: How to initialize those variables?
-// const dispatcherMock: Observer<Action>;
-// const reducerMock: Observer<ActionReducer<any>>;
-// const stateMock: Observable<any>;
 
 export class MockStore<T> extends Store<T> {
 
