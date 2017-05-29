@@ -9,15 +9,15 @@ import { SharedModule } from './../../shared/shared.module';
 import { CourseService, LoaderService, AuthorService, BreadcrumbService } from './../../shared/services';
 
 import { CourseAddPageComponent } from './course-add.component';
-import { MockStore } from '../../test-helpers';
+import { MockStore, MockAuthorService } from '../../test-helpers';
 
 describe('CourseAddPageComponent component: ', () => {
     let comp: CourseAddPageComponent;
     let fixture: ComponentFixture<CourseAddPageComponent>;
     let courseServiceStub;
     let loaderServiceStub;
-    let authorServiceStub;
     let breadcrumbServiceStub;
+	let authorService;
 
     beforeEach(() => {
         courseServiceStub = {
@@ -28,9 +28,10 @@ describe('CourseAddPageComponent component: ', () => {
 
         };
 
-        authorServiceStub = {
-
-        };
+        // authorServiceStub = {
+        //     loadList: () => {},
+        //     getList: () => {}
+        // };
 
         breadcrumbServiceStub = {
 
@@ -46,7 +47,7 @@ describe('CourseAddPageComponent component: ', () => {
                 {provide: ActivatedRoute, useValue: {params: Observable.of({})}},
                 {provide: CourseService, useValue: courseServiceStub },
                 {provide: LoaderService, useValue: loaderServiceStub },
-                {provide: AuthorService, useValue: authorServiceStub },
+                {provide: AuthorService, useClass: MockAuthorService },
                 {provide: BreadcrumbService, useValue: breadcrumbServiceStub },
                 {
                     provide: Store,
@@ -60,4 +61,23 @@ describe('CourseAddPageComponent component: ', () => {
     });
 
     it('should create component', () => expect(comp).toBeDefined() );
+
+    describe('on init', () => {
+        it('should run \'AuthorService.loadList()\'', () => {
+			authorService = fixture.debugElement.injector.get(AuthorService);
+
+            spyOn(authorService, 'loadList');
+            fixture.detectChanges();
+            expect(authorService.loadList).toHaveBeenCalled();
+        });
+
+		// it('should run \'AuthorService.getList()\'', () => {
+		// 	authorService = fixture.debugElement.injector.get(AuthorService);
+
+        //     spyOn(authorService, 'getList');
+        //     fixture.detectChanges();
+        //     expect(authorService.getList).toHaveBeenCalled();
+        // });
+    });
+
 });
