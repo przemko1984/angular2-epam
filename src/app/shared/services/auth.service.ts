@@ -9,7 +9,8 @@ import {
     LOGOUT_USER,
     USER_AUTHENTICATED,
     USER_INFO,
-    LOGIN_FAILURE
+    LOGIN_FAILURE,
+    IAppStore
 } from '../../reducers';
 import { ICredential, IToken, IUser, IAuth } from '../../business-entities';
 import { AuthorizedHttp } from './authorized-http.service';
@@ -27,9 +28,9 @@ export class AuthService {
     constructor(
         private http: Http,
         private authorizedHttp: AuthorizedHttp,
-        private store: Store<any>
+        private store: Store<IAppStore>
     ) {
-        const store$ = this.store.select<IAuth>('auth');
+        const store$ = this.store.select((s) => s.auth);
         this.userInfo$ = store$.map((data) => data['current']);
         this.isAuthenticated$ = store$.map((data) => !!data['token']);
     }

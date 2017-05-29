@@ -11,7 +11,7 @@ import {
 	COURSE_SAVED,
 	COURSE_SAVE_FAILURE,
 	COURSE_LOAD_FAILURE,
-	ICourseReducer
+	IAppStore
 } from '../../reducers';
 import { BasePage } from '../base.page.component';
 import { ICourse, IAuthor } from './../../business-entities';
@@ -40,7 +40,7 @@ export class CourseAddPageComponent extends BasePage {
 		private loaderService: LoaderService,
 		private authorService: AuthorService,
 		private breadcrumbService: BreadcrumbService,
-		private store: Store<ICourseReducer>
+		private store: Store<IAppStore>
 	) {
 		super();
 	}
@@ -51,8 +51,7 @@ export class CourseAddPageComponent extends BasePage {
 		this.subscribeCourseId();
 		this.store.dispatch({type: INIT_COURSE});
 
-		this.store.select<ICourseReducer>('course')
-		.map((data) => data['course'])
+		this.store.select((store) => store.course.course)
 		.subscribe((course) => {
 			this.formModel = course;
 		});

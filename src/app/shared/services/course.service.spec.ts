@@ -60,7 +60,8 @@ describe('Course Service:', () => {
                 },
                 {
                     provide: Store,
-                    useClass: MockStore
+                    // useClass: MockStore
+					useValue: new MockStore({})
                 }
             ]
         });

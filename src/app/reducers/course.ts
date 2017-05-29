@@ -25,7 +25,7 @@ const initialState: ICourseReducer = {
   error: null,
 };
 
-export const courseReducer = (state: ICourseReducer = initialState, action: Action = {type: INIT_COURSE}) => {
+export const courseReducer = (state: ICourseReducer = initialState, action: Action = {type: INIT_COURSE}): ICourseReducer => {
 
   switch (action.type) {
     case COURSE_LOADED:

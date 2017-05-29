@@ -16,7 +16,7 @@ const initialState: IAuth = {
   current: null
 };
 
-export const authReducer = (state: IAuth = initialState, action: Action = {type: INIT_AUTH}) => {
+export const authReducer = (state: IAuth = initialState, action: Action = {type: INIT_AUTH}): IAuth => {
 
   switch (action.type) {
     case USER_AUTHENTICATED:
