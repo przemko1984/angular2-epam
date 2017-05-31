@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import _  from 'lodash';
+import { uniqBy }  from 'lodash';
 // ngrx example
 import { Store } from '@ngrx/store';
 
@@ -130,7 +130,7 @@ export class CourseAddPageComponent extends BasePage {
 		this.authorService.loadList();
 		const sub = this.authorService.getList()
 			.subscribe((dafaultAuthors) => {
-				this.authors = _.uniqBy(this.authors.concat(dafaultAuthors), 'id');
+				this.authors = uniqBy(this.authors.concat(dafaultAuthors), 'id');
 				this.ref.markForCheck();
 			});
 

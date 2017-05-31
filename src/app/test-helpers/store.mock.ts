@@ -1,3 +1,5 @@
+// Alternative way to create mock store
+
 // import { Action, ActionReducer, Store } from '@ngrx/store';
 // import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 // import { Observable } from 'rxjs/Observable';
