@@ -165,7 +165,7 @@ export class CourseAddPageComponent extends BasePage {
 							course: resp
 						}
 					});
-					this.authors = _.uniqBy(this.authors.concat(resp.authors), 'id');
+					this.authors = uniqBy(this.authors.concat(resp.authors), 'id');
 					this.loaderService.hide();
 					this.ref.markForCheck();
 					// set dynamic breadcrumb for this route

@@ -37,9 +37,7 @@ describe('CourseAddPageComponent component: ', () => {
 
         TestBed.configureTestingModule({
             imports: [
-                CourseAddPageModule,
-                SharedModule.forRoot()
-                // StoreModule.provideStore(courseReducer)
+				CourseAddPageModule
             ],
             providers: [
                 {provide: Router, useClass: RouterModule},
@@ -58,24 +56,23 @@ describe('CourseAddPageComponent component: ', () => {
         }).compileComponents();
 
         fixture = TestBed.createComponent(CourseAddPageComponent);
-
+        // fixture.detectChanges();
         comp = fixture.componentInstance;
 
         // get the injected instances
         store = fixture.debugElement.injector.get(Store);
-		authorService = fixture.debugElement.injector.get(AuthorService);
+        authorService = fixture.debugElement.injector.get(AuthorService);
     });
 
     it('should create component', () => expect(comp).toBeDefined() );
 
-	// it('should create form with class \'course-add\' in component', () => {
-
-	// 	const deElems = fixture.debugElement.query(By.css('form'));
-	// 	// el =  de.nativeElement;
-	// 	fixture.detectChanges();
-	// 	// const className = deElems[0].nativeElement.className;
-	// 	expect(deElems).toBe(null);
-	// });
+    // it('should create form with class \'course-add\' in component', () => {
+    //     const deElems = fixture.debugElement.query(By.css('form'));
+    //     // el =  de.nativeElement;
+    //     fixture.detectChanges();
+    //     // const className = deElems[0].nativeElement.className;
+    //     expect(deElems).toBe(null);
+    // });
 
     describe('on init', () => {
         it('should run \'AuthorService.loadList()\'', () => {
@@ -85,17 +82,15 @@ describe('CourseAddPageComponent component: ', () => {
         });
 
         it('should run \'AuthorService.getList()\'', () => {
-            spyOn(authorService, 'getList').and.callFake(function () {
-				return Observable.of({});
-			});
+            spyOn(authorService, 'getList').and.callFake(() => Observable.of({}));
             fixture.detectChanges();
             expect(authorService.getList).toHaveBeenCalled();
         });
 
-		it('should run \'Store.dispatch()\'', () => {
+        it('should run \'Store.dispatch()\'', () => {
             spyOn(store, 'dispatch');
             fixture.detectChanges();
-			expect(store.dispatch).toHaveBeenCalledWith({type: INIT_COURSE});
+            expect(store.dispatch).toHaveBeenCalledWith({type: INIT_COURSE});
         });
     });
 
