@@ -1,7 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { FormsModule }   from '@angular/forms';
+import { CommonModule, DatePipe } from '@angular/common';
+import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { Http, Response, Headers, RequestOptions, XHRBackend } from '@angular/http';
 
 import * as components from './components';
@@ -40,7 +40,8 @@ providers = providers.concat([
             },
             deps: [ XHRBackend, RequestOptions]
         },
-        FilterByNamePipe
+        FilterByNamePipe,
+        DatePipe
     ]);
 
 @NgModule({

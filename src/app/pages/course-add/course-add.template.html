@@ -1,34 +1,66 @@
-<div class="container">
-    <form class="course-add" (ngSubmit)="createCourse(courseForm)" #courseForm="ngForm">
+<div class="container" *ngIf="formModel">
+    <form class="course-add" (ngSubmit)="saveCourse(courseForm)" #courseForm="ngForm">
         <div class="row">
             <div class="col-sm-4 offset-sm-4">
                 <div class="row">
-                    <h2>Add course</h2>
+                    <h2>
+                        <span *ngIf="this.courseId">Edit </span>
+                        <span *ngIf="!this.courseId">Add </span>
+                        <span>course</span>
+                    </h2>
                 </div>
                 <div class="form-group row">
                     <label for="name-input" class="col-4 col-form-label">Title:</label>
                     <div class="col-8">
-                        <input type="text" name="name" [(ngModel)]="name" id="name-input" placeholder="Course title" required>
+                        <input type="text" name="name" id="name-input" #name="ngModel" [ngModel]="formModel.name" placeholder="Course title" required maxlength="50">
+                        <span class="status-message error-message" *ngIf="name.invalid && name.touched">Pole jest wymagane</span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="desc-input" class="col-4 col-form-label">Description:</label>
                     <div class="col-8">
-                        <textarea name="description"  [(ngModel)]="description" id="desc-input" placeholder="Course description" required></textarea>
+                        <textarea name="description" #description="ngModel" [ngModel]="formModel.description" id="desc-input" placeholder="Course description" required maxlength="500"></textarea>
+                        <span class="status-message error-message" *ngIf="description.invalid && description.touched">Pole jest wymagane</span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="date-input" class="col-4 col-form-label">Date:</label>
                     <div class="col-8">
-                        <input type="date" name="date"  [(ngModel)]="date" id="date-input" required>
+                        <date-input name="date" #date="ngModel" [nameOption]="date" id="date-input" [ngModel]="formModel.date" required></date-input>
+                        <span class="status-message error-message" *ngIf="date.invalid && date.touched">
+                            <span *ngIf="!date.errors.invalidDate && date.errors.required">Pole jest wymagane</span>
+                            <span *ngIf="date.errors.invalidDate">Nieprawidłowy format daty, proszę wpisz: dd/mm/rrrr</span>
+                        </span>
                     </div>
+
                 </div>
 
                 <div class="form-group row">
                     <label for="duration-input" class="col-4 col-form-label">Duration:</label>
                     <div class="col-8">
-                        <input type="number" name="length" [(ngModel)]="length" id="duration-input" min="0" required>
-                        <span>{{length | duration}}</span>
+                        <number-input name="length" #length="ngModel" [nameOption]="length" id="duration-input" [(ngModel)]="formModel.length" required></number-input>
+                        <span>{{formModel.length | duration}}</span>
+                        <span class="status-message error-message" *ngIf="length.invalid && length.touched">
+                            <span *ngIf="length.errors.required">Pole jest wymagane</span>
+                            <span *ngIf="length.errors.invalidNumber">Nieprawidłowa wartość</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="author-input" class="col-4 col-form-label">Authors:</label>
+                    <div class="col-8">
+                        <author-input
+                            name="authors"
+                            [items]="authors"
+                            [nameOption]="authors"
+                            id="author-input"
+                            [ngModel]="formModel.authors"
+                            #authorInput="ngModel"
+                        ></author-input>
+                        <span class="status-message error-message" *ngIf="authorInput.invalid && authorInput.touched">
+                            Pole jest wymagane, zaznacz przynajmniej jednego autora
+                        </span>
                     </div>
                 </div>
 
@@ -37,6 +69,7 @@
                         <button
                             type="submit"
                             class="btn btn-primary btn-sm"
+                            [disabled]="courseForm.untouched || courseForm.invalid"
                         >Save</button>
                         <a
                             class="btn btn-default btn-sm"

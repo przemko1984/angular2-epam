@@ -63,15 +63,16 @@ export class CourseService implements OnDestroy {
         let course: ICourse = Object.assign(newCourse, {
             id: timestamp,
             isTopRated: false,
-            date: new Date(newCourse.date)
+            date: new Date(newCourse.date).toString()
         });
 
-        console.warn('This method doesn\'t work now');
-
-        // this.courseList.push(course);
-        // this.courseListSubject.next(this.courseList.slice());
-
-        return Observable.of<ICourse>(course).delay(DELAY);
+        return this.http.post(this.serviceUrl, course)
+            .map(this.mapData)
+            // .map((res) => res)
+            .catch((error) => {
+                console.error('error', error);
+                return Observable.throw(error);
+            });
     }
 
     getById(id: number): Observable<ICourse> {
@@ -84,18 +85,21 @@ export class CourseService implements OnDestroy {
             });
     }
 
-    update(id: number): Observable<ICourse> {
-        console.warn('this method doesn\'t work now');
+    update(id: number, course: ICourse): Observable<ICourse> {
 
-        return Observable.of<ICourse>(null);
+        return this.http.put(`${this.serviceUrl}/${id}`, course)
+            .map(this.mapData)
+            // .map((res) => res)
+            .catch((error) => {
+                console.error('error', error);
+                return Observable.throw(error);
+            });
     }
 
     remove(id: number): Observable<boolean> {
         return this.http.delete(`${this.serviceUrl}/${id}`)
             .map(this.mapData)
-            .map((res) => {
-                return true;
-            })
+            .map((res) => true)
             .catch((error) => {
                 console.error('error', error);
                 return Observable.throw(error);

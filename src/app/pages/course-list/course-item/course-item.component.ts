@@ -17,19 +17,12 @@ export class CourseItemComponent {
 	@Output()
 	private deleteCourse: EventEmitter<number>;
 
-	@Output()
-	private editCourse: EventEmitter<number>;
-
 	constructor() {
 		this.deleteCourse = new EventEmitter<number>();
-		this.editCourse = new EventEmitter<number>();
 	}
 
 	public delete($event) {
 		this.deleteCourse.emit(this.course.id);
 	}
 
-	public edit() {
-		this.editCourse.emit(this.course.id);
-	}
 }

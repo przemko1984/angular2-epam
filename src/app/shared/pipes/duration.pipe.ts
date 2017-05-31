@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class DurationPipe implements PipeTransform {
 
     transform(duration: number): string {
-        if (typeof duration === 'undefined') {
+        if (typeof duration === 'undefined' || isNaN(duration)) {
             return '-';
         }
 

@@ -1,0 +1,14 @@
+<div>
+    <p *ngFor="let item of items">
+        <label>
+            <input type="checkbox"
+                (change)="setValue(item)"
+                [value]="item"
+                [checked]="isChecked(item)"
+                name="{{nameOption}}"
+                (blur)="onTouched($event)"
+            >
+            <span>{{item.firstName}} {{item.lastName}}</span>
+        </label>
+    </p>
+</div>

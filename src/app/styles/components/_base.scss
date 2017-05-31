@@ -1,12 +1,23 @@
-html {
-	font-size: 12px;
-}
+// html {
+// 	font-size: 12px;
+// }
 
-body {
-	font-size: 1.4rem;
-	overflow: hidden;
-}
+// body {
+// 	font-size: 1.4rem;
+// 	overflow: hidden;
+// }
 
 h1, h2, h3, h4, h5 {
 	font-weight: normal;
+}
+
+form {
+  input.ng-touched.ng-invalid, .ng-touched.ng-invalid input, .ng-touched.ng-invalid > div {
+    border: 1px solid #f00;
+  }
+}
+
+
+.status-message.error-message {
+  color: #f00;
 }
