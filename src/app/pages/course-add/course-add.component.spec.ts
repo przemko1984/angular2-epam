@@ -70,8 +70,7 @@ describe('CourseAddPageComponent component: ', () => {
     //     const deElems = fixture.debugElement.query(By.css('form'));
     //     // el =  de.nativeElement;
     //     fixture.detectChanges();
-    //     // const className = deElems[0].nativeElement.className;
-    //     expect(deElems).toBe(null);
+    //     expect(deElems).not.toBeNull();
     // });
 
     describe('on init', () => {
