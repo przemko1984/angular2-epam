@@ -11,7 +11,8 @@ import { AuthorizedHttp } from './authorized-http.service';
 import {
     COURSES_LOADED,
     INIT_COURSES,
-    ICoursesReducer
+    ICoursesReducer,
+    IAppStore
 } from '../../reducers';
 
 const DELAY = 500;
@@ -30,11 +31,11 @@ export class CourseService implements OnDestroy {
     constructor(
         private http: AuthorizedHttp,
         private _filterByName: FilterByNamePipe,
-        private store: Store<any>
+        private store: Store<IAppStore>
     ) {
         // this.courseList$ = this.courseListSubject
         //     .asObservable();
-        const store$ = this.store.select<ICoursesReducer>('courses');
+        const store$ = this.store.select((s) => s.courses);
         this.courseList$ = store$.map((data) => data['list']);
         this.noMoreResults$ = store$.map((data) => data['noMoreResults']);
     }

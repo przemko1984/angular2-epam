@@ -1,6 +1,7 @@
 /**
  * @author: @AngularClass
  */
+var DEBUG = process.argv.includes('--debug');
 
 module.exports = function (config) {
   var testWebpackConfig = require('./webpack.test.js')({ env: 'test' });
@@ -45,7 +46,9 @@ module.exports = function (config) {
      * preprocess matching files before serving them to the browser
      * available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
      */
-    preprocessors: { './config/spec-bundle.js': ['coverage', 'webpack', 'sourcemap'] },
+    preprocessors: {
+      './config/spec-bundle.js': ['coverage', 'webpack', 'sourcemap']
+    },
 
     // Webpack Config at ./webpack.test.js
     webpack: testWebpackConfig,
@@ -67,7 +70,7 @@ module.exports = function (config) {
       noInfo: true,
       // and use stats to turn off verbose output
       stats: {
-        // options i.e. 
+        // options i.e.
         chunks: false
       }
     },
@@ -85,6 +88,10 @@ module.exports = function (config) {
 
     // enable / disable colors in the output (reporters and logs)
     colors: true,
+    captureTimeout: 60000,
+    browserDisconnectTimeout: 10000,
+    browserDisconnectTolerance: 3,
+    browserNoActivityTimeout: 60000,
 
     /*
      * level of logging
@@ -100,7 +107,7 @@ module.exports = function (config) {
      * available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
      */
     browsers: [
-      'Chrome'
+      DEBUG ? 'Chrome' : 'PhantomJS'
     ],
 
     customLaunchers: {

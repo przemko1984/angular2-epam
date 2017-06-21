@@ -8,7 +8,7 @@ import {
 
 // Load the implementations that should be tested
 import { AppComponent } from './app.component';
-import { AppState } from './app.service';
+// import { AppState } from './app.service';
 
 describe(`App`, () => {
   let comp: AppComponent;
@@ -19,7 +19,7 @@ describe(`App`, () => {
     TestBed.configureTestingModule({
       declarations: [ AppComponent ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [AppState]
+      providers: []
     })
     .compileComponents(); // compile template and css
   }));
@@ -35,12 +35,6 @@ describe(`App`, () => {
   it(`should be readly initialized`, () => {
     expect(fixture).toBeDefined();
     expect(comp).toBeDefined();
-  });
-
-  it(`should be @AngularClass`, () => {
-    expect(comp.url).toEqual('https://twitter.com/AngularClass');
-    expect(comp.angularclassLogo).toEqual('assets/img/angularclass-avatar.png');
-    expect(comp.name).toEqual('Angular 2 Webpack Starter');
   });
 
   it('should log ngOnInit', () => {

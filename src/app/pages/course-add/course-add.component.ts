@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import _  from 'lodash';
+import { uniqBy }  from 'lodash';
 // ngrx example
 import { Store } from '@ngrx/store';
 
@@ -11,7 +11,7 @@ import {
 	COURSE_SAVED,
 	COURSE_SAVE_FAILURE,
 	COURSE_LOAD_FAILURE,
-	ICourseReducer
+	IAppStore
 } from '../../reducers';
 import { BasePage } from '../base.page.component';
 import { ICourse, IAuthor } from './../../business-entities';
@@ -40,7 +40,7 @@ export class CourseAddPageComponent extends BasePage {
 		private loaderService: LoaderService,
 		private authorService: AuthorService,
 		private breadcrumbService: BreadcrumbService,
-		private store: Store<ICourseReducer>
+		private store: Store<IAppStore>
 	) {
 		super();
 	}
@@ -51,8 +51,7 @@ export class CourseAddPageComponent extends BasePage {
 		this.subscribeCourseId();
 		this.store.dispatch({type: INIT_COURSE});
 
-		this.store.select<ICourseReducer>('course')
-		.map((data) => data['course'])
+		this.store.select((store) => store.course.course)
 		.subscribe((course) => {
 			this.formModel = course;
 		});
@@ -131,7 +130,7 @@ export class CourseAddPageComponent extends BasePage {
 		this.authorService.loadList();
 		const sub = this.authorService.getList()
 			.subscribe((dafaultAuthors) => {
-				this.authors = _.uniqBy(this.authors.concat(dafaultAuthors), 'id');
+				this.authors = uniqBy(this.authors.concat(dafaultAuthors), 'id');
 				this.ref.markForCheck();
 			});
 
@@ -166,7 +165,7 @@ export class CourseAddPageComponent extends BasePage {
 							course: resp
 						}
 					});
-					this.authors = _.uniqBy(this.authors.concat(resp.authors), 'id');
+					this.authors = uniqBy(this.authors.concat(resp.authors), 'id');
 					this.loaderService.hide();
 					this.ref.markForCheck();
 					// set dynamic breadcrumb for this route

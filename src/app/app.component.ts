@@ -29,7 +29,7 @@ import { LoaderService, AuthService } from './shared/services';
 })
 export class AppComponent implements OnInit {
 
-	private start: Date;
+	// private start: Date;
 
 	constructor(private ngZone: NgZone, private ref: ChangeDetectorRef) {
 		// ref.detach();
@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
 	}
 
 	public ngOnInit() {
-
+		console.log('AppComponent init');
 		// Tracking: start (unstable) and end (stable) states
 		// this.ngZone.onUnstable.subscribe(() => {
 		// 	this.start = new Date();

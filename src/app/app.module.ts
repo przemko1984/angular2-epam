@@ -15,13 +15,15 @@ import {
 } from '@angular/router';
 
 // NGRX
-import { StoreModule } from '@ngrx/store';
+import { StoreModule, combineReducers } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import {
-	authReducer,
-	coursesReducer,
-	courseReducer
-} from './reducers';
+import { compose } from '@ngrx/core/compose';
+// import {
+// 	authReducer,
+// 	coursesReducer,
+// 	courseReducer
+// } from './reducers';
+import { default as reducer } from './reducers/app-store';
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -64,11 +66,12 @@ const APP_PROVIDERS = [
 		FormsModule,
 		HttpModule,
 		RouterModule.forRoot(ROUTES, {useHash: true, preloadingStrategy: PreloadAllModules}),
-		StoreModule.provideStore({
-			auth: authReducer,
-			courses: coursesReducer,
-			course: courseReducer
-		}),
+		// StoreModule.provideStore({
+		// 	auth: authReducer,
+		// 	courses: coursesReducer,
+		// 	course: courseReducer
+		// }),
+		StoreModule.provideStore(reducer),
 		StoreDevtoolsModule.instrumentOnlyWithExtension({
 			maxAge: 5
 		}),

@@ -13,10 +13,9 @@ const DELAY = 500;
 @Injectable()
 export class AuthorService {
 
+    protected authorList$: Observable<IAuthor[]>;
+    protected authorListSubject: ReplaySubject<IAuthor[]> = new ReplaySubject<IAuthor[]>(1);
     private serviceUrl: string = 'http://localhost:3004/authors';
-
-    private authorList$: Observable<IAuthor[]>;
-    private authorListSubject: ReplaySubject<IAuthor[]> = new ReplaySubject<IAuthor[]>(1);
     private sub: Subscription;
 
     constructor(private http: AuthorizedHttp, private _filterByName: FilterByNamePipe) {

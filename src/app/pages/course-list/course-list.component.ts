@@ -7,7 +7,7 @@ import {
 import { Observable } from 'rxjs';
 // ngrx
 import { Store } from '@ngrx/store';
-import { INIT_COURSES, ICoursesReducer } from '../../reducers';
+import { INIT_COURSES, ICoursesReducer, IAppStore } from '../../reducers';
 
 import { BasePage } from '../base.page.component';
 import { ICourse } from './../../business-entities';
@@ -33,7 +33,7 @@ export class CourseListPageComponent extends BasePage {
 		private courseService: CourseService,
 		private loaderService: LoaderService,
 		private filterByName: FilterByNamePipe,
-		private store: Store<ICoursesReducer>
+		private store: Store<IAppStore>
 	) {
 		super();
 		console.log('CourseListPageComponent: constructor');
