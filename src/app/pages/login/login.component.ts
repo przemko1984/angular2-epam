@@ -21,6 +21,9 @@ export class LoginPageComponent extends BasePage {
 	isAuthenticated: Observable<boolean>;
 	userInfo: IUser;
 
+	// ngrx example
+	counter: Observable<number>;
+
 	constructor(
 		private ref: ChangeDetectorRef,
 		private authService: AuthService,

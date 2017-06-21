@@ -39,5 +39,6 @@
   "buildOnSave": false,
   "atom": {
     "rewriteTsconfig": false
-  }
+  },
+  "arrow-parens": [true, "ban-single-arg-parens"]
 }

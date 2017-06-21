@@ -2,7 +2,17 @@ import { Component, ViewEncapsulation, OnInit, OnDestroy, ChangeDetectionStrateg
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import _  from 'lodash';
+// ngrx example
+import { Store } from '@ngrx/store';
 
+import {
+	INIT_COURSE,
+	COURSE_LOADED,
+	COURSE_SAVED,
+	COURSE_SAVE_FAILURE,
+	COURSE_LOAD_FAILURE,
+	ICourseReducer
+} from '../../reducers';
 import { BasePage } from '../base.page.component';
 import { ICourse, IAuthor } from './../../business-entities';
 import { CourseService, LoaderService, AuthorService, BreadcrumbService } from './../../shared/services';
@@ -29,7 +39,8 @@ export class CourseAddPageComponent extends BasePage {
 		private courseService: CourseService,
 		private loaderService: LoaderService,
 		private authorService: AuthorService,
-		private breadcrumbService: BreadcrumbService
+		private breadcrumbService: BreadcrumbService,
+		private store: Store<ICourseReducer>
 	) {
 		super();
 	}
@@ -38,6 +49,13 @@ export class CourseAddPageComponent extends BasePage {
 		this.authors = [];
 		this.loadDefaultAuthors();
 		this.subscribeCourseId();
+		this.store.dispatch({type: INIT_COURSE});
+
+		this.store.select<ICourseReducer>('course')
+		.map((data) => data['course'])
+		.subscribe((course) => {
+			this.formModel = course;
+		});
 	}
 
 	onDestroy() {
@@ -58,11 +76,18 @@ export class CourseAddPageComponent extends BasePage {
 			.subscribe(
 				(resp) => {
 					console.log('course edited', resp);
+					this.store.dispatch({
+						type: COURSE_SAVED,
+						payload: {
+							course: resp
+						}
+					});
 					this.loaderService.hide();
 					this.router.navigate(['']);
 				},
 				(error) => {
 					console.error('error', error);
+					this.store.dispatch({ type: COURSE_SAVE_FAILURE });
 					this.loaderService.hide();
 				}
 			);
@@ -74,26 +99,33 @@ export class CourseAddPageComponent extends BasePage {
 			.subscribe(
 				(resp) => {
 					console.log('course added', resp);
+					this.store.dispatch({
+						type: COURSE_SAVED,
+						payload: {
+							course: resp
+						}
+					});
 					this.loaderService.hide();
 					this.router.navigate(['']);
 				},
 				(error) => {
 					console.error('error', error);
+					this.store.dispatch({ type: COURSE_SAVE_FAILURE });
 					this.loaderService.hide();
 				}
 			);
 		this.registerSubscription(sub);
 	}
 
-	private initEmptyCourseForm() {
-		this.formModel = {
-			name: '',
-			description: '',
-			date: '',
-			length: null,
-			authors: []
-		};
-	}
+	// private initEmptyCourseForm() {
+	// 	this.formModel = {
+	// 		name: '',
+	// 		description: '',
+	// 		date: '',
+	// 		length: null,
+	// 		authors: []
+	// 	};
+	// }
 
 	private loadDefaultAuthors() {
 		this.authorService.loadList();
@@ -112,9 +144,10 @@ export class CourseAddPageComponent extends BasePage {
 			if (this.courseId) {
 				// console.log('<<<<<<<<<<<< edit >>>>>>>>>>>>');
 				this.subscribeCourse();
-			} else {
+			// } else {
+				// this.store.dispatch({ type: INIT_COURSE});
 				// console.log('<<<<<<<<<<<< add >>>>>>>>>>>>>');
-				this.initEmptyCourseForm();
+				// this.initEmptyCourseForm();
 
 			}
 		});
@@ -126,7 +159,13 @@ export class CourseAddPageComponent extends BasePage {
 		const sub = this.courseService.getById(+this.courseId)
 			.subscribe(
 				(resp) => {
-					this.formModel = resp;
+					// this.formModel = resp;
+					this.store.dispatch({
+						type: COURSE_LOADED,
+						payload: {
+							course: resp
+						}
+					});
 					this.authors = _.uniqBy(this.authors.concat(resp.authors), 'id');
 					this.loaderService.hide();
 					this.ref.markForCheck();
@@ -135,6 +174,7 @@ export class CourseAddPageComponent extends BasePage {
 				},
 				(error) => {
 					console.error('error', error);
+					this.store.dispatch({ type: COURSE_LOAD_FAILURE });
 					this.loaderService.hide();
 				}
 			);

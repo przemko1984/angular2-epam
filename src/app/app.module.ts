@@ -14,6 +14,14 @@ import {
 	PreloadAllModules
 } from '@angular/router';
 
+// NGRX
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import {
+	authReducer,
+	coursesReducer,
+	courseReducer
+} from './reducers';
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -56,6 +64,14 @@ const APP_PROVIDERS = [
 		FormsModule,
 		HttpModule,
 		RouterModule.forRoot(ROUTES, {useHash: true, preloadingStrategy: PreloadAllModules}),
+		StoreModule.provideStore({
+			auth: authReducer,
+			courses: coursesReducer,
+			course: courseReducer
+		}),
+		StoreDevtoolsModule.instrumentOnlyWithExtension({
+			maxAge: 5
+		}),
 		SharedModule.forRoot(),
 		LoginPageModule,
 		CoursePageModule,

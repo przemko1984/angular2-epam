@@ -3,10 +3,16 @@ import { Http, Response, RequestOptions, URLSearchParams } from '@angular/http';
 import { Observable, Subject, Subscription } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import { Store } from '@ngrx/store';
 
 import { ICourse, INewCourse } from '../../business-entities/';
 import { FilterByNamePipe } from '../pipes';
 import { AuthorizedHttp } from './authorized-http.service';
+import {
+    COURSES_LOADED,
+    INIT_COURSES,
+    ICoursesReducer
+} from '../../reducers';
 
 const DELAY = 500;
 
@@ -14,15 +20,23 @@ const DELAY = 500;
 export class CourseService implements OnDestroy {
 
     limit: number = 5;
+    noMoreResults$: Observable<boolean>;
     private serviceUrl: string = 'http://localhost:3004/courses';
 
     private courseList$: Observable<ICourse[]>;
-    private courseListSubject: Subject<ICourse[]> = new Subject<ICourse[]>();
+    // private courseListSubject: Subject<ICourse[]> = new Subject<ICourse[]>();
     private sub: Subscription;
 
-    constructor(private http: AuthorizedHttp, private _filterByName: FilterByNamePipe) {
-        this.courseList$ = this.courseListSubject
-            .asObservable();
+    constructor(
+        private http: AuthorizedHttp,
+        private _filterByName: FilterByNamePipe,
+        private store: Store<any>
+    ) {
+        // this.courseList$ = this.courseListSubject
+        //     .asObservable();
+        const store$ = this.store.select<ICoursesReducer>('courses');
+        this.courseList$ = store$.map((data) => data['list']);
+        this.noMoreResults$ = store$.map((data) => data['noMoreResults']);
     }
 
     ngOnDestroy() {
@@ -54,8 +68,19 @@ export class CourseService implements OnDestroy {
             })
             .subscribe((courses: ICourse[]) => {
                 console.log('loaded courses:', courses);
-                this.courseListSubject.next(courses);
+                this.store.dispatch({
+                    type: COURSES_LOADED,
+                    payload: {
+                        list: courses
+                    }
+                });
+                // this.courseListSubject.next(courses);
             });
+    }
+
+    search(search: string = '') {
+        this.store.dispatch({ type: INIT_COURSES});
+        this.loadList(0, search);
     }
 
     create(newCourse: INewCourse): Observable<ICourse> {
@@ -99,7 +124,11 @@ export class CourseService implements OnDestroy {
     remove(id: number): Observable<boolean> {
         return this.http.delete(`${this.serviceUrl}/${id}`)
             .map(this.mapData)
-            .map((res) => true)
+            .map((res) => {
+                this.store.dispatch({ type: INIT_COURSES});
+
+                return true;
+            })
             .catch((error) => {
                 console.error('error', error);
                 return Observable.throw(error);
